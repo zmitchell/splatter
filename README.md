@@ -1,98 +1,25 @@
-# nannou [![Actions Status](https://github.com/nannou-org/nannou/workflows/nannou/badge.svg)](https://github.com/nannou-org/nannou/actions) [![Backers on Open Collective](https://opencollective.com/nannou/backers/badge.svg)](https://guide.nannou.cc/contributors.html#backers) [![Sponsors on Open Collective](https://opencollective.com/nannou/sponsors/badge.svg)](https://guide.nannou.cc/contributors.html#sponsors)
+# splatter
 
-![nannou_logo](https://i.imgur.com/1ldLFfj.png)
+A Rust-based framework for creating generative art.
 
-An open-source creative-coding toolkit for Rust.
+## Origins
+`splatter` was forked from [nannou](https://nannou.cc) with the primary goal of focusing on creating 2D generative art, whereas `nannou` does much more than that.
+If you'd like to do things with audio, hardware, etc `nannou` will be a much better fit for what you're looking for.
 
-**nannou** is a collection of code aimed at making it easy for artists to
-express themselves with simple, fast, reliable, portable code.  Whether working
-on a 12-month installation or a 5 minute sketch, this framework aims to
-give artists easy access to the tools they need.
+In order to focus on generative art and be able to move faster I decided it would be easier to fork `nannou` and remove all of the capabilities that I don't need.
 
-The project was started out of a desire for a creative coding framework inspired
-by Processing, OpenFrameworks and Cinder, but for Rust. <sup>Named after
-[this](https://www.youtube.com/watch?v=A-Pkx37kYf4).</sup>
+## License
 
-|     |     |     |
-| --- |:---:| ---:|
-| [![1](https://i.imgur.com/kPn91tW.gif)](https://github.com/nannou-org/nannou/blob/master/examples/draw/draw_polygon.rs) | [![2](https://i.imgur.com/gaiWHZX.gif)](https://github.com/nannou-org/nannou/blob/master/examples/ui/egui/simple_ui.rs) | [![3](https://i.imgur.com/lm4RI4N.gif)](https://github.com/nannou-org/nannou/blob/master/examples/draw/draw_polyline.rs) |
+Licensed under either of
 
-### A Quick Note
+ * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
-It is still early days and there is a lot of work to be done. Feel free to help out!
+at your option.
 
-## The Guide
+### Contribution
 
-- [**Welcome!**](https://www.guide.nannou.cc/)
-- [**Why Nannou?**](https://www.guide.nannou.cc/why_nannou.html)
-  - [**Goals**](https://www.guide.nannou.cc/why_nannou.html#goals)
-  - [**Why Rust?**](https://www.guide.nannou.cc/why_nannou.html#why-rust)
-  - [**FOSS Licensing**](https://guide.nannou.cc/why_nannou.html#why-the-apachemit-dual-licensing)
-- [**Getting Started**](https://www.guide.nannou.cc/getting_started.html)
-  - [**Platform-specific Setup**](https://www.guide.nannou.cc/getting_started/platform-specific_setup.html)
-  - [**Installing Rust**](https://www.guide.nannou.cc/getting_started/installing_rust.html)
-  - [**Editor Setup**](https://www.guide.nannou.cc/getting_started/editor_setup.html)
-  - [**Running Examples**](https://www.guide.nannou.cc/getting_started/running_examples.html)
-  - [**Create A Project**](https://www.guide.nannou.cc/getting_started/create_a_project.html)
-  - [**Upgrading to a New Release**](https://guide.nannou.cc/getting_started/upgrading.html)
-- [**Tutorials**](https://www.guide.nannou.cc/tutorials.html)
-- [**Community Tutorials**](https://www.guide.nannou.cc/community_tutorials.html)
-- [**Developer Reference**](https://www.guide.nannou.cc/developer_reference.html)
-- [**API Reference**](https://www.guide.nannou.cc/api_reference.html)
-- [**Showcases**](https://www.guide.nannou.cc/showcases.html)
-- [**Changelog**](https://www.guide.nannou.cc/changelog.html)
-- [**Contributors**](https://www.guide.nannou.cc/contributors.html)
-- [**Code of Conduct**](https://guide.nannou.cc/code_of_conduct.html)
-
-## Examples
-
-The following collection of **examples** are a great way to get familiar with nannou.
-
-| **Directory** | **Description** |
-| --- | --- |
-| [**`examples/`**](./examples) | A collection of examples demonstrating how to use nannou! |
-| [**`generative_design/`**](./generative_design) | Examples from [Generative Gestaltung](http://www.generative-gestaltung.de/), ported from p5.js to nannou. |
-| [**`nature_of_code/`**](./nature_of_code) | Examples from [Nature of Code](https://natureofcode.com/), ported from Processing to nannou. |
-
-If you spot an example that interests you, you may run it with the following:
-
-```
-cargo run --release --example <example_name>
-```
-
-where `<example_name>` is the example's file name without the `.rs`. Note that
-the first run might take a while in order to build nannou first, but consecutive
-runs should be much quicker.
-
-## Libraries
-
-The following nannou **libraries** are included within this repository.
-
-| **Library** | **Links** | **Description** |
-| --- | --- | --- |
-| [**`nannou`**](./nannou) | [![Crates.io](https://img.shields.io/crates/v/nannou.svg)](https://crates.io/crates/nannou) [![docs.rs](https://docs.rs/nannou/badge.svg)](https://docs.rs/nannou/) | App, sketching, graphics, windowing and UI. |
-| [**`nannou_audio`**](./nannou_audio) | [![Crates.io](https://img.shields.io/crates/v/nannou_audio.svg)](https://crates.io/crates/nannou_audio) [![docs.rs](https://docs.rs/nannou_audio/badge.svg)](https://docs.rs/nannou_audio/) | Audio hosts, devices and streams. |
-| [**`nannou_core`**](./nannou_core) | [![Crates.io](https://img.shields.io/crates/v/nannou_core.svg)](https://crates.io/crates/nannou_core) [![docs.rs](https://docs.rs/nannou_core/badge.svg)](https://docs.rs/nannou_core/) | Just-the-core for headless, embedded and libraries. |
-| [**`nannou_egui`**](./nannou_egui) | [![Crates.io](https://img.shields.io/crates/v/nannou_egui.svg)](https://crates.io/crates/nannou_egui) [![docs.rs](https://docs.rs/nannou_egui/badge.svg)](https://docs.rs/nannou_egui/) | For creating egui UIs in nannou apps. |
-| [**`nannou_isf`**](./nannou_isf) | [![Crates.io](https://img.shields.io/crates/v/nannou_isf.svg)](https://crates.io/crates/nannou_isf) [![docs.rs](https://docs.rs/nannou_isf/badge.svg)](https://docs.rs/nannou_isf/) | An Interactive Shader Format pipeline. |
-| [**`nannou_laser`**](./nannou_laser) | [![Crates.io](https://img.shields.io/crates/v/nannou_laser.svg)](https://crates.io/crates/nannou_laser) [![docs.rs](https://docs.rs/nannou_laser/badge.svg)](https://docs.rs/nannou_laser/) | LASER devices, streams and path optimisation. |
-| [**`nannou_mesh`**](./nannou_mesh) | [![Crates.io](https://img.shields.io/crates/v/nannou_mesh.svg)](https://crates.io/crates/nannou_mesh) [![docs.rs](https://docs.rs/nannou_mesh/badge.svg)](https://docs.rs/nannou_mesh/) | API for composing meshes from channels. |
-| [**`nannou_osc`**](./nannou_osc) | [![Crates.io](https://img.shields.io/crates/v/nannou_osc.svg)](https://crates.io/crates/nannou_osc) [![docs.rs](https://docs.rs/nannou_osc/badge.svg)](https://docs.rs/nannou_osc/) | Simple OSC sender and receiver. |
-| [**`nannou_wgpu`**](./nannou_wgpu) | [![Crates.io](https://img.shields.io/crates/v/nannou_wgpu.svg)](https://crates.io/crates/nannou_wgpu) [![docs.rs](https://docs.rs/nannou_wgpu/badge.svg)](https://docs.rs/nannou_wgpu/) | WGPU helpers and extensions. |
-
-## Tools
-
-A couple of tools are also included, though there some issues we would like to
-address before we can recommend using them just yet!
-
-| **Tool** | **Links** | **Description** |
-| --- | --- | --- |
-| [**`nannou_new`**](./nannou_new) | [![Crates.io](https://img.shields.io/crates/v/nannou_new.svg)](https://crates.io/crates/nannou_new) | A nannou project generator. |
-| [**`nannou_package`**](./nannou_package) | [![Crates.io](https://img.shields.io/crates/v/nannou_package.svg)](https://crates.io/crates/nannou_package) | For packaging nannou apps for distribution. |
-
-## Links
-
-- [Website](https://www.nannou.cc/)
-- [Guide](https://www.guide.nannou.cc/)
-- [Slack](https://communityinviter.com/apps/nannou/join-nannou-slack) / [Matrix](https://matrix.to/#/+nannou:matrix.org)
-- [Support nannou!](https://opencollective.com/nannou)
+Unless you explicitly state otherwise, any contribution intentionally
+submitted for inclusion in the work by you, as defined in the Apache-2.0
+license, shall be dual licensed as above, without any additional terms or
+conditions.
