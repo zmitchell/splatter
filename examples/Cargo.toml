@@ -16,7 +16,6 @@ edition = "2018"
 [dev-dependencies]
 async-std = "1.10.0"
 audrey = "0.3"
-hotglsl = { git = "https://github.com/nannou-org/hotglsl", branch = "master" }
 hrtf = "0.2"
 nannou = { version = "0.18.0", path = "../nannou" }
 nannou_egui = { version = "0.5.0", path = "../nannou_egui" }
@@ -25,31 +24,6 @@ time_calc = { version = "0.13", features = ["serde"] }
 walkdir = "2"
 hound = "3.4.0"
 ringbuf = "0.2.2"
-
-# Audio
-[[example]]
-name = "hrtf-noise"
-path = "audio/hrtf-noise.rs"
-[[example]]
-name = "simple_audio"
-path = "audio/simple_audio.rs"
-[[example]]
-name = "simple_audio_file"
-path = "audio/simple_audio_file.rs"
-[[example]]
-name = "record_wav"
-path = "audio/record_wav.rs"
-[[example]]
-name = "feedback"
-path = "audio/feedback.rs"
-
-# Communication
-[[example]]
-name = "osc_receiver"
-path = "communication/osc_receiver.rs"
-[[example]]
-name = "osc_sender"
-path = "communication/osc_sender.rs"
 
 # Draw
 [[example]]
@@ -103,28 +77,6 @@ path = "draw/draw_textured_polygon.rs"
 [[example]]
 name = "draw_transform"
 path = "draw/draw_transform.rs"
-
-# Interactive Shader Format
-[[example]]
-name = "isf_demo"
-path = "isf/isf_demo.rs"
-
-# Laser
-[[example]]
-name = "laser_ffi"
-path = "laser/laser_ffi.rs"
-[[example]]
-name = "laser_frame_stream"
-path = "laser/laser_frame_stream.rs"
-[[example]]
-name = "laser_frame_stream_gui"
-path = "laser/laser_frame_stream_gui.rs"
-[[example]]
-name = "laser_raw_stream"
-path = "laser/laser_raw_stream.rs"
-[[example]]
-name = "laser_ilda_idtf"
-path = "laser/laser_ilda_idtf.rs"
 
 # Nannou Basics
 [[example]]
