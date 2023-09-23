@@ -33,10 +33,10 @@
  * a-z                 : switch letter on/off
  * ctrl                : save png
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -139,10 +139,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
         );
 
         let sort_x = sort_positions_x[index.unwrap()];
-        let inter_x = nannou::geom::range::Range::new(pos_x, sort_x).lerp(m);
+        let inter_x = splatter::geom::range::Range::new(pos_x, sort_x).lerp(m);
 
         let sort_y = win.top() - (index.unwrap() as f32 * 20.0 + 40.0);
-        let inter_y = nannou::geom::range::Range::new(pos_y, sort_y).lerp(m);
+        let inter_y = splatter::geom::range::Range::new(pos_y, sort_y).lerp(m);
 
         if model.draw_letters[index.unwrap()] {
             if model.draw_grey_lines {

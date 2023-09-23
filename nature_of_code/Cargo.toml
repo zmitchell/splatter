@@ -9,12 +9,12 @@ description = "An implementation of Dan Shiffman's The Nature of Code."
 readme = "README.md"
 keywords = ["creative", "sketch", "nature", "code", "processing"]
 license = "MIT"
-repository = "https://github.com/nannou-org/nannou.git"
-homepage = "https://github.com/nannou-org/nannou"
+repository = "https://github.com/splatter-org/splatter.git"
+homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dev-dependencies]
-nannou = { version ="0.18.0", path = "../nannou" }
+splatter = { version ="0.18.0", path = "../splatter" }
 
 # Chapter 1 Vectors
 [[example]]

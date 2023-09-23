@@ -1,13 +1,13 @@
 # Platform-specific Setup
 
 Before we get started, let's make sure we have all the necessary ingredients for
-installing Rust and building nannou projects.
+installing Rust and building splatter projects.
 
 Depending on what OS you are running, you might require an extra step or two.
 
 By the way, if you notice some steps are missing from this section of the guide,
-feel free to open an issue or PR at [the nannou guide
-repo](https://github.com/nannou-org/nannou/tree/master/guide)!
+feel free to open an issue or PR at [the splatter guide
+repo](https://github.com/splatter-org/splatter/tree/master/guide)!
 
 ## macOS
 
@@ -23,7 +23,7 @@ Some examples require that you have `cmake` installed as well. The easiest way t
 brew install cmake
 ```
 
-This should provide all the developer tools needed for building nannou.
+This should provide all the developer tools needed for building splatter.
 
 ## Windows
 
@@ -50,7 +50,7 @@ Ensure you have the following system packages installed:
   - `build-essential` will be required by `rustc` the rust compiler for linking.
   - `pkg-config` is used by some build scripts to source information about
     certain libraries.
-  - `alsa` dev packages are required for `nannou_audio`.
+  - `alsa` dev packages are required for `splatter_audio`.
 
   For Debian/Ubuntu users:
   ```bash
@@ -76,7 +76,7 @@ Ensure you have the following system packages installed:
 
 - **curl lib dev package**
 
-  Nannou depends on the `curl-sys` crate. Some Linux distributions use
+  splatter depends on the `curl-sys` crate. Some Linux distributions use
   LibreSSL instead of OpenSSL (such as AlpineLinux, Voidlinux, possibly
   [others](https://en.wikipedia.org/wiki/LibreSSL#Adoption) if manually
   installed).

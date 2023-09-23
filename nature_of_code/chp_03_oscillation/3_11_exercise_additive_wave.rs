@@ -5,10 +5,10 @@
 // Additive Wave
 // Create a more complex wave by adding two waves together.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

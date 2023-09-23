@@ -27,12 +27,12 @@
  * KEYS
  * s                   : save png
  */
-use nannou::noise::NoiseFn;
-use nannou::noise::Seedable;
-use nannou::prelude::*;
+use splatter::noise::NoiseFn;
+use splatter::noise::Seedable;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -60,7 +60,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
     draw.background().color(WHITE);
 
-    let noise = nannou::noise::Perlin::new().set_seed(model.act_random_seed);
+    let noise = splatter::noise::Perlin::new().set_seed(model.act_random_seed);
 
     let noise_x_range = map_range(app.mouse.x, win.left(), win.right(), 0.0, win.w()) / 10.0;
 

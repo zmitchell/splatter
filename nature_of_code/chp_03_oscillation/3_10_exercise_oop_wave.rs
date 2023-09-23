@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Exercise 3-10: OOP Wave
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

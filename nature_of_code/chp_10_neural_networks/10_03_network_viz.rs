@@ -5,10 +5,10 @@
 // A static drawing of a Neural Network
 //
 // Example 10-3: Network Viz
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 #[derive(Clone)]

@@ -10,11 +10,11 @@
 // to describe each individual cell and a "cellular automata" class
 // to describe a collection of cells
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 use std::ops::Range;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Gol {

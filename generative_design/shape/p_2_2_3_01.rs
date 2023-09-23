@@ -30,11 +30,11 @@
  * Delete/Backspace    : clear display
  * s                   : save png
  */
-use nannou::lyon;
-use nannou::prelude::*;
+use splatter::lyon;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {
@@ -98,7 +98,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         draw.background().color(WHITE);
     }
 
-    let mut builder = nannou::geom::path::Builder::new().with_svg();
+    let mut builder = splatter::geom::path::Builder::new().with_svg();
 
     // TODO implement the Catmull–Rom spline algo in lyon, see curveVertex() in Processing
     // first control point

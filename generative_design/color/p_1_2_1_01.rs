@@ -30,13 +30,13 @@
  * s                   : save png
  * c                   : save color palette
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
-use nannou::color::FromColor;
-use nannou::color::Mix;
+use splatter::color::FromColor;
+use splatter::color::Mix;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

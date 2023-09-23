@@ -37,12 +37,12 @@
  * s                   : save png
  * c                   : save color palette
  */
-use nannou::image;
-use nannou::image::GenericImageView;
-use nannou::prelude::*;
+use splatter::image;
+use splatter::image::GenericImageView;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 enum SortMode {

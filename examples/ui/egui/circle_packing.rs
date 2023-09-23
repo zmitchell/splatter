@@ -1,12 +1,12 @@
-use nannou::{color::rgb_u32, rand::thread_rng};
-use nannou::{prelude::*, rand::prelude::SliceRandom};
-use nannou_egui::{self, egui, Egui};
+use splatter::{color::rgb_u32, rand::thread_rng};
+use splatter::{prelude::*, rand::prelude::SliceRandom};
+use splatter_egui::{self, egui, Egui};
 
 const WIDTH: f32 = 640.0;
 const HEIGHT: f32 = 360.0;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Circle {
@@ -78,7 +78,7 @@ fn update(_app: &App, model: &mut Model, update: Update) {
     });
 }
 
-fn raw_window_event(_app: &App, model: &mut Model, event: &nannou::winit::event::WindowEvent) {
+fn raw_window_event(_app: &App, model: &mut Model, event: &splatter::winit::event::WindowEvent) {
     model.egui.handle_raw_event(event);
 }
 

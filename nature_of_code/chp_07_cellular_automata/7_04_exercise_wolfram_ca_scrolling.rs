@@ -8,13 +8,13 @@
 // with the system scrolling by
 // Also implements wrap around
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 use std::ops::Range;
 
 const RULE: i32 = 5;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // A Type to manage the CA

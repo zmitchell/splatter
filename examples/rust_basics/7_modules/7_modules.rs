@@ -1,10 +1,10 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 mod ball;
 use crate::ball::Ball;
 
 fn main() {
-    nannou::app(model).update(update).simple_window(view).run();
+    splatter::app(model).update(update).simple_window(view).run();
 }
 
 struct Model {

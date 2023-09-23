@@ -27,12 +27,12 @@
  * s                   : save png
  * c                   : save color palette
  */
-use nannou::prelude::*;
-use nannou::rand::rngs::StdRng;
-use nannou::rand::{Rng, SeedableRng};
+use splatter::prelude::*;
+use splatter::rand::rngs::StdRng;
+use splatter::rand::{Rng, SeedableRng};
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {
@@ -153,7 +153,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
                 let h = row_height as f32 * 1.5;
 
                 let index = counter % model.color_count;
-                let rect = nannou::geom::rect::Rect::from_x_y_w_h(0.0, 0.0, w, h);
+                let rect = splatter::geom::rect::Rect::from_x_y_w_h(0.0, 0.0, w, h);
                 let points_colored = rect.corners_iter().map(|[x, y]| {
                     let lum = map_range(y, h / 2.0, -h / 2.0, 0.0, 1.0);
 

@@ -29,10 +29,10 @@
 //   # Rinse and repeat
 // Example 9-1: GA Shakespeare
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // A type to describe a psuedo-DNA, i.e. genotype

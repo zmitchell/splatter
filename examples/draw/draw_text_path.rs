@@ -3,10 +3,10 @@
 //! While drawing text via the `Path` API may not be the most efficient approach, it allows for
 //! interesting creative applications.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run()
+    splatter::sketch(view).run()
 }
 
 fn view(app: &App, frame: Frame) {
@@ -21,7 +21,7 @@ fn view(app: &App, frame: Frame) {
         .w_h(win_rect.w(), win_rect.top());
 
     // Draw the text.
-    let text = text("create\nwith\nnannou").font_size(128).build(win_rect);
+    let text = text("create\nwith\nsplatter").font_size(128).build(win_rect);
 
     // Draw rects behind the lines.
     for line_rect in text.line_rects() {

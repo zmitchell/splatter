@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Example 8-1: Simple Recursion
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model;

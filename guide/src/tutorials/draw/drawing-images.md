@@ -10,7 +10,7 @@
 
 ---
 
-In this tutorial, we explore drawing images with nannou. We will cover loading textures from images in the app's assets directory, drawing them, and applying basic transformations. You can also find this file, and other useful examples, in the [examples](https://github.com/nannou-org/nannou/tree/master/examples) directory of the nannou source repository.
+In this tutorial, we explore drawing images with splatter. We will cover loading textures from images in the app's assets directory, drawing them, and applying basic transformations. You can also find this file, and other useful examples, in the [examples](https://github.com/splatter-org/splatter/tree/master/examples) directory of the splatter source repository.
 
 ## What is a Texture?
 
@@ -22,12 +22,12 @@ In short, this is how the GPU on your machine understands how to draw images. Th
 
 ## Getting Started
 
-To begin, we will need to bootstrap an `assets` directory with some images at the root of our project. I recommend copying the assets directory from the `nannou` repo itself to get started. This can be accomplished from the command line like so:
+To begin, we will need to bootstrap an `assets` directory with some images at the root of our project. I recommend copying the assets directory from the `splatter` repo itself to get started. This can be accomplished from the command line like so:
 
 ```bash
-git clone https://github.com/nannou-org/nannou.git
-cp -r nannou/assets ./assets
-rm -rf nannou
+git clone https://github.com/splatter-org/splatter.git
+cp -r splatter/assets ./assets
+rm -rf splatter
 ```
 
 Once you have a fleshed-out `assets` directory at the root of your project, you'll be ready to return to your `main.rs` file for the following steps.
@@ -38,12 +38,12 @@ We need somewhere to display the image, so first, let's create a window:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables, dead_code)]
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 struct Model {}
 
 fn main() {
-  nannou::app(model).run();
+  splatter::app(model).run();
 }
 
 fn model(app: &App) -> Model {
@@ -60,16 +60,16 @@ If you `cargo run` your app, you'll see an empty window.
 
 ## Setting up a Texture
 
-Now, at the top of your `main.rs` file, add a [WGPU Texture](https://docs.rs/nannou/latest/nannou/wgpu/struct.Texture.html) type field named `texture` to the `Model` struct.
+Now, at the top of your `main.rs` file, add a [WGPU Texture](https://docs.rs/splatter/latest/splatter/wgpu/struct.Texture.html) type field named `texture` to the `Model` struct.
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables, dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 struct Model {
   texture: wgpu::Texture,
 }
 # fn main() {
-#   nannou::app(model).run();
+#   splatter::app(model).run();
 # }
 # fn model(app: &App) -> Model {
 #   // Create a new window!
@@ -81,16 +81,16 @@ struct Model {
 # }
 ```
 
-Next, we'll need to create a GPU texture to initialize the struct with. We can accomplish this by loading a texture from an image file after we create the window in our `model` function. We will let nannou find the assets directory for us using the app's [`assets_path()`](https://docs.rs/nannou/0.14.1/nannou/app/struct.App.html#method.assets_path) method, so we only need to spell out the image path from the root of that directory.
+Next, we'll need to create a GPU texture to initialize the struct with. We can accomplish this by loading a texture from an image file after we create the window in our `model` function. We will let splatter find the assets directory for us using the app's [`assets_path()`](https://docs.rs/splatter/0.14.1/splatter/app/struct.App.html#method.assets_path) method, so we only need to spell out the image path from the root of that directory.
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables, dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {
 #   texture: wgpu::Texture,
 # }
 # fn main() {
-#   nannou::app(model).run();
+#   splatter::app(model).run();
 # }
 fn model(app: &App) -> Model {
   // Create a new window!
@@ -109,16 +109,16 @@ After all that, we've still got an empty window...but not for much longer!
 
 ## Drawing a Texture
 
-Finally, in our `view` function, we can draw the texture stored in our model with the `texture` method of the [App's Draw API](https://docs.rs/nannou/latest/nannou/draw/struct.Draw.html).
+Finally, in our `view` function, we can draw the texture stored in our model with the `texture` method of the [App's Draw API](https://docs.rs/splatter/latest/splatter/draw/struct.Draw.html).
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables, dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {
 #   texture: wgpu::Texture,
 # }
 # fn main() {
-#   nannou::app(model).run();
+#   splatter::app(model).run();
 # }
 # fn model(app: &App) -> Model {
 #   // Create a new window!
@@ -147,12 +147,12 @@ A texture can be drawn at any location and any size desired within the frame. Le
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables, dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {
 #   texture: wgpu::Texture,
 # }
 # fn main() {
-#   nannou::app(model).run();
+#   splatter::app(model).run();
 # }
 # fn model(app: &App) -> Model {
 #   // Create a new window!

@@ -24,11 +24,11 @@
  * 0-9                 : recursion level
  * s                   : save png
  */
-use nannou::lyon;
-use nannou::prelude::*;
+use splatter::lyon;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -70,7 +70,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 // Recursive function
 fn draw_branch(draw: &Draw, x: f32, y: f32, radius: f32, level: u8, mx: f32, my: f32) {
-    use nannou::geom::path::Builder;
+    use splatter::geom::path::Builder;
     let mut builder = Builder::new().with_svg();
     builder.move_to(lyon::math::point(x - radius, y));
     builder.arc(

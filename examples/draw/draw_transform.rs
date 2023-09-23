@@ -3,12 +3,12 @@
 //! groups of drawings, rather than one at a time. Note that `scale` and `rotate` are only two of
 //! many transform methods. See the link below to find a whole suite of interesting draw methods:
 //!
-//! https://docs.rs/nannou/latest/nannou/draw/struct.Draw.html
+//! https://docs.rs/splatter/latest/splatter/draw/struct.Draw.html
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run()
+    splatter::sketch(view).run()
 }
 
 fn view(app: &App, frame: Frame) {

@@ -1,28 +1,28 @@
 # Running Examples
 
-The easiest way to get familiar with nannou is to explore the examples.
+The easiest way to get familiar with splatter is to explore the examples.
 
-Nannou provides three collections of examples:
+splatter provides three collections of examples:
 
 | **Path** | **Description** |
 | --- | --- |
-| [**`examples/`**](https://github.com/nannou-org/nannou/tree/master/examples) | A collection of examples with categorised demonstrations of nannou. |
-| [**`generative_design/`**](https://github.com/nannou-org/nannou/tree/master/generative_design) | Examples from [Generative Gestaltung](http://www.generative-gestaltung.de/), ported from p5.js to nannou. |
-| [**`nature_of_code/`**](https://github.com/nannou-org/nannou/tree/master/nature_of_code) | Examples from [Nature of Code](https://natureofcode.com/), ported from Processing to nannou. |
+| [**`examples/`**](https://github.com/splatter-org/splatter/tree/master/examples) | A collection of examples with categorised demonstrations of splatter. |
+| [**`generative_design/`**](https://github.com/splatter-org/splatter/tree/master/generative_design) | Examples from [Generative Gestaltung](http://www.generative-gestaltung.de/), ported from p5.js to splatter. |
+| [**`nature_of_code/`**](https://github.com/splatter-org/splatter/tree/master/nature_of_code) | Examples from [Nature of Code](https://natureofcode.com/), ported from Processing to splatter. |
 
-To get the examples we can clone the nannou repository.
+To get the examples we can clone the splatter repository.
 
 ```bash
-git clone https://github.com/nannou-org/nannou
+git clone https://github.com/splatter-org/splatter
 ```
 
 If you do not have `git` installed you can press the "Clone or download" button
 at the top of this page and then press "Download .zip".
 
-Now, change the current directory to `nannou`.
+Now, change the current directory to `splatter`.
 
 ```bash
-cd nannou
+cd splatter
 ```
 
 Run the example using cargo!
@@ -63,7 +63,7 @@ cargo run --release --example 1_1_bouncingball_novectors
 In general, the name of the example will almost always be the file name without
 the `.rs` extension.
 
-If you are compiling nannou for the first time you will see cargo download and
+If you are compiling splatter for the first time you will see cargo download and
 build all the necessary dependencies. This might take a while! Luckily, we only
 have to wait for this the first time.
 

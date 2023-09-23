@@ -1,4 +1,4 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 pub struct Ball {
     pub position: Point2,

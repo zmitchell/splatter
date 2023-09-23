@@ -31,12 +31,12 @@
  * arrow right         : noise octaves +
  * s                   : save png
  */
-use nannou::image;
-use nannou::noise::{MultiFractal, NoiseFn, Seedable};
-use nannou::prelude::*;
+use splatter::image;
+use splatter::noise::{MultiFractal, NoiseFn, Seedable};
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -77,7 +77,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     frame.clear(BLACK);
 
     let win = app.window_rect();
-    let noise = nannou::noise::Fbm::new()
+    let noise = splatter::noise::Fbm::new()
         .set_seed(model.noise_random_seed)
         .set_octaves(model.octaves)
         .set_persistence(model.falloff as f64);
@@ -109,7 +109,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             noise_value = (n - n.floor()) * std::u8::MAX as f64;
         }
         let n = noise_value as u8;
-        nannou::image::Rgba([n, n, n, std::u8::MAX])
+        splatter::image::Rgba([n, n, n, std::u8::MAX])
     });
 
     let flat_samples = image.as_flat_samples();

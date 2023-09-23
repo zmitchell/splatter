@@ -7,11 +7,11 @@
 // Implements Craig Reynold's autonomous steering behaviors
 // One vehicle "seeks"
 // See: http://www.red3d.com/cwr/
-use nannou::prelude::*;
-use nannou::Draw;
+use splatter::prelude::*;
+use splatter::Draw;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

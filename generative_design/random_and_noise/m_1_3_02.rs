@@ -26,13 +26,13 @@
  * KEYS
  * s                   : save png
  */
-use nannou::image;
-use nannou::prelude::*;
-use nannou::rand::rngs::SmallRng;
-use nannou::rand::{Rng, SeedableRng};
+use splatter::image;
+use splatter::prelude::*;
+use splatter::rand::rngs::SmallRng;
+use splatter::rand::{Rng, SeedableRng};
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -71,7 +71,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
     let image = image::ImageBuffer::from_fn(win.w() as u32, win.h() as u32, |_x, _y| {
         let r: u8 = rng.gen_range(0..std::u8::MAX);
-        nannou::image::Rgba([r, r, r, std::u8::MAX])
+        splatter::image::Rgba([r, r, r, std::u8::MAX])
     });
 
     let flat_samples = image.as_flat_samples();

@@ -1,7 +1,7 @@
 //! The same as the `wgpu_triangle` example, but demonstrates how to draw directly to the swap
-//! chain texture (`RawFrame`) rather than to nannou's intermediary `Frame`.
+//! chain texture (`RawFrame`) rather than to splatter's intermediary `Frame`.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 struct Model {
     bind_group: wgpu::BindGroup,
@@ -28,7 +28,7 @@ const VERTICES: [Vertex; 3] = [
 ];
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 fn model(app: &App) -> Model {
@@ -88,7 +88,7 @@ fn view(_app: &App, model: &Model, frame: RawFrame) {
     render_pass.draw(vertex_range, instance_range);
 }
 
-// See the `nannou::wgpu::bytes` documentation for why this is necessary.
+// See the `splatter::wgpu::bytes` documentation for why this is necessary.
 fn vertices_as_bytes(data: &[Vertex]) -> &[u8] {
     unsafe { wgpu::bytes::from_slice(data) }
 }

@@ -1,7 +1,7 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run()
+    splatter::sketch(view).run()
 }
 
 fn view(app: &App, frame: Frame) {

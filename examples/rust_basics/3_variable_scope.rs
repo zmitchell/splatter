@@ -1,11 +1,11 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 // This is how you make a global constant value.
 // Constant values are accessible anywhere in your app but cannot be changed.
 const GLOBAL: i32 = 10;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {

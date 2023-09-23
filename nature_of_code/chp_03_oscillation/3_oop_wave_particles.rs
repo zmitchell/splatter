@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // example 3-x: OOP Wave Particle
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

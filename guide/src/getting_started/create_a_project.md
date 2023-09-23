@@ -1,10 +1,10 @@
 # Create A Project
 
 Whether we are creating an artwork, an app, a quick sketch or an installation,
-we want to begin by creating a new project. A new nannou project lets us build a
-nannou application the way that *we* want to use it.
+we want to begin by creating a new project. A new splatter project lets us build a
+splatter application the way that *we* want to use it.
 
-Eventually, the aim for Nannou is to provide a project generator tool which will
+Eventually, the aim for splatter is to provide a project generator tool which will
 allow us to do the following and much more in just a few clicks. For now, we can
 create a new project with just a few small steps:
 
@@ -20,7 +20,7 @@ create a new project with just a few small steps:
    cd my-project
    ```
 
-3. Edit the `Cargo.toml` file and add the latest version of nannou to the bottom
+3. Edit the `Cargo.toml` file and add the latest version of splatter to the bottom
    like so:
 
    ```toml
@@ -31,22 +31,22 @@ create a new project with just a few small steps:
    edition = "2018"
 
    [dependencies]
-   nannou = "0.17"
+   splatter = "0.17"
    ```
 
-   Note that there is a chance the nannou version above might be out of date.
-   You can check the latest version by typing `cargo search nannou` in your
+   Note that there is a chance the splatter version above might be out of date.
+   You can check the latest version by typing `cargo search splatter` in your
    terminal. Be sure to change the author to your name too!
 
-4. Replace the code in `src/main.rs` with the following to setup our nannou
+4. Replace the code in `src/main.rs` with the following to setup our splatter
    application.
 
    ```rust,no_run
-   # extern crate nannou;
-   use nannou::prelude::*;
+   # extern crate splatter;
+   use splatter::prelude::*;
 
    fn main() {
-       nannou::app(model)
+       splatter::app(model)
            .update(update)
            .simple_window(view)
            .run();
@@ -77,7 +77,7 @@ create a new project with just a few small steps:
    cargo run --release
    ```
 
-   The first build might take a while, as we must build nannou and all of its
+   The first build might take a while, as we must build splatter and all of its
    dependencies from scratch. The following times that we run our app should be
    much faster!
 
@@ -86,7 +86,7 @@ create a new project with just a few small steps:
 
 
 **That's it!** If everything went as planned, you are now ready to start
-building your own nannou project. Of course, we probably want our application to
+building your own splatter project. Of course, we probably want our application to
 be more than just a purple window.
 
 To find out how to add more features to our project like graphics, audio,

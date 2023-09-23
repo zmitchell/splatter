@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Example 3-11: Spring
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // Spring Type describes an anchor point that can connect to "Bob" objects via a spring

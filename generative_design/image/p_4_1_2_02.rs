@@ -24,10 +24,10 @@
  * del, backspace      : clear screen
  * s                   : save png
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {

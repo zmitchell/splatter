@@ -1,7 +1,7 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model;
@@ -33,7 +33,7 @@ fn multiply(x: f32, y: f32) -> f32 {
 
 // Return a random floating point value between 0.0 and 1.0
 fn random() -> f32 {
-    nannou::rand::random()
+    splatter::rand::random()
 }
 
 fn event(_app: &App, _model: &mut Model, event: WindowEvent) {

@@ -3,10 +3,10 @@
 A Rust-based framework for creating generative art.
 
 ## Origins
-`splatter` was forked from [nannou](https://nannou.cc) with the primary goal of focusing on creating 2D generative art, whereas `nannou` does much more than that.
-If you'd like to do things with audio, hardware, etc `nannou` will be a much better fit for what you're looking for.
+`splatter` was forked from [splatter](https://splatter.cc) with the primary goal of focusing on creating 2D generative art, whereas `splatter` does much more than that.
+If you'd like to do things with audio, hardware, etc `splatter` will be a much better fit for what you're looking for.
 
-In order to focus on generative art and be able to move faster I decided it would be easier to fork `nannou` and remove all of the capabilities that I don't need.
+In order to focus on generative art and be able to move faster I decided it would be easier to fork `splatter` and remove all of the capabilities that I don't need.
 
 ## License
 

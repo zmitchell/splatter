@@ -1,12 +1,12 @@
-//! A simple demonstration on how to create and draw with a custom wgpu render pipeline in nannou!
+//! A simple demonstration on how to create and draw with a custom wgpu render pipeline in splatter!
 //!
-//! The aim of this example is not to show the simplest way of drawing a triangle in nannou, but
+//! The aim of this example is not to show the simplest way of drawing a triangle in splatter, but
 //! rather provide a reference on how to get started creating your own rendering pipeline from
-//! scratch. While nannou's provided graphics-y APIs can do a lot of things quite efficiently,
+//! scratch. While splatter's provided graphics-y APIs can do a lot of things quite efficiently,
 //! writing a custom pipeline that does only exactly what you need it to can sometimes result in
 //! better performance.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 struct Model {
     bind_group: wgpu::BindGroup,
@@ -35,7 +35,7 @@ const VERTICES: [Vertex; 3] = [
 ];
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 fn model(app: &App) -> Model {
@@ -103,7 +103,7 @@ fn view(_app: &App, model: &Model, frame: Frame) {
     // Now we're done! The commands we added will be submitted after `view` completes.
 }
 
-// See the `nannou::wgpu::bytes` documentation for why this is necessary.
+// See the `splatter::wgpu::bytes` documentation for why this is necessary.
 fn vertices_as_bytes(data: &[Vertex]) -> &[u8] {
     unsafe { wgpu::bytes::from_slice(data) }
 }

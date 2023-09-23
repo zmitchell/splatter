@@ -7,10 +7,10 @@
 // Branching angle calculated as a function of horizontal mouse position
 // Example 8-4: Tree
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

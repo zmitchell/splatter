@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Example 2-8: Mutual Attraction
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

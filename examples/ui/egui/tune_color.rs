@@ -1,11 +1,11 @@
-use nannou::prelude::*;
-use nannou_egui::{egui, Egui};
+use splatter::prelude::*;
+use splatter_egui::{egui, Egui};
 
 const WIDTH: f32 = 640.0;
 const HEIGHT: f32 = 360.0;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {
@@ -18,7 +18,7 @@ fn model(app: &App) -> Model {
     // Create a new window! Store the ID so we can refer to it later.
     let window_id = app
         .new_window()
-        .title("Nannou + Egui")
+        .title("splatter + Egui")
         .size(WIDTH as u32, HEIGHT as u32)
         .raw_event(raw_window_event) // This is where we forward all raw events for egui to process them
         .view(view) // The function that will be called for presenting graphics to a frame.
@@ -53,7 +53,7 @@ fn update(_app: &App, model: &mut Model, update: Update) {
         });
 }
 
-fn raw_window_event(_app: &App, model: &mut Model, event: &nannou::winit::event::WindowEvent) {
+fn raw_window_event(_app: &App, model: &mut Model, event: &splatter::winit::event::WindowEvent) {
     model.egui.handle_raw_event(event);
 }
 
@@ -89,6 +89,6 @@ fn edit_hsv(ui: &mut egui::Ui, color: &mut Hsv) {
     )
     .changed()
     {
-        *color = nannou::color::hsv(egui_hsv.h, egui_hsv.s, egui_hsv.v);
+        *color = splatter::color::hsv(egui_hsv.h, egui_hsv.s, egui_hsv.v);
     }
 }
