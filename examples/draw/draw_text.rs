@@ -2,10 +2,10 @@
 //!
 //! If you're looking for more control over the text path, checkout `simple_text_path.rs`.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run()
+    splatter::sketch(view).run()
 }
 
 fn view(app: &App, frame: Frame) {

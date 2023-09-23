@@ -8,10 +8,10 @@
 // A "Mover" object stores position, velocity, and acceleration as vectors
 // The motion is controlled by affecting the acceleration
 // (in this case towards the mouse)
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

@@ -26,13 +26,13 @@
  * 1-9                 : switch draw mode
  * s                   : save png
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
-use nannou::image;
-use nannou::image::GenericImageView;
+use splatter::image;
+use splatter::image::GenericImageView;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {

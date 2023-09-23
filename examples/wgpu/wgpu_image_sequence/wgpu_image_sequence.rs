@@ -9,9 +9,9 @@
 //! frame rates by interpolating between two of the layers at a time. Hint: this would likely
 //! require adding a second texture view binding to the bind group and its layout.
 
-use nannou::image;
-use nannou::image::RgbaImage;
-use nannou::prelude::*;
+use splatter::image;
+use splatter::image::RgbaImage;
+use splatter::prelude::*;
 use std::path::{Path, PathBuf};
 
 struct Model {
@@ -49,7 +49,7 @@ const VERTICES: [Vertex; 4] = [
 ];
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 fn model(app: &App) -> Model {
@@ -258,7 +258,7 @@ fn create_render_pipeline(
         .build(device)
 }
 
-// See the `nannou::wgpu::bytes` documentation for why this is necessary.
+// See the `splatter::wgpu::bytes` documentation for why this is necessary.
 fn vertices_as_bytes(data: &[Vertex]) -> &[u8] {
     unsafe { wgpu::bytes::from_slice(data) }
 }

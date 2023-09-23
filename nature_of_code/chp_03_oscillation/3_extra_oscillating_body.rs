@@ -1,10 +1,10 @@
 // The Nature of Code
 // Daniel Shiffman
 // http://natureofcode.com
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // A type for a draggable attractive body in our world

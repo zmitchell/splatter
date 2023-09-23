@@ -1,6 +1,6 @@
 # Installing Rust
 
-Nannou is a library written for the [Rust programming
+splatter is a library written for the [Rust programming
 language](https://www.rust-lang.org/). Thus, the first step is to install Rust!
 
 To install Rust on **Windows**, download and run the installer from

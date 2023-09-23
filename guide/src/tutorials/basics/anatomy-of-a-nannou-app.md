@@ -1,4 +1,4 @@
-# Anatomy of a Nannou App
+# Anatomy of a splatter App
 
 **Tutorial Info**
 
@@ -10,19 +10,19 @@
 ---
 
 
-**Nannou is a framework for creative coding in Rust.** A framework can be
+**splatter is a framework for creative coding in Rust.** A framework can be
 thought of as a collection of building blocks that help accomplish a goal.
 Let's take a look at the building blocks for creative coding together.
 
-Here's an example of a bare-bones nannou app that opens an empty window:
+Here's an example of a bare-bones splatter app that opens an empty window:
 
 ```rust,no_run
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 struct Model {}
 
 fn main() {
-    nannou::app(model)
+    splatter::app(model)
         .event(event)
         .simple_window(view)
         .run();
@@ -45,20 +45,20 @@ We will start from the top!
 
 ```rust,no_run
 # #![allow(unused_imports)]
-use nannou::prelude::*;
+use splatter::prelude::*;
 # fn main() {}
 ```
 
-This line imports all of the commonly used items from nannou into scope. These
+This line imports all of the commonly used items from splatter into scope. These
 include items such as `App`, `Frame`, and many more that we will learn about
 over time. To see the full list of items re-exported by the prelude, see
-[here](https://docs.rs/nannou/latest/nannou/prelude/index.html).
+[here](https://docs.rs/splatter/latest/splatter/prelude/index.html).
 
 > Note: Unlike some other languages, Rust does not automatically include
 > everything from the libraries added to the project. This approach results in
 > very clean namespaces and avoids conflicts between different items from
 > different crates. That said, it also means we need to manually import every
-> item we *do* want to use into scope. By providing a prelude nannou makes it a
+> item we *do* want to use into scope. By providing a prelude splatter makes it a
 > little easier to access all of the commonly used items.
 
 ## **Model** - Our app state
@@ -84,10 +84,10 @@ model can stay empty.
 ## **main** - Where Rust programs begin and end
 
 ```rust,no_run
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 fn main() {
-    nannou::app(model)
+    splatter::app(model)
         .event(event)
         .simple_window(view)
         .run();
@@ -102,14 +102,14 @@ fn main() {
 ```
 
 All Rust programs begin executing at the start of the `main` function and end
-when the `main` function ends. In most nannou programs, the main function is
+when the `main` function ends. In most splatter programs, the main function is
 quite small. In short, we build a description of our app and then run it!
 
 ```rust,no_run
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 # fn main() {
-    nannou::app(model)       // Start building the app and specify our `model`
+    splatter::app(model)       // Start building the app and specify our `model`
         .event(event)        // Specify that we want to handle app events with `event`
         .simple_window(view) // Request a simple window to which we'll draw with `view`
         .run();              // Run it!
@@ -127,7 +127,7 @@ We will describe what these **model**, **event** and **view** functions do
 below!
 
 > Note: In this app building process we get a hint at the fundamental design
-> archetype of nannou apps. The approach is roughly based on the
+> archetype of splatter apps. The approach is roughly based on the
 > [Model-View-Controller (MVC)
 > pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller),
 > though equally inspired by [Functional Reactive Programming
@@ -149,7 +149,7 @@ below!
 
 ```rust,no_run
 # #![allow(dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 fn model(_app: &App) -> Model {
     Model {}
@@ -157,7 +157,7 @@ fn model(_app: &App) -> Model {
 # fn main() {}
 ```
 
-The `model` function is run once at the beginning of the nannou app and produces
+The `model` function is run once at the beginning of the splatter app and produces
 a fresh, new instance of the **Model** that we declared previously, AKA the app
 state. This can be thought of as the "setup" stage of our application. Here, we
 might do things like create some windows, create a GUI, load some images or
@@ -171,11 +171,11 @@ will just return an instance of our empty **Model**.
 > details of the application (such as establishing event loops, spawning I/O
 > streams, etc) and provides an easy to use, high-level API on top. Providing
 > access to the **App** via a function's first argument is a common practice
-> throughout nannou's API.
+> throughout splatter's API.
 >
 > ```rust,no_run
 > # #![allow(dead_code)]
-> # use nannou::prelude::*;
+> # use splatter::prelude::*;
 > # struct Model {}
 > //                ----- Access to the `App` passed as an input to the function.
 > //               /
@@ -187,13 +187,13 @@ will just return an instance of our empty **Model**.
 > ```
 >
 > You can learn more about what the **App** is responsible for and capable of
-> [here](https://docs.rs/nannou/latest/nannou/app/struct.App.html).
+> [here](https://docs.rs/splatter/latest/splatter/app/struct.App.html).
 
 ## **event** - updating the Model on app events
 
 ```rust,no_run
 # #![allow(dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 fn event(_app: &App, _model: &mut Model, _event: Event) {
 }
@@ -221,10 +221,10 @@ our app building code to this:
 
 ```rust,no_run
 # #![allow(dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 fn main() {
-    nannou::app(model)
+    splatter::app(model)
         .update(update) // rather than `.event(event)`, now we only subscribe to updates
         .simple_window(view)
         .run();
@@ -242,7 +242,7 @@ And remove our `event` function in favour of an `update` function:
 
 ```rust,no_run
 # #![allow(dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 fn update(_app: &App, _model: &mut Model, _update: Update) {
 }
@@ -252,9 +252,9 @@ fn update(_app: &App, _model: &mut Model, _update: Update) {
 Now, our new **update** function will only run each time a timed update
 occurs.
 
-> Note: Nannou provides a whole suite of different events that may be registered
+> Note: splatter provides a whole suite of different events that may be registered
 > while building an app or window in this way. See the [all_functions.rs
-> example](https://github.com/nannou-org/nannou/blob/master/examples/nannou_basics/all_functions.rs)
+> example](https://github.com/splatter-org/splatter/blob/master/examples/splatter_basics/all_functions.rs)
 > for a demonstration of most of the different kinds of events that are
 > available.
 
@@ -262,7 +262,7 @@ occurs.
 
 ```rust,no_run
 # #![allow(dead_code)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # struct Model {}
 fn view(_app: &App, _model: &Model, _frame: Frame) {
 }
@@ -277,6 +277,6 @@ render passes. All of this will be covered by future tutorials.
 
 ## Concluding Remarks
 
-Hopefully this has given you a rough idea of how nannou apps work! Do not stress
+Hopefully this has given you a rough idea of how splatter apps work! Do not stress
 if some of the syntax looks confusing or some of the specifics still seem
 unclear - we will aim to cover these and more in future tutorials :)

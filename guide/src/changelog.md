@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to nannou should be documented below! From the most recent,
+All notable changes to splatter should be documented below! From the most recent,
 back to the origins.
 
 ---
@@ -11,14 +11,14 @@ back to the origins.
 - Add CI for testing the `wasm32-unknown-unknown` target.
 - Enable `wgpu/webgl` when `wasm` feature is enabled.
 - Update minimum wgpu version to `0.11.1`, update winit to `0.26`.
-- Merge the `nannou_egui` repo into the main `nannou` repo.
-- Move `nannou_conrod` and `nannou_timeline` into a new repository:
-  https://github.com/nannou-org/nannou_conrod. Both crates are deprecated in
-  favour of `nannou_egui`.
+- Merge the `splatter_egui` repo into the main `splatter` repo.
+- Move `splatter_conrod` and `splatter_timeline` into a new repository:
+  https://github.com/splatter-org/splatter_conrod. Both crates are deprecated in
+  favour of `splatter_egui`.
 
 ---
 
-# `nannou` 0.18.1 (2021-12-17)
+# `splatter` 0.18.1 (2021-12-17)
 
 - Expose missing `begin()` method in `geom::path::Builder`.
 - Set window class for X11 running apps.
@@ -30,7 +30,7 @@ back to the origins.
 
 ### wgpu 0.9 -> 0.11
 
-**Note:** As of wgpu 0.10, all nannou projects now require either:
+**Note:** As of wgpu 0.10, all splatter projects now require either:
 
 1. The following line in their top-level cargo manifest:
    ```toml
@@ -73,14 +73,14 @@ For more details, see the wgpu CHANGELOG:
 ### General
 
 - Update `lyon` to version `0.17`.
-- Refactor the `nannou::mesh` module into a `nannou_mesh` crate, re-exported to
+- Refactor the `splatter::mesh` module into a `splatter_mesh` crate, re-exported to
   maintain the same API.
-- Refactor the `nannou::wgpu` module into a `nannou_wgpu` crate, re-exported to
+- Refactor the `splatter::wgpu` module into a `splatter_wgpu` crate, re-exported to
   maintain the same API.
-- Remove the `nannou::ui` module in favour of providing a `nannou_conrod` crate.
+- Remove the `splatter::ui` module in favour of providing a `splatter_conrod` crate.
   See the updated `examples/ui/conrod` examples to find out how to update. Note
   that input must now be manually submitted to the `Ui` and is no longer done
-  automatically by the nannou `App`. The easiest approach is to register a
+  automatically by the splatter `App`. The easiest approach is to register a
   `raw_event` function with the `Ui`'s window. Refer to the updated examples for
   demonstration.
 - Add community tutorials section to the guide.
@@ -95,7 +95,7 @@ For more details, see the wgpu CHANGELOG:
 
 ---
 
-### `nannou` 0.17.1 (2021-07-02)
+### `splatter` 0.17.1 (2021-07-02)
 
 - Fix some edge-cases in the behaviour of `io::safe_file_save`.
 
@@ -111,11 +111,11 @@ Most changes have been about renaming Blend-related data structres and fixing sh
     - `wgpu::Extend3d::depth` -> `wgpu::Extend3d::depth_of_array_layers`
     - Float tpes are now typed more descripively. E.g., `Float2` -> `Float32x2`
 
-**Refactor core of `nannou` into `nannou_core` crate**
+**Refactor core of `splatter` into `splatter_core` crate**
 
-- Add a new `nannou_core` crate, targeted towards headless or embedded apps,
+- Add a new `splatter_core` crate, targeted towards headless or embedded apps,
   libraries and rust-gpu.
-- Move the `color`, `geom`, `math` and `rand` crates into `nannou_core`.
+- Move the `color`, `geom`, `math` and `rand` crates into `splatter_core`.
 - Remove the `geom::Graph` type due to lack of strong use-case and no reports of
   use.
 - Remove generic scalar param from `Draw` API in favour of using `f32`
@@ -135,7 +135,7 @@ Most changes have been about renaming Blend-related data structres and fixing sh
   incorrect.
 - Fix `glyph_colors` miscoloring on resize.
 - Enable serializing of color types.
-- Enable `nannou_laser` features for documentation build.
+- Enable `splatter_laser` features for documentation build.
 - Update dependencies:
     - `conrod_*` from 0.73 to 0.74.
     - `noise` from 0.6 to 0.7 (`image` feature no longer enabled).
@@ -185,7 +185,7 @@ significant refactoring of the `wgpu::RenderPipeline`.
 
 **Update to wgpu 0.6**
 
-For the most part, these changes will affect users of the `nannou::wgpu` module,
+For the most part, these changes will affect users of the `splatter::wgpu` module,
 but not so much the users of the `draw` or `ui` APIs. *Find the relevant wgpu
 changelog entry
 [here](https://github.com/gfx-rs/wgpu/blob/master/CHANGELOG.md#v06-2020-08-17).*
@@ -214,9 +214,9 @@ changelog entry
 - Updates some dependencies:
     - `audrey` to 0.3.
     - `winit` to 0.24.
-    - `conrod_derive` and `conrod_core` to 0.71 (`nannou_timeline` only).
+    - `conrod_derive` and `conrod_core` to 0.71 (`splatter_timeline` only).
 
-### nannou_audio
+### splatter_audio
 
 - Update to CPAL 0.13.1 and from `sample` to `dasp_sample`.
 - Add the ability to specify a device buffer size.
@@ -233,7 +233,7 @@ changelog entry
 
 **Update to WGPU 0.5**
 
-For the most part, these changes will affect users of the `nannou::wgpu` module,
+For the most part, these changes will affect users of the `splatter::wgpu` module,
 but not so much the users of the `draw` or `ui` APIs. *Find the relevant wgpu
 changelog entry
 [here](https://github.com/gfx-rs/wgpu/blob/master/CHANGELOG.md#v05-06-04-2020).*
@@ -297,26 +297,26 @@ changelog entry
 
 ---
 
-### `nannou_laser` 0.14.3 (2020-05-19)
+### `splatter_laser` 0.14.3 (2020-05-19)
 
 - Add support for enabling/disabling draw path reordering.
 
 ---
 
-### `nannou_laser` 0.14.2 (2020-05-15)
+### `splatter_laser` 0.14.2 (2020-05-15)
 
 - Update `lasy` to 0.4. Adds better support for points and improved euler
   circuit interpolation.
 
 ---
 
-### `nannou_laser` 0.14.1 (2020-05-06)
+### `splatter_laser` 0.14.1 (2020-05-06)
 
-- Add `ilda-idtf` feature to `nannou_laser`.
+- Add `ilda-idtf` feature to `splatter_laser`.
 
 ---
 
-### `nannou` 0.14.1 (2020-05-06)
+### `splatter` 0.14.1 (2020-05-06)
 
 - Fix bug where `draw::Renderer` was initialised with an incorrect scale factor.
 - Fix `Vector::angle_between` implementation.
@@ -332,8 +332,8 @@ changelog entry
 - Add `rgb_u32` for creating color from hex literals.
 - Fix `.z_radians()` behaviour.
 - Simplify the fullscreen API.
-  [#521](https://github.com/nannou-org/nannou/pull/521).
-- Adds a `set_version` script for synchronising version updates across nannou
+  [#521](https://github.com/splatter-org/splatter/pull/521).
+- Adds a `set_version` script for synchronising version updates across splatter
   crates.
 - Add a `random_ascii()` function.
 - Add many more "Generative Design" and "Nature of Code" examples.
@@ -341,13 +341,13 @@ changelog entry
 
 **The Great Repository Refactor**
 
-- Move nannou src and tests into a `nannou` subdirectory.
-- Move `nannou_audio` into the nannou repo.
-- Move `nannou_isf` into the nannou repo.
-- Move `nannou_laser` into the nannou repo.
-- Move `nannou_osc` into the nannou repo.
-- Move `nannou_timeline` into the nannou repo.
-- Move guide into the nannou repo.
+- Move splatter src and tests into a `splatter` subdirectory.
+- Move `splatter_audio` into the splatter repo.
+- Move `splatter_isf` into the splatter repo.
+- Move `splatter_laser` into the splatter repo.
+- Move `splatter_osc` into the splatter repo.
+- Move `splatter_timeline` into the splatter repo.
+- Move guide into the splatter repo.
 - Add all crates under a single workspace.
 - Update README.md with a repository overview.
 - Move `run_all_examples.rs` test into a new `scripts/` directory. Add
@@ -362,7 +362,7 @@ changelog entry
 - Add a "Window Coordinates" tutorial.
 - Add "OSC Introduction" and "OSC Sender" tutorials.
 - Ensure the "Drawing 2D Shapes" tutorial code is tested.
-- Add automated testing of all guide code on each PR to nannou repo.
+- Add automated testing of all guide code on each PR to splatter repo.
 
 **Draw API**
 
@@ -385,7 +385,7 @@ changelog entry
 - Add GPU caching of glyphs for text drawn via `draw.text()`. Allows for
   much higher-performance text rendering.
 - Add `draw.arrow()` API.
-- New examples of the new APIs in the `nannou/examples/draw/` directory.
+- New examples of the new APIs in the `splatter/examples/draw/` directory.
 
 **WGPU API**
 
@@ -403,7 +403,7 @@ changelog entry
 - Add non-blocking LASER DAC detection via `Api::detect_dacs_async`.
 - Add error callback to LASER stream API.
 - Expose some missing setters on the LASER stream handles.
-- Add nicer socket address and error handling to `nannou_laser::ffi`.
+- Add nicer socket address and error handling to `splatter_laser::ffi`.
 
 ---
 
@@ -441,7 +441,7 @@ changelog entry
   This was necessary to enable ergonomic texture capturing.
 - `frame.submit()` can now be used to submit the frame to the GPU before the end
   of the `view` function.
-- `nannou::sketch` now returns a `SketchBuilder`. This allows for specifying the
+- `splatter::sketch` now returns a `SketchBuilder`. This allows for specifying the
   sketch `.size(w, h)`, but now requires that `.run()` is called (or the sketch
   won't do anything!).
 - A `.size(w, h)` builder has been added to the `app::Builder` type that allows
@@ -539,7 +539,7 @@ changelog entry
 - Remove depth format constants in favour of querying supported formats.
 - Update from palette 0.2 to 0.4.
 - Add shorthand color constructors to the `color` module.
-- Remove nannou named colors in favour of using palette's.
+- Remove splatter named colors in favour of using palette's.
 - Added a `named_color_reference.rs` example for finding suitable colors and to
   act as a test of color accuracy.
 - Change the `Frame` image type from the swapchain color format (non-linear
@@ -547,9 +547,9 @@ changelog entry
 - Add Window::rect method.
 - Add `simple_audio_file.rs` playback example.
 - Add a new `NTimes` loop mode.
-- Separate the OSC API out into a `nannou_osc` crate.
-- Separate the audio API out into a `nannou_audio` crate.
-- Update laser examples for switch from `lasy` to `nannou_laser`.
+- Separate the OSC API out into a `splatter_osc` crate.
+- Separate the audio API out into a `splatter_audio` crate.
+- Update laser examples for switch from `lasy` to `splatter_laser`.
 - Update deps:
   - rand 0.7
   - conrod 0.66
@@ -560,7 +560,7 @@ changelog entry
 # Version 0.9.0 (2019-05-28)
 
 - Change graphics rendering backend from glium to vulkano! This affects a wide
-  range of nannou's API including:
+  range of splatter's API including:
   - Window creation and methods. Each window now has it's own associated Vulkan
     swapchain and related methods.
   - The `Frame` API now wraps a single swapchain image and a vulkan command
@@ -596,7 +596,7 @@ changelog entry
 - Fix mouse positioning on HiDPI macOS displays.
 - Draw to an intermediary frame before resolving to the swapchain to simplify
   MSAA and keeping the image consistent between frames.
-- Add some laser streaming examples using the `nannou-org/lasy` crate.
+- Add some laser streaming examples using the `splatter-org/lasy` crate.
 
 ---
 
@@ -650,8 +650,8 @@ changelog entry
 # Version 0.5.1 (2018-04-26)
 
 - Add `Ui::draw_to_frame_if_changed` method which only draws if necessary.
-- Add README to nannou-package.
-- Add missing `Cargo.toml` details to nannou-package.
+- Add README to splatter-package.
+- Add missing `Cargo.toml` details to splatter-package.
 - Add an `io` module with some helper functions simplifying `std::io`.
 - Add `fmod` function to `math` module.
 
@@ -663,14 +663,14 @@ changelog entry
 - Remove `app.window.*` fields in favour of `app.window_rect()` method.
 - Enable vsync and 4x multisampling by default.
 - Add fullscreen toggle keyboard shortcuts.
-- Add `nannou-new` and `nannou-package` tools.
+- Add `splatter-new` and `splatter-package` tools.
 - Add `Draw::line` along with custom line builders to `Drawing`.
 - Change `draw::Background` coloring API to match the `SetColor` API.
 - Change OSC default binding address from `127.0.0.1` to `0.0.0.0`.
 - Add many new items to prelude.
 - Add more `Rect` constructors.
 - Add `Range::lerp` method.
-- Window name defaults to "nannou - exe_name" if no name is given.
+- Window name defaults to "splatter - exe_name" if no name is given.
 - Correct existing and add missing geometry scalar default types.
 
 ---

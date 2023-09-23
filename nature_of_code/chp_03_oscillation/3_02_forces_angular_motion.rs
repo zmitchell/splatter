@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Exercise 3-02: Forces Angular Motion
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // A type for a draggable attractive body in our world

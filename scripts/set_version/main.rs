@@ -1,10 +1,10 @@
-//! A small rust program that sets all nannou crates within the workspace to the specified version.
+//! A small rust program that sets all splatter crates within the workspace to the specified version.
 //!
 //! Does the following:
 //!
 //! - Find all crates via the cargo workspace toml.
-//! - Sets the version number for each of the `nannou*` packages and updates each of their
-//!   respective `nannou*` dependencies.
+//! - Sets the version number for each of the `splatter*` packages and updates each of their
+//!   respective `splatter*` dependencies.
 //! - Writes the resulting TOML files.
 
 fn main() {
@@ -19,9 +19,9 @@ fn main() {
     let manifest_dir = env!("CARGO_MANIFEST_DIR");
     let workspace_manifest_dir = std::path::Path::new(manifest_dir)
         .parent()
-        .unwrap() // nannou/scripts
+        .unwrap() // splatter/scripts
         .parent()
-        .unwrap(); // nannou
+        .unwrap(); // splatter
     let workspace_manifest_path = workspace_manifest_dir.join("Cargo.toml");
     let workspace_manifest_string = std::fs::read_to_string(&workspace_manifest_path)
         .expect("failed to read the workspace manifest");
@@ -54,7 +54,7 @@ fn main() {
         let manifest_table = manifest_toml.as_table_mut();
 
         // Update the manifest table.
-        if is_nannou_member(relative_path) {
+        if is_splatter_member(relative_path) {
             set_package_version(manifest_table, &desired_version);
         }
         if let Some(deps) = manifest_table.entry("dependencies").as_table_mut() {
@@ -93,12 +93,12 @@ fn set_package_version(manifest_table: &mut toml_edit::Table, desired_version: &
 
 /// Shared between updating the `[dependencies]` and `[dev-dependencies]` tables.
 fn update_dependencies_table(table: &mut toml_edit::Table, desired_version: &semver::Version) {
-    let nannou_deps: Vec<_> = table
+    let splatter_deps: Vec<_> = table
         .iter()
         .map(|(name, _)| name.to_string())
-        .filter(|s| is_nannou_member(s))
+        .filter(|s| is_splatter_member(s))
         .collect();
-    for dep in nannou_deps {
+    for dep in splatter_deps {
         let value = table
             .entry(&dep)
             .as_value_mut()
@@ -114,9 +114,9 @@ fn update_dependencies_table(table: &mut toml_edit::Table, desired_version: &sem
     }
 }
 
-/// Check if the given crate name is one of the nannou crates whose version requires setting.
-fn is_nannou_member(workspace_member_name: &str) -> bool {
-    workspace_member_name.contains("nannou")
+/// Check if the given crate name is one of the splatter crates whose version requires setting.
+fn is_splatter_member(workspace_member_name: &str) -> bool {
+    workspace_member_name.contains("splatter")
 }
 
 /// Saves the file to a temporary file before removing the original to reduce the chance of losing

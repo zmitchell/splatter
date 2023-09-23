@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Example 1-10: Motion 101 Acceleration
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

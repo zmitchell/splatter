@@ -10,18 +10,18 @@
 
 ---
 
-In this tutorial we explore drawing 2D shapes with nannou. We will cover drawing
+In this tutorial we explore drawing 2D shapes with splatter. We will cover drawing
 basic lines, simple polygons (e.g. ellipses, rectangles, etc.), and more complex
 polygons where you can create whatever shape you'd like!
 
-To begin with, we will need a nannou project file to work with. Copy the
+To begin with, we will need a splatter project file to work with. Copy the
 following into new file:
 
 ```rust,no_run
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run();
+    splatter::sketch(view).run();
 }
 
 fn view(app: &App, frame: Frame) {
@@ -39,7 +39,7 @@ fn view(app: &App, frame: Frame) {
 }
 ```
 
-You can also find this file, and other useful examples, in the [examples](https://github.com/nannou-org/nannou/tree/master/examples) directory of the nannou source repository.
+You can also find this file, and other useful examples, in the [examples](https://github.com/splatter-org/splatter/tree/master/examples) directory of the splatter source repository.
 
 ## Drawing Simple Shapes
 
@@ -53,7 +53,7 @@ Already we are rendering a circle to our canvas.  As you may have guessed, the l
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.ellipse()
@@ -65,7 +65,7 @@ There are many ways we can alter our circle here.  Let's start with changing the
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.ellipse()
@@ -81,7 +81,7 @@ We can also change the position of our ellipse with the `x_y` method:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.ellipse()
@@ -96,14 +96,14 @@ draw.ellipse()
 
 As you can see, we edit our ellipse by chaining together different methods which will change one or more properties of our shape.  This is called the **Builder** pattern.  The call to `draw.ellipse()` returns an object of type `Drawing<Ellipse>`.  In turn, each call to a builder method, such as `w(300.0)` or `x_y(200.0, -100.0)`, returns the same instance of our shape. By chaining these function calls, we are able to build an ellipse with the attributes we want.
 
-There are several more methods we can use to build our ellipse. You can view the documentation for many of these methods [here](https://docs.rs/nannou/latest/nannou/draw/struct.Drawing.html).
+There are several more methods we can use to build our ellipse. You can view the documentation for many of these methods [here](https://docs.rs/splatter/latest/splatter/draw/struct.Drawing.html).
 
 ### Drawing Rectangles and Quadrilaterals
 Drawing a square or rectangle uses the same builder pattern that drawing an ellipse does.  In fact, it's similar enough that you can swap out `ellipse` with `rect` in the example above to get a working example:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.rect()
@@ -121,7 +121,7 @@ In addition to `rect`, you can also use the `quad` method, which is for drawing 
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 let point1 = pt2(-10.0, -20.0);
@@ -141,7 +141,7 @@ You should see the following:
 
 ![A quadrilateral with custom defined points](./images/2d-shape-quad.png)
 
-The `pt2` method above will create a point object that represents a point in XY coordinate space, like a graph or a Cartesian plane. nannou's coordinate system places (0,0) at the center of the window. This is **not** like many other graphical creative coding frameworks, which place (0,0) at the upper-leftmost position of the window.
+The `pt2` method above will create a point object that represents a point in XY coordinate space, like a graph or a Cartesian plane. splatter's coordinate system places (0,0) at the center of the window. This is **not** like many other graphical creative coding frameworks, which place (0,0) at the upper-leftmost position of the window.
 
 Note that while the `Drawing` builder objects for different shapes share many of the same builder methods, they do not share all of them.  Trying to use the method `points` on an instance of an `Drawing<Ellipse>`, for example, will raise an error.
 
@@ -157,7 +157,7 @@ The `line` function provides a simple way to draw a line:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 let start_point = pt2(-30.0, -20.0);
@@ -181,7 +181,7 @@ To draw our sine wave, we will use the `polyline` function.  To use this functio
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 let points = (0..50).map(|i| {
@@ -206,7 +206,7 @@ For example, a circle:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 // Store the radius of the circle we want to make.
@@ -272,7 +272,7 @@ instead of calling `polyline` to create a Builder, we call `polygon`:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 let radius = 150.0;
@@ -291,24 +291,24 @@ draw.polygon()
 
 ## Concluding Remarks
 
-In this tutorial, we learned about most basic 2D drawing functions with nannou.
+In this tutorial, we learned about most basic 2D drawing functions with splatter.
 
 You can view the documentation for the different `Drawing` objects these return
 here:
 
-* [Ellipse](https://docs.rs/nannou/latest/nannou/draw/primitive/ellipse/struct.Ellipse.html)
-* [Rect](https://docs.rs/nannou/latest/nannou/draw/primitive/rect/struct.Rect.html)
-* [Quad](https://docs.rs/nannou/latest/nannou/draw/primitive/quad/struct.Quad.html)
-* [Tri](https://docs.rs/nannou/latest/nannou/draw/primitive/tri/struct.Tri.html)
-* [Polyline (or PathStroke)](https://docs.rs/nannou/latest/nannou/draw/primitive/path/type.PathStroke.html)
-* [Polygon](https://docs.rs/nannou/latest/nannou/draw/primitive/polygon/struct.Polygon.html)
+* [Ellipse](https://docs.rs/splatter/latest/splatter/draw/primitive/ellipse/struct.Ellipse.html)
+* [Rect](https://docs.rs/splatter/latest/splatter/draw/primitive/rect/struct.Rect.html)
+* [Quad](https://docs.rs/splatter/latest/splatter/draw/primitive/quad/struct.Quad.html)
+* [Tri](https://docs.rs/splatter/latest/splatter/draw/primitive/tri/struct.Tri.html)
+* [Polyline (or PathStroke)](https://docs.rs/splatter/latest/splatter/draw/primitive/path/type.PathStroke.html)
+* [Polygon](https://docs.rs/splatter/latest/splatter/draw/primitive/polygon/struct.Polygon.html)
 
 These links provide more information about other functions you can use to change
 your drawings in a variety of ways.
 
 You have now learned about some of the most commonly used functions for 2D
-drawing with nannou. Of course, this is just scratching the surface of ways in
-which you can generate shapes or polygons with nannou, but it should serve as a
+drawing with splatter. Of course, this is just scratching the surface of ways in
+which you can generate shapes or polygons with splatter, but it should serve as a
 solid starting point in creating your own drawings.
 
 Happy coding!

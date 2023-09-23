@@ -7,10 +7,10 @@
 // Demonstration of multiple forces acting on bodies (Mover type)
 // Bodies experience gravity continuously
 // Bodies experience fluid resistance when in *water*
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

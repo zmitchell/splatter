@@ -27,12 +27,12 @@
  * KEYS
  * s                   : save png
  */
-use nannou::prelude::*;
-use nannou::rand::rngs::StdRng;
-use nannou::rand::{Rng, SeedableRng};
+use splatter::prelude::*;
+use splatter::rand::rngs::StdRng;
+use splatter::rand::{Rng, SeedableRng};
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -74,8 +74,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let circle_x = (angle * i as f32).cos() * 300.0;
         let circle_y = (angle * i as f32).sin() * 300.0;
 
-        let x = nannou::geom::Range::new(random_x, circle_x).lerp(fader_x);
-        let y = nannou::geom::Range::new(random_y, circle_y).lerp(fader_x);
+        let x = splatter::geom::Range::new(random_x, circle_x).lerp(fader_x);
+        let y = splatter::geom::Range::new(random_y, circle_y).lerp(fader_x);
 
         draw.ellipse().x_y(x, y).w_h(11.0, 11.0).rgb8(0, 130, 163);
     }

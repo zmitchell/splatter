@@ -1,8 +1,8 @@
-use nannou::prelude::*;
-use nannou_egui::{self, egui, Egui};
+use splatter::prelude::*;
+use splatter_egui::{self, egui, Egui};
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Settings {
@@ -71,7 +71,7 @@ fn update(_app: &App, model: &mut Model, update: Update) {
     });
 }
 
-fn raw_window_event(_app: &App, model: &mut Model, event: &nannou::winit::event::WindowEvent) {
+fn raw_window_event(_app: &App, model: &mut Model, event: &splatter::winit::event::WindowEvent) {
     // Let egui handle things like keyboard and mouse input.
     model.egui.handle_raw_event(event);
 }

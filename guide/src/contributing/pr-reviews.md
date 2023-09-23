@@ -2,8 +2,8 @@
 
 Now that you have made your PR it is time to wait for a review.
 
-Keep in mind that for the most part, the nannou team and community members take
-care of nannou in their personal time. As a result, it's difficult to say how
+Keep in mind that for the most part, the splatter team and community members take
+care of splatter in their personal time. As a result, it's difficult to say how
 long it will take before your code is reviewed and accepted.
 
 Here are some things you can do to help land your PR quickly:

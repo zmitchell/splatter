@@ -1,19 +1,19 @@
 // A demonstration of drawing to a very large texture, capturing the texture in its original size
 // as a PNG and displaying a down-scaled version of the image within the window each frame.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).exit(exit).run();
+    splatter::app(model).update(update).exit(exit).run();
 }
 
 struct Model {
     // The texture that we will draw to.
     texture: wgpu::Texture,
     // Create a `Draw` instance for drawing to our texture.
-    draw: nannou::Draw,
+    draw: splatter::Draw,
     // The type used to render the `Draw` vertices to our texture.
-    renderer: nannou::draw::Renderer,
+    renderer: splatter::draw::Renderer,
     // The type used to capture the texture.
     texture_capturer: wgpu::TextureCapturer,
     // The type used to resize our texture to the window texture.
@@ -29,7 +29,7 @@ fn model(app: &App) -> Model {
     let w_id = app
         .new_window()
         .size(win_w, win_h)
-        .title("nannou")
+        .title("splatter")
         .view(view)
         .build()
         .unwrap();
@@ -45,7 +45,7 @@ fn model(app: &App) -> Model {
         // Our texture will be used as the RENDER_ATTACHMENT for our `Draw` render pass.
         // It will also be SAMPLED by the `TextureCapturer` and `TextureResizer`.
         .usage(wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING)
-        // Use nannou's default multisampling sample count.
+        // Use splatter's default multisampling sample count.
         .sample_count(sample_count)
         // Use a spacious 16-bit linear sRGBA format suitable for high quality drawing.
         .format(wgpu::TextureFormat::Rgba16Float)
@@ -53,10 +53,10 @@ fn model(app: &App) -> Model {
         .build(device);
 
     // Create our `Draw` instance and a renderer for it.
-    let draw = nannou::Draw::new();
+    let draw = splatter::Draw::new();
     let descriptor = texture.descriptor();
     let renderer =
-        nannou::draw::RendererBuilder::new().build_from_texture_descriptor(device, descriptor);
+        splatter::draw::RendererBuilder::new().build_from_texture_descriptor(device, descriptor);
 
     // Create the texture capturer.
     let texture_capturer = wgpu::TextureCapturer::default();

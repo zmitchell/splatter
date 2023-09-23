@@ -4,10 +4,10 @@
 //
 // Example 3-01: Angular Motion(using rotate())
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

@@ -5,51 +5,25 @@ authors = [
     "mitchmindtree <mitchell.nordine@gmail.com>",
     "JoshuaBatty <joshpbatty@gmail.com>",
 ]
-description = "A suite examples for nannou, the creative coding framework."
+description = "A suite examples for splatter, the creative coding framework."
 readme = "README.md"
 keywords = ["creative", "sketch", "graphics", "audio", "example"]
 license = "MIT"
-repository = "https://github.com/nannou-org/nannou.git"
-homepage = "https://github.com/nannou-org/nannou"
+repository = "https://github.com/splatter-org/splatter.git"
+homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dev-dependencies]
 async-std = "1.10.0"
 audrey = "0.3"
-hotglsl = { git = "https://github.com/nannou-org/hotglsl", branch = "master" }
 hrtf = "0.2"
-nannou = { version = "0.18.0", path = "../nannou" }
-nannou_egui = { version = "0.5.0", path = "../nannou_egui" }
+splatter = { version = "0.18.0", path = "../splatter" }
+splatter_egui = { version = "0.5.0", path = "../splatter_egui" }
 pitch_calc = { version = "0.12", features = ["serde"] }
 time_calc = { version = "0.13", features = ["serde"] }
 walkdir = "2"
 hound = "3.4.0"
 ringbuf = "0.2.2"
-
-# Audio
-[[example]]
-name = "hrtf-noise"
-path = "audio/hrtf-noise.rs"
-[[example]]
-name = "simple_audio"
-path = "audio/simple_audio.rs"
-[[example]]
-name = "simple_audio_file"
-path = "audio/simple_audio_file.rs"
-[[example]]
-name = "record_wav"
-path = "audio/record_wav.rs"
-[[example]]
-name = "feedback"
-path = "audio/feedback.rs"
-
-# Communication
-[[example]]
-name = "osc_receiver"
-path = "communication/osc_receiver.rs"
-[[example]]
-name = "osc_sender"
-path = "communication/osc_sender.rs"
 
 # Draw
 [[example]]
@@ -104,47 +78,25 @@ path = "draw/draw_textured_polygon.rs"
 name = "draw_transform"
 path = "draw/draw_transform.rs"
 
-# Interactive Shader Format
-[[example]]
-name = "isf_demo"
-path = "isf/isf_demo.rs"
-
-# Laser
-[[example]]
-name = "laser_ffi"
-path = "laser/laser_ffi.rs"
-[[example]]
-name = "laser_frame_stream"
-path = "laser/laser_frame_stream.rs"
-[[example]]
-name = "laser_frame_stream_gui"
-path = "laser/laser_frame_stream_gui.rs"
-[[example]]
-name = "laser_raw_stream"
-path = "laser/laser_raw_stream.rs"
-[[example]]
-name = "laser_ilda_idtf"
-path = "laser/laser_ilda_idtf.rs"
-
-# Nannou Basics
+# splatter basics
 [[example]]
 name = "all_functions"
-path = "nannou_basics/all_functions.rs"
+path = "splatter_basics/all_functions.rs"
 [[example]]
 name = "window_coordinates"
-path = "nannou_basics/window_coordinates.rs"
+path = "splatter_basics/window_coordinates.rs"
 [[example]]
 name = "loop_mode"
-path = "nannou_basics/loop_mode.rs"
+path = "splatter_basics/loop_mode.rs"
 [[example]]
 name = "multi_window"
-path = "nannou_basics/multi_window.rs"
+path = "splatter_basics/multi_window.rs"
 [[example]]
 name = "multi_window_draw"
-path = "nannou_basics/multi_window_draw.rs"
+path = "splatter_basics/multi_window_draw.rs"
 [[example]]
 name = "simple_window"
-path = "nannou_basics/simple_window.rs"
+path = "splatter_basics/simple_window.rs"
 
 # Offline
 [[example]]
@@ -153,8 +105,8 @@ path = "offline/tree.rs"
 
 # Rust Basics
 [[example]]
-name = "1_nannou_events"
-path = "rust_basics/1_nannou_events.rs"
+name = "1_splatter_events"
+path = "rust_basics/1_splatter_events.rs"
 [[example]]
 name = "2_variables_window_console"
 path = "rust_basics/2_variables_window_console.rs"

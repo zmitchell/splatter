@@ -1,10 +1,10 @@
 // This example is a copy of the `simple_draw.rs` example, but captures each frame and writes them
-// as a PNG image file to `/<path_to_nannou>/nannou/simple_capture/<frame_number>.png`
+// as a PNG image file to `/<path_to_splatter>/splatter/simple_capture/<frame_number>.png`
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run()
+    splatter::sketch(view).run()
 }
 
 fn view(app: &App, frame: Frame) {
@@ -50,7 +50,7 @@ fn captured_frame_path(app: &App, frame: &Frame) -> std::path::PathBuf {
     // Create a path that we want to save this frame to.
     app.project_path()
         .expect("failed to locate `project_path`")
-        // Capture all frames to a directory called `/<path_to_nannou>/nannou/simple_capture`.
+        // Capture all frames to a directory called `/<path_to_splatter>/splatter/simple_capture`.
         .join(app.exe_name().unwrap())
         // Name each file after the number of the frame.
         .join(format!("{:03}", frame.nth()))

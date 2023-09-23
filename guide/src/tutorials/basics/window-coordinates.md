@@ -15,12 +15,12 @@ in certain directions, it can be very useful to understand the **coordinate
 system** that we are working with.
 
 Different kinds of coordinate systems are useful for different purposes. Let's
-take a look at nannou's **window coordinates**.
+take a look at splatter's **window coordinates**.
 
 ![window_coordinates.rs][3]
 
 This is a screenshot of the [`window_coordinates.rs` example][2]. The example
-aims to help develop an intuition for how nannou's window coordinates work. In
+aims to help develop an intuition for how splatter's window coordinates work. In
 this case, we are presented with a window whose size is 600x400. We can see
 that:
 
@@ -38,20 +38,20 @@ that:
 - The distance from the centre to the top or bottom edge is 200, or half the
   window height.
 
-In other words, nannou uses a [Cartesian coordinate system][4] to describe
+In other words, splatter uses a [Cartesian coordinate system][4] to describe
 window space, where the origin is in the centre, *y* increases upwards and the
 distance between the edges of the window are equal to the size of the window.
 
 ## Drawing in Window Coordinates
 
 Having the origin in the centre is a theme that carries through to the way that
-we draw shapes with nannou's [`draw` API][20]. Let's see what happens if we
+we draw shapes with splatter's [`draw` API][20]. Let's see what happens if we
 change the example to draw a plum colored square at `[0.0, 0.0]` and with a size
 of `100.0`.
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.rect()
@@ -75,7 +75,7 @@ Let's try rotating our plum square by 45 degrees.
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.rect()
@@ -101,7 +101,7 @@ the origin and the marker, so `[50.0, 50.0]`.
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 draw.rect()
@@ -124,7 +124,7 @@ square to the right by half the width and down by half the height:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 let side = 100.0;
@@ -158,7 +158,7 @@ the window. Let's retrieve the window `Rect` with the name `win`.
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let app: App = unimplemented!();
 let win = app.window_rect();
@@ -175,7 +175,7 @@ square and call it `r`.
 
 ```rust,no_run
 # #![allow(unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 let r = Rect::from_w_h(100.0, 100.0);
 # }
@@ -187,7 +187,7 @@ like so:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 let r = Rect::from_w_h(100.0f32, 100.0f32);
@@ -204,7 +204,7 @@ We can align our plum square to the `top_left_of` the window like so:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 #     let win: Rect = unimplemented!();
@@ -228,7 +228,7 @@ Let's take a look!
 ### Padding
 
 We can use padding to add some space between the edges of an area and the
-content within it. In nannou, we can use the `pad` method to produce a padded
+content within it. In splatter, we can use the `pad` method to produce a padded
 instance of a `Rect`.
 
 Let's try padding the window rect by `25.0` and drawing it with a
@@ -236,7 +236,7 @@ semi-transparent blue color:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 #     let win: Rect = unimplemented!();
@@ -255,7 +255,7 @@ square and achieve the desired look:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 #     let win: Rect = unimplemented!();
@@ -283,7 +283,7 @@ circle:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 #     let win: Rect = unimplemented!();
@@ -312,7 +312,7 @@ square:
 
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
 #     let draw: Draw = unimplemented!();
 #     let win: Rect = unimplemented!();
@@ -348,7 +348,7 @@ really mean by all these numbers.
 *What exactly does 600x400 measure? Millimetres? Pixels? Something
 else?*
 
-In nannou, we generally describe positions within window space in **points**.
+In splatter, we generally describe positions within window space in **points**.
 Points are very similar to **pixels**, except that points allow us to work
 without having to worry about the "scale factor" of our display.
 
@@ -362,19 +362,19 @@ without having to worry about the "scale factor" of our display.
 >
 > For this reason, most devices expose a **scale factor**. This value describes
 > the recommended UI scaling that should be applied in order to allow for a
-> consistent user experience across devices. In nannou, we refer to this scaled
+> consistent user experience across devices. In splatter, we refer to this scaled
 > space as *points* (aka *logical pixels*) and the *physical* pixel space as
-> *pixels*. By working in *points* we can let nannou take care of scaling for
+> *pixels*. By working in *points* we can let splatter take care of scaling for
 > us.
 >
-> You can learn more about how window scaling works in nannou's windowing
+> You can learn more about how window scaling works in splatter's windowing
 > library [here][1].
 >
 > To convert from points to pixels we can multiply by the scale factor:
 >
 > ```rust,no_run
 > # #![allow(unreachable_code, unused_variables)]
-> # use nannou::prelude::*;
+> # use splatter::prelude::*;
 > # fn main() {
 > #     let points = 100.0;
 > #     let window: Window = unimplemented!();
@@ -386,7 +386,7 @@ without having to worry about the "scale factor" of our display.
 >
 > ```rust,no_run
 > # #![allow(unreachable_code, unused_variables)]
-> # use nannou::prelude::*;
+> # use splatter::prelude::*;
 > # fn main() {
 > #     let pixels = 100.0;
 > #     let window: Window = unimplemented!();
@@ -397,29 +397,29 @@ without having to worry about the "scale factor" of our display.
 ## Conclusion
 
 Thanks for reading! Hopefully this has helped to demystify window coordinates in
-nannou at least a little.
+splatter at least a little.
 
 Remember, the more you experiment and play, the more these things become second
 nature. Next thing you know you will start seeing everything in window
 coordinates!
 
 [1]: https://docs.rs/winit/latest/winit/dpi/index.html
-[2]: https://github.com/nannou-org/nannou/tree/master/examples/nannou_basics/window_coordinates.rs
+[2]: https://github.com/splatter-org/splatter/tree/master/examples/splatter_basics/window_coordinates.rs
 [3]: ./images/window_coordinates_example.png
 [4]: https://en.wikipedia.org/wiki/Cartesian_coordinate_system
 [5]: ./images/window_coordinates_example2.png
 [6]: ./images/window_coordinates_example3.png
 [7]: ./images/window_coordinates_example4.png
 [8]: ./images/window_coordinates_example5.png
-[9]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html
-[10]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html#method.align_left_of
-[11]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html#method.pad
-[12]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html#method.shift
-[13]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html#method.stretch_to_point
-[14]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html#method.subdivisions_iter
-[15]: https://docs.rs/nannou/latest/nannou/geom/rect/struct.Rect.html#method.contains
+[9]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html
+[10]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html#method.align_left_of
+[11]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html#method.pad
+[12]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html#method.shift
+[13]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html#method.stretch_to_point
+[14]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html#method.subdivisions_iter
+[15]: https://docs.rs/splatter/latest/splatter/geom/rect/struct.Rect.html#method.contains
 [16]: ./images/window_coordinates_example6.png
 [17]: ./images/window_coordinates_example7.png
 [18]: ./images/window_coordinates_example8.png
 [19]: ./images/window_coordinates_example9.png
-[20]: https://guide.nannou.cc/tutorials.html#drawing
+[20]: https://guide.splatter.cc/tutorials.html#drawing

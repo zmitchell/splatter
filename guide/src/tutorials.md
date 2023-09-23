@@ -1,10 +1,10 @@
 # Tutorials
 
-In the previous chapter we prepared everything needed to start our own Nannou
+In the previous chapter we prepared everything needed to start our own splatter
 project! In this chapter, we will take a more focused look at all of the
-different features we can add to our Nannou project.
+different features we can add to our splatter project.
 
-If you are new to Nannou or Rust we recommend starting with the "Basics"
+If you are new to splatter or Rust we recommend starting with the "Basics"
 tutorials before going on. If you are feeling more confident, feel free to
 choose your own adventure through the following tutorials depending on what you
 want to add to your project!
@@ -12,25 +12,25 @@ want to add to your project!
 
 ## Rust Basics
 
-Tutorials for learning the basics of Rust with nannou. 
+Tutorials for learning the basics of Rust with splatter. 
 
 - [Rust variables](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html)
 - [Rust control flows](https://doc.rust-lang.org/book/ch03-05-control-flow.html)
 - [Rust functions](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
 
-## Nannou Basics
+## splatter Basics
 
-A suite of tutorials for getting familiar with the Nannou environment.
+A suite of tutorials for getting familiar with the splatter environment.
 
-- [Anatomy of a nannou app](/tutorials/basics/anatomy-of-a-nannou-app.md)
+- [Anatomy of a splatter app](/tutorials/basics/anatomy-of-a-splatter-app.md)
 - [Drawing a sketch](/tutorials/basics/draw-a-sketch.md)
 - [Sketch vs App](/tutorials/basics/sketch-vs-app.md)
 - [Window Coordinates](/tutorials/basics/window-coordinates.md)
-- Nannou events
+- splatter events
 
 ## Drawing
 
-Working with Nannou's `Draw` API - a simple approach of coding graphics.
+Working with splatter's `Draw` API - a simple approach of coding graphics.
 
 - [Drawing 2D shapes](/tutorials/draw/drawing-2d-shapes.md)
 - [Animating a circle](/tutorials/draw/animating-a-circle.md)
@@ -50,10 +50,10 @@ Walk-throughs for creating and working with one or more windows.
 
 ## GUI
 
-How to create a GUI (Graphical User Interface) for you Nannou project.
+How to create a GUI (Graphical User Interface) for you splatter project.
 
 *NOTE: It might be best to wait for
-[#383](https://github.com/nannou-org/nannou/issues/383) before addressing
+[#383](https://github.com/splatter-org/splatter/issues/383) before addressing
 these.*
 
 - Creating a UI
@@ -62,7 +62,7 @@ these.*
 
 ## Audio
 
-A suite of guides for working with audio in Nannou.
+A suite of guides for working with audio in splatter.
 
 - Setting up audio output
 - Setting up audio input
@@ -75,7 +75,7 @@ A suite of guides for working with audio in Nannou.
 
 ## Video
 
-Loading, playing and recording video in Nannou.
+Loading, playing and recording video in splatter.
 
 - Drawing video
 - Recording a window to video
@@ -83,7 +83,7 @@ Loading, playing and recording video in Nannou.
 
 ## WGPU
 
-Understanding the lower level that underlies all graphics in Nannou.
+Understanding the lower level that underlies all graphics in splatter.
 
 - What is WGPU?
 - The graphics pipeline
@@ -93,7 +93,7 @@ Understanding the lower level that underlies all graphics in Nannou.
 
 ## Projection Mapping
 
-Getting started with using Nannou for projection mapping.
+Getting started with using splatter for projection mapping.
 
 - Basic quad-warping.
 

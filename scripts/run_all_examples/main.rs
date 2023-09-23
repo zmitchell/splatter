@@ -27,13 +27,13 @@ fn main() {
         specified_packages
     };
 
-    // Read the nannou cargo manifest to a `toml::Value`.
+    // Read the splatter cargo manifest to a `toml::Value`.
     let manifest_dir = env!("CARGO_MANIFEST_DIR");
     let workspace_manifest_dir = std::path::Path::new(manifest_dir)
         .parent()
-        .unwrap() // nannou/scripts
+        .unwrap() // splatter/scripts
         .parent()
-        .unwrap(); // nannou
+        .unwrap(); // splatter
 
     for package in packages {
         let examples_dir = workspace_manifest_dir.join(&package);
@@ -42,7 +42,7 @@ fn main() {
         let toml: toml::Value = toml::from_slice(&bytes).unwrap();
 
         // Frist, build all examples in the package.
-        println!("Building all examples within /nannou/{}...", package);
+        println!("Building all examples within /splatter/{}...", package);
         let output = std::process::Command::new("cargo")
             .arg("build")
             .arg("-p")
@@ -64,7 +64,7 @@ fn main() {
         let examples = toml["example"]
             .as_array()
             .expect("failed to retrieve example array");
-        println!("Running all examples within /nannou/{}...", package);
+        println!("Running all examples within /splatter/{}...", package);
         for example in examples {
             let name = example["name"]
                 .as_str()

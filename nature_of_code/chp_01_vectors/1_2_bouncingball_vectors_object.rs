@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Example 1-2: Bouncing Ball, with Vector!
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model)
+    splatter::app(model)
         .update(update)
         .simple_window(view)
         .size(300, 300)

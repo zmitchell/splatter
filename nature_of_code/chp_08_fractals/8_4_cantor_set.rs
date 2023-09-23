@@ -4,10 +4,10 @@
 //
 // Example 8-4: Cantor Set
 // Renders a simple fractal, the Cantor Set
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model;

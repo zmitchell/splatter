@@ -1,9 +1,9 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 // Every rust program has to have a main function which gets called when the program is run.
-// In the main function, we build the nannou app and run it.
+// In the main function, we build the splatter app and run it.
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // Model represents the state of our application. We don't have any state in this demonstration, so

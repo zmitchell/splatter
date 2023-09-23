@@ -23,10 +23,10 @@
  * MOUSE
  * position x/y        : resolution
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).size(800, 400).run();
+    splatter::sketch(view).size(800, 400).run();
 }
 
 fn view(app: &App, frame: Frame) {
@@ -40,7 +40,7 @@ fn view(app: &App, frame: Frame) {
     let step_y = (win_rect.top() - app.mouse.y).max(5.0);
 
     let size = vec2(step_x, step_y);
-    let r = nannou::geom::Rect::from_wh(size)
+    let r = splatter::geom::Rect::from_wh(size)
         .align_left_of(win_rect)
         .align_top_of(win_rect);
     let mut grid_y = 0.0;

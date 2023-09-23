@@ -4,7 +4,7 @@
 
 - Author: [madskjeldgaard](https://madskjeldgaard.dk)
 - Required Knowledge:
-    - [Anatomy of a nannou App](/tutorials/basics/anatomy-of-a-nannou-app.md)
+    - [Anatomy of a splatter App](/tutorials/basics/anatomy-of-a-splatter-app.md)
     - [Drawing 2D Shapes](/tutorials/basics/drawing-2d-shapes.md)
     - [Moving a circle about on the screen](/tutorials/tutorial/moving-a-circle-about.md)
     - [OSC introduction](/tutorials/osc/osc-introduction.md)
@@ -12,26 +12,26 @@
 
 ---
 
-In this tutorial we will cover how to send OSC data from a nannou app to another application using the `nannou_osc` crate.
+In this tutorial we will cover how to send OSC data from a splatter app to another application using the `splatter_osc` crate.
 
 We are going to write a simple program which has a circle moving about on the screen while the circle's position is sent via OSC to another application. We will continue working on the app from [Moving a circle about on the screen](/tutorials/basics/moving-a-circle-about.md).
 
 ## Setting up an OSC sender
 
-At the top of your `main.rs`-file, import the `nannou_osc` crate and make it available in your program via the shorthand `osc`.
+At the top of your `main.rs`-file, import the `splatter_osc` crate and make it available in your program via the shorthand `osc`.
 
 ```rust, norun
 # #![allow(unused_imports)]
-use nannou_osc as osc;
+use splatter_osc as osc;
 # fn main(){}
 ```
 
-The first thing we then need to do is set up our OSC-sender in the `Model`-struct you may have seen in other nannou-tutorials.
-Add a field to the struct called `sender` with a [Sender](https://docs.rs/nannou_osc/latest/nannou_osc/send/struct.Sender.html)-struct as the type input.
+The first thing we then need to do is set up our OSC-sender in the `Model`-struct you may have seen in other splatter-tutorials.
+Add a field to the struct called `sender` with a [Sender](https://docs.rs/splatter_osc/latest/splatter_osc/send/struct.Sender.html)-struct as the type input.
 
 ```rust,no_run
 # #![allow(dead_code, unused_imports)]
-# use nannou_osc as osc;
+# use splatter_osc as osc;
 struct Model {
     sender: osc::Sender<osc::Connected>,
 }
@@ -42,8 +42,8 @@ Next, we need to setup our `Model` struct using the `model` function. Don't worr
 
 ```rust,no_run
 # #![allow(dead_code, unused_imports)]
-# use nannou_osc as osc;
-# use nannou::prelude::*;
+# use splatter_osc as osc;
+# use splatter::prelude::*;
 # struct Model {
 #   sender: osc::Sender<osc::Connected>,
 # }
@@ -84,7 +84,7 @@ Lastly, we need to bind our OSC sender to the network socket. This isn't always 
 
 ```rust,no_run
 # #![allow(unused_variables)]
-# use nannou_osc as osc;
+# use splatter_osc as osc;
 # fn main() {
 #     let port = 1234;
 #     let target_addr = format!("{}:{}", "127.0.0.1", port);
@@ -107,11 +107,11 @@ let osc_addr = "/circle/position".to_string();
 # }
 ```
 
-Then create a vector of arguments. These need to be formatted using the types found in [osc::Type](https://docs.rs/nannou_osc/latest/nannou_osc/enum.Type.html) in the nannou_osc crate. Below we create an argument list of two floating point values: the `x` and `y` coordinates of our circle.
+Then create a vector of arguments. These need to be formatted using the types found in [osc::Type](https://docs.rs/splatter_osc/latest/splatter_osc/enum.Type.html) in the splatter_osc crate. Below we create an argument list of two floating point values: the `x` and `y` coordinates of our circle.
 
 ```rust,no_run
 # #![allow(unused_variables)]
-# use nannou_osc as osc;
+# use splatter_osc as osc;
 # fn main() {
 # let x = 0.0;
 # let y = 0.0;
@@ -131,10 +131,10 @@ let packet = (osc_addr, args);
 # }
 ```
 
-[Reading the documentation](https://docs.rs/nannou_osc/latest/nannou_osc/send/struct.Sender.html#method.send-1) for the `send`-method, we can see that it returns a Result type which will either contain the number of bytes written (if it was successful) and, more importantly, some useful errors of type CommunicationError if it was not succesful. To discard the error part of this, we use the `ok()` method at the end.
+[Reading the documentation](https://docs.rs/splatter_osc/latest/splatter_osc/send/struct.Sender.html#method.send-1) for the `send`-method, we can see that it returns a Result type which will either contain the number of bytes written (if it was successful) and, more importantly, some useful errors of type CommunicationError if it was not succesful. To discard the error part of this, we use the `ok()` method at the end.
 ```rust,no_run
 # #![allow(unreachable_code, unused_variables)]
-# use nannou_osc as osc;
+# use splatter_osc as osc;
 # struct Model {
 #    sender: osc::Sender<osc::Connected>,
 # }
@@ -150,11 +150,11 @@ let packet = (osc_addr, args);
 ## The finished app
 
 ```rust,no_run
-use nannou::prelude::*;
-use nannou_osc as osc;
+use splatter::prelude::*;
+use splatter_osc as osc;
 
 fn main() {
-    nannou::app(model).simple_window(view).run();
+    splatter::app(model).simple_window(view).run();
 }
 
 struct Model {

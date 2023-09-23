@@ -28,10 +28,10 @@
 * s                   : save png
 */
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).size(720, 720).run();
+    splatter::sketch(view).size(720, 720).run();
 }
 
 fn view(app: &App, frame: Frame) {

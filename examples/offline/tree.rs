@@ -4,14 +4,14 @@
 mod colors;
 mod quadtree;
 use crate::colors::Palette;
-use nannou::prelude::Frame;
-use nannou::prelude::*;
+use splatter::prelude::Frame;
+use splatter::prelude::*;
 
 const LENGTH_FRAME: u64 = 700;
 //const START_FRAME: u64 = 0;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

@@ -27,12 +27,12 @@
  * KEYS
  * s                   : save png
  */
-extern crate nannou;
+extern crate splatter;
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).size(550, 550).run();
+    splatter::sketch(view).size(550, 550).run();
 }
 
 fn view(app: &App, frame: Frame) {

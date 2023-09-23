@@ -28,15 +28,15 @@
  * backspace            : delete last typed letter
  * ctrl                 : save png
  */
-use nannou::lyon;
-use nannou::lyon::algorithms::path::math::Point;
-use nannou::lyon::algorithms::path::PathSlice;
-use nannou::lyon::algorithms::walk::{walk_along_path, RepeatedPattern};
-use nannou::lyon::path::iterator::*;
-use nannou::prelude::*;
+use splatter::lyon;
+use splatter::lyon::algorithms::path::math::Point;
+use splatter::lyon::algorithms::path::PathSlice;
+use splatter::lyon::algorithms::walk::{walk_along_path, RepeatedPattern};
+use splatter::lyon::path::iterator::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -54,7 +54,7 @@ fn model(app: &App) -> Model {
         .unwrap();
 
     Model {
-        text_typed: "Nannou is Amazing!".to_string(),
+        text_typed: "splatter is Amazing!".to_string(),
     }
 }
 

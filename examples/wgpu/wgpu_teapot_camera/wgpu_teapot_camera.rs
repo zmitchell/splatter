@@ -1,5 +1,5 @@
-use nannou::prelude::*;
-use nannou::winit;
+use splatter::prelude::*;
+use splatter::winit;
 use std::cell::RefCell;
 
 mod data;
@@ -77,7 +77,7 @@ fn pitch_yaw_to_direction(pitch: f32, yaw: f32) -> Vec3 {
 }
 
 fn main() {
-    nannou::app(model).event(event).update(update).run();
+    splatter::app(model).event(event).update(update).run();
 }
 
 fn model(app: &App) -> Model {
@@ -381,7 +381,7 @@ fn create_render_pipeline(
         .build(device)
 }
 
-// See the `nannou::wgpu::bytes` documentation for why the following are necessary.
+// See the `splatter::wgpu::bytes` documentation for why the following are necessary.
 
 fn vertices_as_bytes(data: &[Vertex]) -> &[u8] {
     unsafe { wgpu::bytes::from_slice(data) }

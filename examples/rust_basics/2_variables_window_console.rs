@@ -1,7 +1,7 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).view(view).run();
+    splatter::app(model).view(view).run();
 }
 
 struct Model;

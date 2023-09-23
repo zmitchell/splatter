@@ -1,9 +1,9 @@
 //! A simple as possible example demonstrating how to use the `draw` API to display a texture.
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {

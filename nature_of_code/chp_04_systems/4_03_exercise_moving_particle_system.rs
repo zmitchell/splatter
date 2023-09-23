@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // example 4-03: Exercise Moving Particle System
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // A simple particle type

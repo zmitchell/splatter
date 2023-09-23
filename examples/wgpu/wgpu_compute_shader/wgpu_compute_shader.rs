@@ -5,8 +5,8 @@
 //! with a gray value equal to the amplitude. Real-time interaction is demonstrated by providing
 //! access to time, frequency (mouse `x`) and the number of oscillators via uniform data.
 
-use nannou::prelude::*;
-use nannou::wgpu::BufferInitDescriptor;
+use splatter::prelude::*;
+use splatter::wgpu::BufferInitDescriptor;
 use std::sync::{Arc, Mutex};
 
 struct Model {
@@ -33,7 +33,7 @@ pub struct Uniforms {
 const OSCILLATOR_COUNT: u32 = 128;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 fn model(app: &App) -> Model {
@@ -135,7 +135,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
     );
     {
         let pass_desc = wgpu::ComputePassDescriptor {
-            label: Some("nannou-wgpu_compute_shader-compute_pass"),
+            label: Some("splatter-wgpu_compute_shader-compute_pass"),
         };
         let mut cpass = encoder.begin_compute_pass(&pass_desc);
         cpass.set_pipeline(&compute.pipeline);
@@ -175,7 +175,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
     // Check for resource cleanups and mapping callbacks.
     //
     // Note that this line is not necessary in our case, as the device we are using already gets
-    // polled when nannou submits the command buffer for drawing and presentation after `view`
+    // polled when splatter submits the command buffer for drawing and presentation after `view`
     // completes. If we were to use a standalone device to create our buffer and perform our
     // compute (rather than the device requested during window creation), calling `poll` regularly
     // would be a must.
@@ -251,7 +251,7 @@ fn create_pipeline_layout(
     bind_group_layout: &wgpu::BindGroupLayout,
 ) -> wgpu::PipelineLayout {
     device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
-        label: Some("nannou"),
+        label: Some("splatter"),
         bind_group_layouts: &[&bind_group_layout],
         push_constant_ranges: &[],
     })
@@ -263,7 +263,7 @@ fn create_compute_pipeline(
     cs_mod: &wgpu::ShaderModule,
 ) -> wgpu::ComputePipeline {
     let desc = wgpu::ComputePipelineDescriptor {
-        label: Some("nannou"),
+        label: Some("splatter"),
         layout: Some(layout),
         module: &cs_mod,
         entry_point: "main",
@@ -271,7 +271,7 @@ fn create_compute_pipeline(
     device.create_compute_pipeline(&desc)
 }
 
-// See `nannou::wgpu::bytes` docs for why these are necessary.
+// See `splatter::wgpu::bytes` docs for why these are necessary.
 
 fn uniforms_as_bytes(uniforms: &Uniforms) -> &[u8] {
     unsafe { wgpu::bytes::from(uniforms) }

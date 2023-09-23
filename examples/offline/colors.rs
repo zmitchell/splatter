@@ -1,9 +1,9 @@
 // Colors tools
 // Alexis Andre (@mactuitui)
 
-use nannou::color::Hsv;
-use nannou::color::Rgb;
-use nannou::color::Srgb;
+use splatter::color::Hsv;
+use splatter::color::Rgb;
+use splatter::color::Srgb;
 
 pub struct Palette {
     pub colors: Vec<Rgb>,

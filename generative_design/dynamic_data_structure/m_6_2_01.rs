@@ -21,11 +21,11 @@
  * loads the names of the links on the wikipedia-site "Superegg"
  * and prints them to the console
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 use wikipedia;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model;

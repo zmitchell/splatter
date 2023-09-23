@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // Example 3-5: Simple Harmonic Motion
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).size(640, 360).run();
+    splatter::sketch(view).size(640, 360).run();
 }
 
 fn view(app: &App, frame: Frame) {

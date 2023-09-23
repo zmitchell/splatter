@@ -1,6 +1,6 @@
 # Contributing
 
-Considering contributing to nannou? Awesome! Hopefully this section can guide
+Considering contributing to splatter? Awesome! Hopefully this section can guide
 you in the right direction.
 
 - [**About the Codebase**](./contributing/about-the-codebase.md)
@@ -13,4 +13,4 @@ you in the right direction.
 Remember, if you are still unsure about anything, you probably are not the only
 one! Feel free to [open an issue][issue-tracker] with your question.
 
-[issue-tracker]: https://github.com/nannou-org/nannou/issues
+[issue-tracker]: https://github.com/splatter-org/splatter/issues

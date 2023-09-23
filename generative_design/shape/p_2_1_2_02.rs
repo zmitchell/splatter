@@ -32,12 +32,12 @@
  * arrow left/right    : foreground module size
  * s                   : save png
  */
-use nannou::prelude::*;
-use nannou::rand::rngs::StdRng;
-use nannou::rand::{Rng, SeedableRng};
+use splatter::prelude::*;
+use splatter::rand::rngs::StdRng;
+use splatter::rand::{Rng, SeedableRng};
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {

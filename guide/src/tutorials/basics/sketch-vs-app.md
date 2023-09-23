@@ -9,17 +9,17 @@
 
 ---
 
-When creating a new nannou project we have two options for kicking off our
+When creating a new splatter project we have two options for kicking off our
 program:
 
-1. `nannou::sketch` and
-2. `nannou::app`.
+1. `splatter::sketch` and
+2. `splatter::app`.
 
 Let's find out exactly what the differences are!
 
 > **Note:** When referring to *app* throughout this tutorial, we are referring to
-> a nannou project that is run via `nannou::app`. We are *not* referring to the
-> `App` type that often appears as the first argument in nannou functions.
+> a splatter project that is run via `splatter::app`. We are *not* referring to the
+> `App` type that often appears as the first argument in splatter functions.
 > Hopefully we can point to an `App` oriented tutorial some day soon!
 
 ## Sketches
@@ -29,14 +29,14 @@ require a simple `view` function designed to make it easy to start drawing
 quickly and easily.
 
 Here is what the [sketch
-template](https://github.com/nannou-org/nannou/blob/master/examples/templates/template_sketch.rs)
+template](https://github.com/splatter-org/splatter/blob/master/examples/templates/template_sketch.rs)
 looks like:
 
 ```rust,no_run
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run()
+    splatter::sketch(view).run()
 }
 
 fn view(app: &App, frame: Frame) {
@@ -57,14 +57,14 @@ applications. They allow for greater flexibility and finer grained control than
 sketches, but also require a little more setup.
 
 Here is what the [app
-template](https://github.com/nannou-org/nannou/blob/master/examples/templates/template_app.rs)
+template](https://github.com/splatter-org/splatter/blob/master/examples/templates/template_app.rs)
 looks like:
 
 ```rust,no_run
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {
@@ -94,12 +94,12 @@ custom ***state*** (i.e. the `Model`), whereas a sketch does not.
 > The line:
 >
 > ```rust,ignore
-> nannou::sketch(view).run()
+> splatter::sketch(view).run()
 > ```
 > is simply short-hand for
 >
 > ```rust,ignore
-> nannou::app(model).simple_window(view).run()
+> splatter::app(model).simple_window(view).run()
 > ```
 > except without the need for `model` and with a slightly simpler `view` function.
 
@@ -115,9 +115,9 @@ flexibility, you can turn it into an app by following these steps:
 
    ```rust,no_run
    # #![allow(dead_code)]
-   # use nannou::prelude::*;
+   # use splatter::prelude::*;
    # fn main() {
-   nannou::sketch(view).run()
+   splatter::sketch(view).run()
    # }
    # fn view(_: &App, _: Frame) {}
    ```
@@ -126,9 +126,9 @@ flexibility, you can turn it into an app by following these steps:
 
    ```rust,no_run
    # #![allow(dead_code)]
-   # use nannou::prelude::*;
+   # use splatter::prelude::*;
    # fn main() {
-   nannou::app(model).simple_window(view).run()
+   splatter::app(model).simple_window(view).run()
    # }
    # struct Model {}
    # fn model(_: &App) -> Model { Model {} }
@@ -147,7 +147,7 @@ flexibility, you can turn it into an app by following these steps:
 
    ```rust,no_Run
    # #![allow(dead_code)]
-   # use nannou::prelude::*;
+   # use splatter::prelude::*;
    # fn main() {}
    # struct Model {}
    fn model(_app: &App) -> Model {
@@ -159,7 +159,7 @@ flexibility, you can turn it into an app by following these steps:
 
    ```rust,no_run
    # #![allow(dead_code, unused_variables)]
-   # use nannou::prelude::*;
+   # use splatter::prelude::*;
    # fn main() {}
    fn view(app: &App, frame: Frame) {
    # }
@@ -169,7 +169,7 @@ flexibility, you can turn it into an app by following these steps:
 
    ```rust,no_run
    # #![allow(dead_code, unused_variables)]
-   # use nannou::prelude::*;
+   # use splatter::prelude::*;
    # fn main() {}
    # struct Model {}
    fn view(app: &App, _model: &Model, frame: Frame) {
@@ -185,10 +185,10 @@ And that's it! You are now ready to take your sketch to the next level.
 | Easier to start drawing quickly? | Yes | No |
 | Allows for a `Model`? | No | Yes |
 | Allows for  audio/LASER/MIDI/etc? | No | Yes |
-| The `main` function looks like: | `nannou::sketch(view)` | `nannou::app(model)` |
-| Templates | [template_sketch.rs](https://github.com/nannou-org/nannou/blob/master/examples/templates/template_sketch.rs) | [template_app.rs](https://github.com/nannou-org/nannou/blob/master/examples/templates/template_app.rs) |
+| The `main` function looks like: | `splatter::sketch(view)` | `splatter::app(model)` |
+| Templates | [template_sketch.rs](https://github.com/splatter-org/splatter/blob/master/examples/templates/template_sketch.rs) | [template_app.rs](https://github.com/splatter-org/splatter/blob/master/examples/templates/template_app.rs) |
 | Can make awesome stuff? | Yes | Yes |
 
-To learn more about nannou **sketches** visit the [Draw a sketch](/tutorials/basics/draw-a-sketch.md) tutorial.
+To learn more about splatter **sketches** visit the [Draw a sketch](/tutorials/basics/draw-a-sketch.md) tutorial.
 
-To learn more about nannou **apps** visit the [Anatomy of a nannou app](/tutorials/basics/anatomy-of-a-nannou-app.md) tutorial.
+To learn more about splatter **apps** visit the [Anatomy of a splatter app](/tutorials/basics/anatomy-of-a-splatter-app.md) tutorial.

@@ -1,6 +1,6 @@
-# Why Nannou?
+# Why splatter?
 
-**nannou** is a collection of code aimed at making it easy for artists to
+**splatter** is a collection of code aimed at making it easy for artists to
 express themselves with simple, fast, reliable, portable code.  Whether working
 on a 12-month installation or a 5 minute sketch, this framework aims to give
 artists easy access to the tools they need.
@@ -11,7 +11,7 @@ by Processing, OpenFrameworks and Cinder, but for Rust. <sup>Named after
 
 ## Goals
 
-Nannou aims to provide easy, cross-platform access to the things that artists
+splatter aims to provide easy, cross-platform access to the things that artists
 need:
 
 - [x] **Windowing & Events** via [winit](https://crates.io/crates/winit).
@@ -20,8 +20,8 @@ need:
 - [ ] **Video** input, playback and processing (*would love suggestions and
   ideas*).
 - [x] **GUI** via [egui](https://crates.io/crates/egui). *May switch to a custom
-  nannou solution [in the
-  future](https://github.com/nannou-org/nannou/issues/383)*.
+  splatter solution [in the
+  future](https://github.com/splatter-org/splatter/issues/383)*.
 - **Geometry** with functions and iterators for producing vertices and indices:
   - [x] 1D - `Scalar`, `Range`.
   - [x] 2D - `Path`, `Polyline`, `Polygon`, `Rect`, `Line`, `Ellipse`, `Quad`,
@@ -29,32 +29,32 @@ need:
   - [x] 3D - `Cuboid`.
   - [ ] 3D TODO - `Ellipsoid`, `Cube`, Prisms, Pyramids, *Hedrons, Camera, etc.
   - [x] Vertex & index iterators.
-  - [x] [Graph](https://docs.rs/nannou/latest/nannou/geom/graph/index.html) for
+  - [x] [Graph](https://docs.rs/splatter/latest/splatter/geom/graph/index.html) for
     composing geometry.
 - **Graphics** via WGPU (via [wgpu-rs](https://github.com/gfx-rs/wgpu-rs)):
-  - [x] [Draw](https://docs.rs/nannou/latest/nannou/draw/index.html) API. E.g.
+  - [x] [Draw](https://docs.rs/splatter/latest/splatter/draw/index.html) API. E.g.
     `draw.ellipse().w_h(20.0, 20.0).color(RED)`.
-  - [x] [Mesh](https://docs.rs/nannou/latest/nannou/mesh/index.html) API.
-  - [x] [Image](https://docs.rs/nannou/latest/nannou/image/index.html) API.
-  - [x] [Texture](https://docs.rs/nannou/latest/nannou/wgpu/struct.Texture.html) API.
-  - [x] [WGPU](https://docs.rs/nannou/latest/nannou/wgpu/index.html) API.
-  - [x] [Text](https://docs.rs/nannou/latest/nannou/text/index.html) API.
+  - [x] [Mesh](https://docs.rs/splatter/latest/splatter/mesh/index.html) API.
+  - [x] [Image](https://docs.rs/splatter/latest/splatter/image/index.html) API.
+  - [x] [Texture](https://docs.rs/splatter/latest/splatter/wgpu/struct.Texture.html) API.
+  - [x] [WGPU](https://docs.rs/splatter/latest/splatter/wgpu/index.html) API.
+  - [x] [Text](https://docs.rs/splatter/latest/splatter/text/index.html) API.
   - [ ] Shader hot-loading. *See
-    [hotglsl](https://github.com/nannou-org/hotglsl) and [nannou_isf
-    WIP](https://github.com/nannou-org/nannou/tree/master/nannou_isf)*.
+    [hotglsl](https://github.com/splatter-org/hotglsl) and [splatter_isf
+    WIP](https://github.com/splatter-org/splatter/tree/master/splatter_isf)*.
 - **Protocols**:
-  - [x] [OSC](https://docs.rs/nannou_osc) - Open Sound
+  - [x] [OSC](https://docs.rs/splatter_osc) - Open Sound
     Control.
-  - [x] [ISF](https://github.com/nannou-org/isf) - Interactive Shader Format.
-  - [x] [CITP](https://github.com/nannou-org/citp) - Controller Interface
+  - [x] [ISF](https://github.com/splatter-org/isf) - Interactive Shader Format.
+  - [x] [CITP](https://github.com/splatter-org/citp) - Controller Interface
     Transport Protocol (network implementation is in progress).
-  - [x] [Ether-Dream](https://github.com/nannou-org/ether-dream) Laser DAC
+  - [x] [Ether-Dream](https://github.com/splatter-org/ether-dream) Laser DAC
     protocol and network implementation.
   - [x] [DMX via sACN](https://github.com/lschmierer/sacn) - commonly used for
     lighting and effects.
   - [x] [Serial](https://crates.io/crates/serial) - commonly used for
     interfacing with LEDs and other hardware.
-  - [ ] MIDI - No friendly nannou API is provided yet, but cross-platform MIDI I/O is possible via [midir](https://crates.io/crates/midir).
+  - [ ] MIDI - No friendly splatter API is provided yet, but cross-platform MIDI I/O is possible via [midir](https://crates.io/crates/midir).
   - [x] [UDP](https://doc.rust-lang.org/std/net/struct.UdpSocket.html) via
     std.
   - [x] TCP
@@ -64,26 +64,26 @@ need:
 - **Device & I/O stream APIs**:
   - [x] Windowing.
   - [x] Application events.
-  - [x] [Audio](https://docs.rs/nannou/latest/nannou/app/struct.Audio.html).
+  - [x] [Audio](https://docs.rs/splatter/latest/splatter/app/struct.Audio.html).
   - [ ] Video.
-  - [x] [Lasers](https://github.com/nannou-org/nannou/tree/master/nannou_laser).
+  - [x] [Lasers](https://github.com/splatter-org/splatter/tree/master/splatter_laser).
   - [ ] Lights. *For now, we recommend DMX via the [sacn crate](https://docs.rs/sacn/0.4.4/sacn/).*
   - [ ] LEDs. *For now, we recommend DMX via the [sacn crate](https://docs.rs/sacn/0.4.4/sacn/).*
-- [ ] **Graphical Node Graph** via [gantz](https://github.com/nannou-org/gantz).
+- [ ] **Graphical Node Graph** via [gantz](https://github.com/splatter-org/gantz).
 - [ ] **GUI Editor**.
 
-Nannou aims to **use only pure-rust libraries**. As a new user you should
+splatter aims to **use only pure-rust libraries**. As a new user you should
 require nothing more than `cargo build` to get going. Falling back to C-bindings
 will be considered as a temporary solution in the case that there are no Rust
 alternatives yet in development. We prefer to drive forward development of less
 mature rust-alternatives than depend on bindings to C code. This should make it
-easier for nannou *users* to become nannou *contributors* as they do not have to
+easier for splatter *users* to become splatter *contributors* as they do not have to
 learn a second language in order to contribute upstream.
 
-Nannou **will not contain `unsafe` code** with the exception of bindings to
+splatter **will not contain `unsafe` code** with the exception of bindings to
 operating systems or hardware APIs if necessary.
 
-Nannou wishes to **remove the need to decide between lots of different backends
+splatter wishes to **remove the need to decide between lots of different backends
 that provide access to the same hardware**. Instead, we want to focus on a
 specific set of backends and make sure that they work well.
 
@@ -113,7 +113,7 @@ some of the reasons why we choose to use it:
 
 ## Why the Apache/MIT dual licensing?
 
-For the most part, nannou is trying to maintain as much flexibility and compatibility
+For the most part, splatter is trying to maintain as much flexibility and compatibility
 with the licensing of Rust itself, which is also [dual licensed](https://www.rust-lang.org/policies/licenses).
 
 The Apache 2.0 and MIT license are very similar, but have a few key differences.

@@ -24,10 +24,10 @@
  * r             : reset positions
  * s             : save png
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Node {

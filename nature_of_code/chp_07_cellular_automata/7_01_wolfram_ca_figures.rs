@@ -6,11 +6,11 @@
 
 // Simple demonstration of a Wolfram 1-dimensional cellular automata
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 use std::ops::Range;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 // A Type to manage the CA

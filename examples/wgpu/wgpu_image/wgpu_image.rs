@@ -1,6 +1,6 @@
-use nannou::image;
-use nannou::image::GenericImageView;
-use nannou::prelude::*;
+use splatter::image;
+use splatter::image::GenericImageView;
+use splatter::prelude::*;
 
 struct Model {
     bind_group: wgpu::BindGroup,
@@ -32,12 +32,12 @@ const VERTICES: [Vertex; 4] = [
 ];
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 fn model(app: &App) -> Model {
     // Load the image.
-    let logo_path = app.assets_path().unwrap().join("images").join("nannou.png");
+    let logo_path = app.assets_path().unwrap().join("images").join("splatter.png");
     let image = image::open(logo_path).unwrap();
     let (img_w, img_h) = image.dimensions();
 
@@ -164,7 +164,7 @@ fn create_render_pipeline(
         .build(device)
 }
 
-// See the `nannou::wgpu::bytes` documentation for why this is necessary.
+// See the `splatter::wgpu::bytes` documentation for why this is necessary.
 fn vertices_as_bytes(data: &[Vertex]) -> &[u8] {
     unsafe { wgpu::bytes::from_slice(data) }
 }

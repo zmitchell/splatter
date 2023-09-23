@@ -1,7 +1,7 @@
 // Simple QuadTree
 // Alexis Andre (@mactuitui)
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 pub struct QuadTree {
     indices: [usize; 4],

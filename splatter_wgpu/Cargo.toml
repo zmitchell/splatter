@@ -1,0 +1,28 @@
+[package]
+name = "splatter_wgpu"
+version = "0.18.0"
+authors = ["mitchmindtree <mitchell.nordine@gmail.com>"]
+description = "Items related to wgpu and its integration in splatter - a creative coding framework for Rust."
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/splatter-org/splatter.git"
+homepage = "https://splatter.cc"
+edition = "2018"
+
+[dependencies]
+async-std = "1.10.0"
+image = { version = "0.23", optional = true }
+instant = { version = "0.1.9", optional = true }
+num_cpus = { version = "1", optional = true }
+wgpu_upstream = { version = "0.11.1", package = "wgpu" }
+
+[features]
+capturer = ["image", "instant", "num_cpus"]
+replay = ["wgpu_upstream/replay"]
+serde = ["wgpu_upstream/serde"]
+spirv = ["wgpu_upstream/spirv"]
+trace = ["wgpu_upstream/trace"]
+webgl = ["wgpu_upstream/webgl"]
+
+[package.metadata.docs.rs]
+features = ["capturer", "image", "replay", "serde", "spirv", "trace", "webgl"]

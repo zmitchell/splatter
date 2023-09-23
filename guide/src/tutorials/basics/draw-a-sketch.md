@@ -10,16 +10,16 @@
 ---
 
 
-**Nannou is a framework for creative coding in Rust.** A framework can be
+**splatter is a framework for creative coding in Rust.** A framework can be
 thought of as a collection of building blocks to help accomplish a goal.
-A sketch is the smallest/fastest way to get results with nannou.
+A sketch is the smallest/fastest way to get results with splatter.
 Here is one example which just yields a blue window:
 
 ```rust,no_run
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::sketch(view).run();
+    splatter::sketch(view).run();
 }
 
 fn view(app: &App, frame: Frame) {
@@ -43,17 +43,17 @@ First we import some building blocks:
 
 ```rust,no_run
 # #![allow(unused_imports)]
-use nannou::prelude::*;
+use splatter::prelude::*;
 # fn main() {}
 ```
 
 After this import the actual sketching code starts. The `main()` functions is where all your logic starts. The code
 
 ```rust,no_run
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 #
 # fn main() {
-    nannou::sketch(view).run();
+    splatter::sketch(view).run();
 # }
 # fn view(_app: &App, _frame: Frame) {}
 ```
@@ -67,9 +67,9 @@ Within the view() function, what we draw to the Frame will be presented in our w
 
 ```rust,no_run
 # #![allow(unused_imports)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
-#    nannou::sketch(view).run();
+#    splatter::sketch(view).run();
 # }
 fn view(app: &App, frame: Frame) {
     let draw = app.draw();
@@ -84,9 +84,9 @@ This function follows the same scheme. First some setup is done. The line
 
 ```rust,no_run
 # #![allow(unused_imports, unused_variables)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
-#    nannou::sketch(view).run();
+#    splatter::sketch(view).run();
 # }
 # fn view(app: &App, _frame: Frame) {
 let draw = app.draw();
@@ -98,9 +98,9 @@ We can now paint on the this canvas by setting the background to blue.
 
 ```rust,no_run
 # #![allow(unused_imports)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
-#    nannou::sketch(view).run();
+#    splatter::sketch(view).run();
 # }
 # fn view(app: &App, _frame: Frame) {
 # let draw = app.draw();
@@ -113,9 +113,9 @@ create a computer graphics frame from it to display in the main window.
 
 ```rust,no_run
 # #![allow(unused_imports)]
-# use nannou::prelude::*;
+# use splatter::prelude::*;
 # fn main() {
-#    nannou::sketch(view).run();
+#    splatter::sketch(view).run();
 # }
 # fn view(app: &App, frame: Frame) {
 # let draw = app.draw();
@@ -125,6 +125,6 @@ draw.to_frame(app, &frame).unwrap();
 
 If you find the desire to respond to other kinds of events, interact with other
 kinds of input/output, track some state, or need more flexibility in general,
-you might be interested in creating a [nannou app](./anatomy-of-a-nannou-app.md)
+you might be interested in creating a [splatter app](./anatomy-of-a-splatter-app.md)
 instead! You can also learn more about the difference between sketches and apps
 [here](./sketch-vs-app.md).

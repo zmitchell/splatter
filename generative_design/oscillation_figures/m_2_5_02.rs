@@ -23,12 +23,12 @@
  * KEYS
  * s                   : save png
  */
-use nannou::prelude::*;
-use nannou::rand::rngs::StdRng;
-use nannou::rand::{Rng, SeedableRng};
+use splatter::prelude::*;
+use splatter::rand::rngs::StdRng;
+use splatter::rand::{Rng, SeedableRng};
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

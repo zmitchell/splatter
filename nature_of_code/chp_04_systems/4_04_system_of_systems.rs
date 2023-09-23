@@ -3,10 +3,10 @@
 // http://natureofcode.com
 //
 // example 4-04: System of Systems
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Model {

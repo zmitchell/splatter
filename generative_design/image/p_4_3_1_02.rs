@@ -23,15 +23,15 @@
  * KEYS
  * s                   : save png
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
-use nannou::image;
-use nannou::image::GenericImageView;
-use nannou::lyon::math::Point;
-use nannou::lyon::path::PathEvent;
+use splatter::image;
+use splatter::image::GenericImageView;
+use splatter::lyon::math::Point;
+use splatter::lyon::path::PathEvent;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {

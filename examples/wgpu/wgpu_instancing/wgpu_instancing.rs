@@ -1,4 +1,4 @@
-use nannou::prelude::*;
+use splatter::prelude::*;
 use std::cell::RefCell;
 
 mod data;
@@ -147,7 +147,7 @@ pub struct Instance {
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 fn model(app: &App) -> Model {
@@ -469,7 +469,7 @@ fn create_render_pipeline(
         .build(device)
 }
 
-// See the `nannou::wgpu::bytes` documentation for why the following are necessary.
+// See the `splatter::wgpu::bytes` documentation for why the following are necessary.
 
 fn vertices_as_bytes(data: &[Vertex]) -> &[u8] {
     unsafe { wgpu::bytes::from_slice(data) }

@@ -28,10 +28,10 @@
  * a                   : toggle alpha mode
  * s                   : save png
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -104,7 +104,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             0.0,
             1.0,
         );
-        let inter_y = nannou::geom::range::Range::new(pos_y, sort_y).lerp(m);
+        let inter_y = splatter::geom::range::Range::new(pos_y, sort_y).lerp(m);
 
         let character = &c.to_string();
         let text = text(character).font_size(18).build(win);

@@ -5,10 +5,10 @@
 // Outline for game of life
 // This is just a grid of hexagons right now
 
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 #[derive(Clone)]

@@ -6,11 +6,11 @@ others.
 
 ### VS Code
 
-For new Rust users we recommend using VS-Code as your editor and IDE for Nannou
+For new Rust users we recommend using VS-Code as your editor and IDE for splatter
 development. Currently it seems to have the best support for the Rust language
 including syntax highlighting, auto-complete, code formatting and more. It also
 comes with an integrated unix terminal and file navigation system. Below are the
-steps we recommend for getting started with Nannou development using VS-Code.
+steps we recommend for getting started with splatter development using VS-Code.
 
 1. [Download VS-Code](https://code.visualstudio.com/download) for your OS.
 2. [Install

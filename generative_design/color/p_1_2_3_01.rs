@@ -28,10 +28,10 @@
  * s                   : save png
  * c                   : save color palette
  */
-use nannou::prelude::*;
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    splatter::app(model).run();
 }
 
 struct Model {
@@ -182,7 +182,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let tile_height = win_rect.h() as i32 / current_tile_count_y;
 
     let size = vec2(tile_width as f32, tile_height as f32);
-    let r = nannou::geom::Rect::from_wh(size)
+    let r = splatter::geom::Rect::from_wh(size)
         .align_left_of(win_rect)
         .align_top_of(win_rect);
     let mut grid_y = 0;

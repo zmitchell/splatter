@@ -1,6 +1,6 @@
-# the nannou guide
+# the splatter guide
 
-The one-stop-shop for everything someone might want to know about nannou!
+The one-stop-shop for everything someone might want to know about splatter!
 
 ## Working on the Book
 
@@ -8,8 +8,8 @@ The easiest way to build, render and read the book is as follows:
 
 - Clone the repo.
   ```bash
-  git clone https://github.com/nannou-org/nannou
-  cd nannou/guide
+  git clone https://github.com/splatter-org/splatter
+  cd splatter/guide
   ```
 - Install the [Rust markdown book](https://github.com/rust-lang-nursery/mdBook) tool.
   ```

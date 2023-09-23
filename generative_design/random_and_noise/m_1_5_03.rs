@@ -25,11 +25,11 @@
  * backspace           : clear screen
  * s                   : save png
  */
-use nannou::noise::{NoiseFn, Perlin, Seedable};
-use nannou::prelude::*;
+use splatter::noise::{NoiseFn, Perlin, Seedable};
+use splatter::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    splatter::app(model).update(update).run();
 }
 
 struct Agent {
