@@ -15,7 +15,7 @@ async-std = "1.10.0"
 find_folder = "0.3"
 getrandom = "0.2.3"
 image = "0.23"
-instant = "0.1.9"
+instant = "0.1.12"
 lyon = "0.17"
 splatter_core = { version ="0.18.0", path = "../splatter_core", features = ["std", "serde"] }
 splatter_mesh = { version ="0.18.0", path = "../splatter_mesh", features = ["serde1"] }
