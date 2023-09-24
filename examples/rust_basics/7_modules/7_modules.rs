@@ -4,7 +4,10 @@ mod ball;
 use crate::ball::Ball;
 
 fn main() {
-    splatter::app(model).update(update).simple_window(view).run();
+    splatter::app(model)
+        .update(update)
+        .simple_window(view)
+        .run();
 }
 
 struct Model {

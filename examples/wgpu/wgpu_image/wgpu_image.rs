@@ -37,7 +37,11 @@ fn main() {
 
 fn model(app: &App) -> Model {
     // Load the image.
-    let logo_path = app.assets_path().unwrap().join("images").join("splatter.png");
+    let logo_path = app
+        .assets_path()
+        .unwrap()
+        .join("images")
+        .join("splatter.png");
     let image = image::open(logo_path).unwrap();
     let (img_w, img_h) = image.dimensions();
 
