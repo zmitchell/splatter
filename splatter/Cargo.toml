@@ -11,7 +11,7 @@ homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dependencies]
-async-std = "1.10.0"
+async-std = "1.12.0"
 find_folder = "0.3"
 getrandom = "0.2.10"
 image = "0.23"
