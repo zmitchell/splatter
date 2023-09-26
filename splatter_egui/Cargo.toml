@@ -12,7 +12,7 @@ repository = "https://github.com/AlexEne/splatter_egui"
 readme = "../README.md"
 
 [dependencies]
-egui_wgpu_backend = "0.14"
+egui_wgpu_backend = "0.25"
 egui = "0.15.0"
 winit = "0.26"
 splatter = { version = "0.18.1", path = "../splatter" }
