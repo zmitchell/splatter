@@ -14,7 +14,7 @@ glam = { version = "0.17", default-features = false, features = ["num-traits", "
 # TODO: Awaiting `no-std` to be published.
 # noise = 0.6
 num-traits = { version = "0.2.16", default-features = false }
-palette = { version = "0.5", default-features = false, features = ["named"] }
+palette = { version = "0.7", default-features = false, features = ["named"] }
 # TODO: Need to check support for no-std.
 # pennereq = "0.3"
 rand = { version = "0.8", default-features = false, features = ["small_rng"] }
