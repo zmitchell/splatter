@@ -4,7 +4,7 @@ jobs:
   rustfmt-check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Install stable
       uses: actions-rs/toolchain@v1
       with:
@@ -21,7 +21,7 @@ jobs:
   cargo-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Update apt
       run: sudo apt update
     - name: Install libxcb dev tools
@@ -47,7 +47,7 @@ jobs:
   cargo-test-all-features:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Update apt
       run: sudo apt update
     - name: Install libxcb dev tools
@@ -73,7 +73,7 @@ jobs:
   cargo-check-examples:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Update apt
       run: sudo apt update
     - name: Install libxcb dev tools
@@ -154,7 +154,7 @@ jobs:
   guide-build-book:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Update apt
       run: sudo apt update
     - name: Install stable
@@ -175,7 +175,7 @@ jobs:
   guide-test-code:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Update apt
       run: sudo apt update
     - name: Install libxcb dev tools
