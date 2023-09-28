@@ -32,7 +32,7 @@
  * s                   : save png
  */
 use splatter::image;
-use splatter::noise::{MultiFractal, NoiseFn, Seedable};
+use splatter::noise::{Fbm, MultiFractal, NoiseFn, Perlin, Seedable};
 use splatter::prelude::*;
 
 fn main() {
@@ -77,8 +77,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     frame.clear(BLACK);
 
     let win = app.window_rect();
-    let noise = splatter::noise::Fbm::new()
-        .set_seed(model.noise_random_seed)
+    let noise: Fbm<Perlin> = Fbm::new(model.noise_random_seed)
         .set_octaves(model.octaves)
         .set_persistence(model.falloff as f64);
 
