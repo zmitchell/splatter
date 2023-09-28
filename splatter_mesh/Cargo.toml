@@ -1,6 +1,6 @@
 [package]
 name = "splatter_mesh"
-version ="0.18.0"
+version = "0.1.0"
 authors = ["mitchmindtree <mail@mitchellnordine.com>"]
 description = "The mesh abstraction shared between splatter's `Draw` and `Ui` abstractions."
 readme = "README.md"
@@ -10,7 +10,7 @@ homepage = "https://splatter.cc"
 edition = "2018"
 
 [dependencies]
-splatter_core = { version ="0.18.0", path = "../splatter_core" }
+splatter_core = { version = "0.1.0", path = "../splatter_core" }
 serde = { version = "1", optional = true, features = ["derive"] }
 
 [features]

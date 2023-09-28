@@ -1,6 +1,6 @@
 [package]
 name = "splatter_core"
-version = "0.18.0"
+version = "0.1.0"
 authors = ["mitchmindtree <mitchell.nordine@gmail.com>"]
 description = "The core components of splatter - a creative coding framework for Rust. Ideal for libraries and headless/embedded applications that use splatter."
 readme = "README.md"

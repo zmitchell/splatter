@@ -1,6 +1,6 @@
 [package]
 name = "splatter_wgpu"
-version = "0.18.0"
+version = "0.1.0"
 authors = ["mitchmindtree <mitchell.nordine@gmail.com>"]
 description = "Items related to wgpu and its integration in splatter - a creative coding framework for Rust."
 readme = "README.md"

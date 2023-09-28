@@ -1,6 +1,6 @@
 [package]
 name = 'book_tests'
-version = '0.1.0'
+version = "0.1.0"
 authors = ['mitchmindtree <mitchell.nordine@gmail.com>']
 edition = '2018'
 description = 'For testing the splatter-guide, while including the splatter dependencies.'
@@ -16,4 +16,4 @@ skeptic = { git = "https://github.com/mitchmindtree/rust-skeptic", branch = "1.4
 # https://github.com/budziq/rust-skeptic/pull/121
 skeptic = { git = "https://github.com/mitchmindtree/rust-skeptic", branch = "1.45-extern" }
 #skeptic = "0.13"
-splatter = { version = "0.18.0", path = "../../splatter" }
+splatter = { version = "0.1.0", path = "../../splatter" }
