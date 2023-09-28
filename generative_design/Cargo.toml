@@ -14,7 +14,7 @@ homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dev-dependencies]
-splatter = { version ="0.18.0", path = "../splatter" }
+splatter = { version = "0.1.0", path = "../splatter" }
 usvg = "0.4"
 wikipedia = "0.3"
 
