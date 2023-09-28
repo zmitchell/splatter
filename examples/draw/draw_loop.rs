@@ -24,7 +24,7 @@ fn model(app: &App) -> Model {
         .view(view)
         .build()
         .unwrap();
-    let mut noise = Perlin::new();
+    let mut noise = Perlin::new(Perlin::DEFAULT_SEED);
     noise = noise.set_seed(1);
     Model { noise }
 }
