@@ -39,7 +39,7 @@ fn main() {
         let examples_dir = workspace_manifest_dir.join(&package);
         let manifest_path = examples_dir.join("Cargo").with_extension("toml");
         let bytes = std::fs::read(&manifest_path).unwrap();
-        let toml: toml::Value = toml::from_slice(&bytes).unwrap();
+        let toml: toml::Value = toml::Value::try_from(&bytes).unwrap();
 
         // Frist, build all examples in the package.
         println!("Building all examples within /splatter/{}...", package);
