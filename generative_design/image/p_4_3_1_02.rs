@@ -29,6 +29,10 @@ use splatter::image;
 use splatter::image::GenericImageView;
 use splatter::lyon::math::Point;
 use splatter::lyon::path::PathEvent;
+use usvg::tiny_skia_path::PathSegment;
+use usvg::tiny_skia_path::PathSegmentsIter;
+use usvg::tiny_skia_path::Point as UsvgPoint;
+use usvg::TreeParsing;
 
 fn main() {
     splatter::app(model).run();
@@ -94,10 +98,11 @@ fn model(app: &App) -> Model {
 
     for asset in assets {
         let opt = usvg::Options::default();
-        let rtree = usvg::Tree::from_file(&asset, &opt).unwrap();
-        let view_box = rtree.svg_node().view_box;
+        let asset_contents = std::fs::read(asset).unwrap();
+        let rtree = usvg::Tree::from_data(&asset_contents, &opt).unwrap();
+        let view_box = rtree.view_box;
 
-        for node in rtree.root().descendants() {
+        for node in rtree.root.descendants() {
             if let usvg::NodeKind::Path(ref p) = *node.borrow() {
                 if let Some(ref stroke) = p.stroke {
                     let color = match stroke.paint {
@@ -115,9 +120,9 @@ fn model(app: &App) -> Model {
                     for e in path_events {
                         v.push(e);
                     }
-                    let w = view_box.rect.size().width as f32;
-                    let h = view_box.rect.size().height as f32;
-                    let path = SvgPath::new(v, stroke.width.value() as f32, color, w, h);
+                    let w = view_box.rect.width() as f32;
+                    let h = view_box.rect.height() as f32;
+                    let path = SvgPath::new(v, stroke.width.get() as f32, color, w, h);
                     shapes.push(path);
                 }
             }
@@ -191,7 +196,7 @@ fn point(x: &f64, y: &f64) -> Point {
 }
 
 pub struct PathConvIter<'a> {
-    iter: std::slice::Iter<'a, usvg::PathSegment>,
+    iter: PathSegmentsIter<'a>,
     prev: Point,
     first: Point,
     needs_end: bool,
@@ -207,12 +212,12 @@ impl<'l> Iterator for PathConvIter<'l> {
 
         let next = self.iter.next();
         match next {
-            Some(usvg::PathSegment::MoveTo { x, y }) => {
+            Some(PathSegment::MoveTo(UsvgPoint { x, y })) => {
                 if self.needs_end {
                     let last = self.prev;
                     let first = self.first;
                     self.needs_end = false;
-                    self.prev = point(x, y);
+                    self.prev = point(&(x as f64), &(y as f64));
                     self.deferred = Some(PathEvent::Begin { at: self.prev });
                     self.first = self.prev;
                     Some(PathEvent::End {
@@ -221,38 +226,45 @@ impl<'l> Iterator for PathConvIter<'l> {
                         close: false,
                     })
                 } else {
-                    self.first = point(x, y);
+                    self.first = point(&(x as f64), &(y as f64));
                     Some(PathEvent::Begin { at: self.first })
                 }
             }
-            Some(usvg::PathSegment::LineTo { x, y }) => {
+            Some(PathSegment::LineTo(UsvgPoint { x, y })) => {
                 self.needs_end = true;
                 let from = self.prev;
-                self.prev = point(x, y);
+                self.prev = point(&(x as f64), &(y as f64));
                 Some(PathEvent::Line {
                     from,
                     to: self.prev,
                 })
             }
-            Some(usvg::PathSegment::CurveTo {
-                x1,
-                y1,
-                x2,
-                y2,
-                x,
-                y,
-            }) => {
+            Some(PathSegment::QuadTo(p1, p2)) => {
                 self.needs_end = true;
                 let from = self.prev;
-                self.prev = point(x, y);
+                self.prev = point(&(p2.x as f64), &(p2.y as f64));
+                Some(PathEvent::Quadratic {
+                    from: from,
+                    ctrl: point(&(p1.x as f64), &(p2.y as f64)),
+                    to: point(&(p2.x as f64), &(p2.y as f64)),
+                })
+            }
+            Some(PathSegment::CubicTo(
+                UsvgPoint { x: x1, y: y1 },
+                UsvgPoint { x: x2, y: y2 },
+                UsvgPoint { x, y },
+            )) => {
+                self.needs_end = true;
+                let from = self.prev;
+                self.prev = point(&(x as f64), &(y as f64));
                 Some(PathEvent::Cubic {
                     from,
-                    ctrl1: point(x1, y1),
-                    ctrl2: point(x2, y2),
+                    ctrl1: point(&(x1 as f64), &(y1 as f64)),
+                    ctrl2: point(&(x2 as f64), &(y2 as f64)),
                     to: self.prev,
                 })
             }
-            Some(usvg::PathSegment::ClosePath) => {
+            Some(PathSegment::Close) => {
                 self.needs_end = false;
                 self.prev = self.first;
                 Some(PathEvent::End {
@@ -281,7 +293,7 @@ impl<'l> Iterator for PathConvIter<'l> {
 
 pub fn convert_path<'a>(p: &'a usvg::Path) -> PathConvIter<'a> {
     PathConvIter {
-        iter: p.segments.iter(),
+        iter: p.data.segments(),
         first: Point::new(0.0, 0.0),
         prev: Point::new(0.0, 0.0),
         deferred: None,
