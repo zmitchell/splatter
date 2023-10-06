@@ -79,7 +79,9 @@ fn model(app: &App) -> Model {
 }
 
 fn update(app: &App, m: &mut Model, _update: Update) {
+    // FIXME: something in here generates NaNs
     seek(&mut m.vehicle, app.mouse.position());
+    // FIXME: this one too lol
     m.vehicle.update();
 }
 

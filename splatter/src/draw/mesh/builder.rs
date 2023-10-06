@@ -74,11 +74,17 @@ impl<'a, A> GeometryBuilder for MeshBuilder<'a, A> {
         self.begin_index_count = self.mesh.indices().len() as u32;
     }
 
-    fn end_geometry(&mut self) -> geometry_builder::Count {
-        geometry_builder::Count {
-            vertices: self.mesh.points().len() as u32 - self.begin_vertex_count,
-            indices: self.mesh.indices().len() as u32 - self.begin_index_count,
-        }
+    // fn end_geometry(&mut self) -> geometry_builder::Count {
+    //     geometry_builder::Count {
+    //         vertices: self.mesh.points().len() as u32 - self.begin_vertex_count,
+    //         indices: self.mesh.indices().len() as u32 - self.begin_index_count,
+    //     }
+    // }
+
+    fn end_geometry(&mut self) {
+        // NOTE: It's unclear what this method is supposed to do. The method has no return type,
+        // but the docs say that this method is supposed to return the number of vertices added
+        // since the last time `begin_geometry` was called.
     }
 
     fn add_triangle(&mut self, a: VertexId, b: VertexId, c: VertexId) {
