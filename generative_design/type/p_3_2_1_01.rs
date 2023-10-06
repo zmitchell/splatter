@@ -31,7 +31,8 @@
 use splatter::lyon;
 use splatter::lyon::algorithms::path::math::Point;
 use splatter::lyon::algorithms::path::PathSlice;
-use splatter::lyon::algorithms::walk::{walk_along_path, RepeatedPattern};
+use splatter::lyon::algorithms::walk::{walk_along_path, RepeatedPattern, WalkerEvent};
+use splatter::lyon::math::Vector;
 use splatter::lyon::path::iterator::*;
 use splatter::prelude::*;
 
@@ -122,8 +123,8 @@ fn dots_along_path(path: PathSlice, dots: &mut Vec<Point>, interval: f32, offset
     use std::ops::Rem;
     let dot_spacing = map_range(interval, 0.0, 1.0, 0.025, 1.0);
     let mut pattern = RepeatedPattern {
-        callback: &mut |position, _tangent, _distance| {
-            dots.push(position);
+        callback: |walker_event: WalkerEvent| {
+            dots.push(walker_event.position);
             true // Return true to continue walking the path.
         },
         // Invoke the callback above at a regular interval of 3 units.
@@ -133,5 +134,10 @@ fn dots_along_path(path: PathSlice, dots: &mut Vec<Point>, interval: f32, offset
 
     let tolerance = 0.01; // The path flattening tolerance.
     let start_offset = offset.rem(12.0 + dot_spacing); // Start walking at the beginning of the path.
-    walk_along_path(path.iter().flattened(tolerance), start_offset, &mut pattern);
+    walk_along_path(
+        path.iter().flattened(tolerance),
+        start_offset,
+        tolerance,
+        &mut pattern,
+    );
 }

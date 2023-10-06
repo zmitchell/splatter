@@ -4,6 +4,10 @@
 //! offerred by `lyon` in a way that interoperates a little more fluidly and consistently with the
 //! rest of splatter's API.
 
+use std::iter::FromIterator;
+
+use lyon::path::Attributes;
+
 use crate::geom::Point2;
 
 /// A wrapper around a 2D lyon path exposing a splatter-friendly API.
@@ -63,7 +67,8 @@ impl Path {
 
     /// Reversed version of this path with edge loops specified in the opposite order.
     pub fn reversed(&self) -> Self {
-        self.path.reversed().into()
+        let path = lyon::path::Path::from_iter(self.path.reversed());
+        Path { path }
     }
 
     /// Concatenate two paths.
@@ -164,6 +169,7 @@ impl lyon::path::builder::PathBuilder for Builder {
         &mut self,
         ctrl: lyon::math::Point,
         to: lyon::math::Point,
+        _: Attributes,
     ) -> lyon::path::EndpointId {
         self.builder.quadratic_bezier_to(ctrl, to)
     }
@@ -173,11 +179,12 @@ impl lyon::path::builder::PathBuilder for Builder {
         ctrl1: lyon::math::Point,
         ctrl2: lyon::math::Point,
         to: lyon::math::Point,
+        _: Attributes,
     ) -> lyon::path::EndpointId {
         self.builder.cubic_bezier_to(ctrl1, ctrl2, to)
     }
 
-    fn begin(&mut self, at: lyon::math::Point) -> lyon::path::EndpointId {
+    fn begin(&mut self, at: lyon::math::Point, _: Attributes) -> lyon::path::EndpointId {
         self.builder.begin(at)
     }
 
@@ -185,8 +192,12 @@ impl lyon::path::builder::PathBuilder for Builder {
         self.builder.end(close)
     }
 
-    fn line_to(&mut self, to: lyon::math::Point) -> lyon::path::EndpointId {
+    fn line_to(&mut self, to: lyon::math::Point, _: Attributes) -> lyon::path::EndpointId {
         self.builder.line_to(to)
+    }
+
+    fn num_attributes(&self) -> usize {
+        0
     }
 }
 

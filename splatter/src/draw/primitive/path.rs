@@ -595,6 +595,10 @@ pub fn points_colored_to_lyon_path<I>(points_colored: I, close: bool) -> Option<
 where
     I: IntoIterator<Item = (Point2, Color)>,
 {
+    // FIXME: debugging
+    let points_colored = points_colored.into_iter().collect::<Vec<_>>();
+    eprintln!("points_colored: {points_colored:?}");
+
     // Build a path with a color attribute for each channel.
     let channels = draw::mesh::vertex::COLOR_CHANNEL_COUNT;
     let mut path_builder = lyon::path::Path::builder_with_attributes(channels);
@@ -604,6 +608,10 @@ where
     let (first_point, first_color) = iter.next()?;
     let p = first_point.to_array().into();
     let (r, g, b, a) = first_color.into();
+
+    // FIXME: Debugging
+    eprintln!("point: {p:?}, attrs: {attrs:?}", attrs = [r, g, b, a]);
+
     path_builder.begin(p, &[r, g, b, a]);
 
     // Add the lines, keeping track of the last
