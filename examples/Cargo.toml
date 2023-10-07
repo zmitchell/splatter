@@ -14,7 +14,8 @@ homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dev-dependencies]
-async-std = "1.10.0"
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
 audrey = "0.3"
 hrtf = "0.2"
 splatter = { version = "0.1.0", path = "../splatter" }
