@@ -14,8 +14,6 @@ homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dev-dependencies]
-tokio = { version = "1", features = ["full"] }
-futures = "0.3"
 audrey = "0.3"
 hrtf = "0.2"
 splatter = { version = "0.1.0", path = "../splatter" }
