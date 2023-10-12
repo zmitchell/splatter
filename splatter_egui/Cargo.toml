@@ -17,3 +17,6 @@ egui = "0.23"
 eframe = "0.23"
 winit = "0.28"
 splatter = { version = "0.1.0", path = "../splatter" }
+
+[features]
+wayland = []
