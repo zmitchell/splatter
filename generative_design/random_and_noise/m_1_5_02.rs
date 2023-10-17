@@ -25,7 +25,7 @@
  * backspace           : clear screen
  * s                   : save png
  */
-use splatter::noise::{NoiseFn, Perlin, Seedable};
+use splatter::noise::{NoiseFn, Perlin};
 use splatter::prelude::*;
 
 fn main() {

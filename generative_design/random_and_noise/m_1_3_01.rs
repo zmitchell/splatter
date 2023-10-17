@@ -28,7 +28,7 @@
  * s                   : save png
  */
 use splatter::noise::NoiseFn;
-use splatter::noise::Seedable;
+
 use splatter::prelude::*;
 
 fn main() {

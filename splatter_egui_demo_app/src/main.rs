@@ -1,4 +1,4 @@
-use std::ops::Deref;
+
 use splatter::prelude::*;
 use splatter_egui::{Egui};
 
@@ -20,9 +20,9 @@ fn model(app: &App) -> Model {
         .build()
         .unwrap();
     let window = app.window(w_id).unwrap();
-    let mut egui = Egui::from_window(&window);
-    let mut egui_demo_app = egui_demo_lib::DemoWindows::default();
-    let proxy = app.create_proxy();
+    let egui = Egui::from_window(&window);
+    let egui_demo_app = egui_demo_lib::DemoWindows::default();
+    let _proxy = app.create_proxy();
     Model {
         egui,
         egui_demo_app,
@@ -40,7 +40,7 @@ fn update(app: &App, model: &mut Model, update: Update) {
         ..
     } = *model;
     egui.set_elapsed_time(update.since_start);
-    let proxy = app.create_proxy();
+    let _proxy = app.create_proxy();
     egui.begin_frame();
     egui_demo_app.ui(egui.ctx());
 }

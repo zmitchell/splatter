@@ -32,7 +32,7 @@ use splatter::lyon;
 use splatter::lyon::algorithms::path::math::Point;
 use splatter::lyon::algorithms::path::PathSlice;
 use splatter::lyon::algorithms::walk::{walk_along_path, RepeatedPattern, WalkerEvent};
-use splatter::lyon::math::Vector;
+
 use splatter::lyon::path::iterator::*;
 use splatter::prelude::*;
 

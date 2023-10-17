@@ -32,7 +32,7 @@
  * s                   : save png
  */
 use splatter::image;
-use splatter::noise::{Fbm, MultiFractal, NoiseFn, Perlin, Seedable};
+use splatter::noise::{Fbm, MultiFractal, NoiseFn, Perlin};
 use splatter::prelude::*;
 
 fn main() {
