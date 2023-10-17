@@ -1365,6 +1365,7 @@ name = "examples"
 version = "0.1.0"
 dependencies = [
  "audrey",
+ "futures 0.3.28",
  "hound",
  "hrtf",
  "pitch_calc",
@@ -1372,6 +1373,7 @@ dependencies = [
  "splatter",
  "splatter_egui",
  "time_calc",
+ "tokio 1.33.0",
  "walkdir",
 ]
 

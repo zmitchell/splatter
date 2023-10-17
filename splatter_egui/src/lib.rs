@@ -8,7 +8,7 @@ use splatter::{wgpu, winit::event::VirtualKeyCode, winit::event::WindowEvent::*}
 use std::{
     cell::RefCell,
     ops::Deref,
-    sync::{Arc, Mutex},
+    sync::{Mutex},
     time::Duration,
 };
 use splatter::wgpu::ToTextureView;
@@ -322,7 +322,7 @@ impl Renderer {
     /// Encode a render pass for drawing the given context's texture to the given `dst_texture`.
     pub fn encode_render_pass(
         &mut self,
-        context: &egui::Context,
+        _context: &egui::Context,
         device: &wgpu::Device,
         queue: &wgpu::Queue,
         encoder: &mut wgpu::CommandEncoder,
