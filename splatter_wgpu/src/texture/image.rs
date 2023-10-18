@@ -7,7 +7,6 @@ use crate as wgpu;
 use std::ops::Deref;
 use std::path::Path;
 
-
 /// The set of pixel types from the image crate that can be loaded directly into a texture.
 ///
 /// The `Rgba8` and `Bgra8` color types are assumed to be non-linear sRGB.
@@ -574,7 +573,9 @@ where
     // Describe the layout of the data.
     let extent = texture.extent();
     let format = texture.format();
-    let block_size = format.block_size(None).expect("Expected the format to have a block size");
+    let block_size = format
+        .block_size(None)
+        .expect("Expected the format to have a block size");
     let bytes_per_row = extent.width * block_size as u32;
     let image_data_layout = wgpu::ImageDataLayout {
         offset: 0,
@@ -634,7 +635,9 @@ where
 
     // Describe the layout of the data.
     let format = texture.format();
-    let block_size = format.block_size(None).expect("Expected the format to have a block size");
+    let block_size = format
+        .block_size(None)
+        .expect("Expected the format to have a block size");
     let bytes_per_row = extent.width * block_size as u32;
     let image_data_layout = wgpu::ImageDataLayout {
         offset: 0,

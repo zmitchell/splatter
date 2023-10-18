@@ -1,6 +1,5 @@
-
 use splatter::prelude::*;
-use splatter_egui::{Egui};
+use splatter_egui::Egui;
 
 fn main() {
     splatter::app(model).update(update).run();
