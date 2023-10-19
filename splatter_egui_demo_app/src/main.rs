@@ -1,5 +1,5 @@
 use splatter::prelude::*;
-use splatter_egui::{egui_wgpu_backend::epi::App as EguiApp, Egui};
+use splatter_egui::Egui;
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -7,7 +7,7 @@ fn main() {
 
 struct Model {
     egui: Egui,
-    egui_demo_app: egui_demo_lib::WrapApp,
+    egui_demo_app: egui_demo_lib::DemoWindows,
 }
 
 fn model(app: &App) -> Model {
@@ -19,12 +19,9 @@ fn model(app: &App) -> Model {
         .build()
         .unwrap();
     let window = app.window(w_id).unwrap();
-    let mut egui = Egui::from_window(&window);
-    let mut egui_demo_app = egui_demo_lib::WrapApp::default();
-    let proxy = app.create_proxy();
-    egui.do_frame_with_epi_frame(proxy, |ctx, epi_frame| {
-        egui_demo_app.setup(&ctx, epi_frame, None);
-    });
+    let egui = Egui::from_window(&window);
+    let egui_demo_app = egui_demo_lib::DemoWindows::default();
+    let _proxy = app.create_proxy();
     Model {
         egui,
         egui_demo_app,
@@ -42,10 +39,9 @@ fn update(app: &App, model: &mut Model, update: Update) {
         ..
     } = *model;
     egui.set_elapsed_time(update.since_start);
-    let proxy = app.create_proxy();
-    egui.do_frame_with_epi_frame(proxy, |ctx, frame| {
-        egui_demo_app.update(&ctx, frame);
-    });
+    let _proxy = app.create_proxy();
+    egui.begin_frame();
+    egui_demo_app.ui(egui.ctx());
 }
 
 fn view(_app: &App, model: &Model, frame: Frame) {

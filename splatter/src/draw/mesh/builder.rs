@@ -9,7 +9,7 @@ use crate::draw;
 use crate::geom::Point2;
 use crate::glam::Mat4;
 use lyon::tessellation::geometry_builder::{
-    self, FillGeometryBuilder, GeometryBuilder, StrokeGeometryBuilder,
+    FillGeometryBuilder, GeometryBuilder, StrokeGeometryBuilder,
 };
 use lyon::tessellation::{FillVertex, GeometryBuilderError, StrokeVertex, VertexId};
 

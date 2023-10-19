@@ -14,7 +14,6 @@ homepage = "https://github.com/splatter-org/splatter"
 edition = "2018"
 
 [dev-dependencies]
-async-std = "1.10.0"
 audrey = "0.3"
 hrtf = "0.2"
 splatter = { version = "0.1.0", path = "../splatter" }
@@ -24,6 +23,12 @@ time_calc = { version = "0.13", features = ["serde"] }
 walkdir = "2"
 hound = "3.4.0"
 ringbuf = "0.2.2"
+futures = "0.3"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1", features = ["full"] }
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tokio = { version = "1", features = ["rt"] }
 
 # Draw
 [[example]]

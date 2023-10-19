@@ -1,14 +1,13 @@
 [package]
 name = "run_all_examples"
 version = "0.1.0"
-authors = [
-    "mitchmindtree <mitchell.nordine@gmail.com>",
-]
+authors = ["mitchmindtree <mitchell.nordine@gmail.com>"]
+edition = "2021"
 
 [[bin]]
 name = "run_all_examples"
 path = "main.rs"
 
 [dependencies]
-toml = "0.8"
-
+toml_edit = "0.20"
+anyhow = "1"

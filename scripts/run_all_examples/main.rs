@@ -14,7 +14,13 @@
 //!
 //! TODO: Collect a map of failed examples so that they can be concisely reported at the end.
 
-fn main() {
+use anyhow::{bail, Context};
+use std::process::Stdio;
+use toml_edit::Document;
+
+type Error = anyhow::Error;
+
+fn main() -> Result<(), Error> {
     const ALL_PACKAGES: &[&str] = &["examples", "generative_design", "nature_of_code"];
 
     // Retrieve the specified packages if any, otherwise default to ALL_PACKAGES.
@@ -35,26 +41,30 @@ fn main() {
         .parent()
         .unwrap(); // splatter
 
+    let mut failures = Vec::new();
     for package in packages {
         let examples_dir = workspace_manifest_dir.join(&package);
         let manifest_path = examples_dir.join("Cargo").with_extension("toml");
-        let bytes = std::fs::read(&manifest_path).unwrap();
-        let toml: toml::Value = toml::Value::try_from(&bytes).unwrap();
+        let contents = std::fs::read_to_string(manifest_path)?;
+        let toml = contents
+            .parse::<Document>()
+            .context("contents weren't a valid manifest")?;
 
         // Frist, build all examples in the package.
-        println!("Building all examples within /splatter/{}...", package);
+        println!("Building examples in splatter/{}...", package);
         let output = std::process::Command::new("cargo")
             .arg("build")
             .arg("-p")
             .arg(&package)
             .arg("--examples")
             .output()
-            .expect("failed to run `cargo build -p package --examples`");
+            .context("failed to run `cargo build -p {package} --examples`")?;
         if !output.stderr.is_empty() {
-            let stderr = String::from_utf8(output.stderr).unwrap();
+            let stderr =
+                String::from_utf8(output.stderr).context("couldn't convert stderr to string")?;
             if stderr.contains("error[E") {
-                panic!(
-                    "failed to build examples for package \"{}\":\n{}",
+                eprintln!(
+                    "failed to build examples for package '{}':\n{}",
                     package, stderr
                 );
             }
@@ -62,13 +72,14 @@ fn main() {
 
         // Find the `examples` table within the `toml::Value` to find all example names.
         let examples = toml["example"]
-            .as_array()
-            .expect("failed to retrieve example array");
-        println!("Running all examples within /splatter/{}...", package);
+            .as_array_of_tables()
+            .context("failed to retrieve example array")?;
+
+        println!("Running examples in splatter/{}...", package);
         for example in examples {
             let name = example["name"]
                 .as_str()
-                .expect("failed to retrieve example name");
+                .context("failed to retrieve example name")?;
 
             // For each example, invoke a cargo sub-process to run the example.
             let mut child = std::process::Command::new("cargo")
@@ -76,9 +87,11 @@ fn main() {
                 .arg("-p")
                 .arg(&package)
                 .arg("--example")
-                .arg(&name)
+                .arg(name)
+                .stdin(Stdio::piped())
+                .stderr(Stdio::piped())
                 .spawn()
-                .expect("failed to spawn `cargo run --example` process");
+                .context("failed to spawn example '{name}'")?;
 
             // Allow each example to run for 3 secs each.
             std::thread::sleep(std::time::Duration::from_secs(3));
@@ -87,12 +100,21 @@ fn main() {
             child.kill().ok();
             let output = child
                 .wait_with_output()
-                .expect("failed to wait for child process");
+                .context("failed to wait for child process")?;
 
             // If the example wrote to `stderr` it must have failed.
-            if !output.stderr.is_empty() {
-                panic!("example {} wrote to stderr: {:?}", name, output);
+            if !output.stderr.is_empty() || output.status.code().unwrap_or(0) == 101 {
+                failures.push(name.to_string());
             }
         }
+    }
+    println!("Failed examples:");
+    for ex in failures.iter() {
+        println!("{ex}");
+    }
+    if failures.is_empty() {
+        Ok(())
+    } else {
+        bail!("some examples didn't build properly")
     }
 }
