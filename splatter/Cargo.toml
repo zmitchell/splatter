@@ -39,7 +39,7 @@ toml = "0.8"
 walkdir = "2"
 web-sys = { version = "0.3.64", optional = true }
 wgpu_upstream = { version = "0.17.1", package = "wgpu" }
-winit = "0.28"
+winit = "0.29"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1", features = ["full"]}
