@@ -21,7 +21,7 @@ pub use winit::event::{
 /// Event types that are compatible with the splatter app loop.
 pub trait LoopEvent: 'static + From<Update> {
     /// Produce a loop event from the given winit event.
-    fn from_winit_event<'a, T>(_: &winit::event::Event<'a, T>, _: &App) -> Option<Self>;
+    fn from_winit_event<T>(_: &winit::event::Event<T>, _: &App) -> Option<Self>;
 }
 
 /// Update event, emitted on each pass of an application loop.
@@ -321,7 +321,7 @@ impl WindowEvent {
 
 impl LoopEvent for Event {
     /// Convert the given `winit::event::Event` to a splatter `Event`.
-    fn from_winit_event<'a, T>(event: &winit::event::Event<'a, T>, app: &App) -> Option<Self> {
+    fn from_winit_event<T>(event: &winit::event::Event<T>, app: &App) -> Option<Self> {
         let event = match event {
             winit::event::Event::WindowEvent { window_id, event } => {
                 let windows = app.windows.borrow();
