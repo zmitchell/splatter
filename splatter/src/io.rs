@@ -105,7 +105,7 @@ where
     {
         let file = fs::File::create(&temp_path)?;
         let mut buffered = io::BufWriter::new(file);
-        buffered.write(content)?;
+        buffered.write_all(content)?;
         match buffered.into_inner() {
             Err(err) => {
                 let io_err = err.error();

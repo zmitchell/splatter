@@ -13,10 +13,8 @@ use crate::App;
 use std::path::PathBuf;
 use winit;
 
-pub use winit::event::{
-    ElementState, KeyboardInput, ModifiersState, MouseButton, MouseScrollDelta, TouchPhase,
-    VirtualKeyCode as Key,
-};
+pub use winit::event::{ElementState, MouseButton, MouseScrollDelta, TouchPhase};
+pub use winit::keyboard::{Key, ModifiersState};
 
 /// Event types that are compatible with the splatter app loop.
 pub trait LoopEvent: 'static + From<Update> {
@@ -231,7 +229,7 @@ impl WindowEvent {
             winit::event::WindowEvent::HoveredFileCancelled => HoveredFileCancelled,
 
             winit::event::WindowEvent::Focused(b) => {
-                if b.clone() {
+                if *b {
                     Focused
                 } else {
                     Unfocused
@@ -250,12 +248,12 @@ impl WindowEvent {
             winit::event::WindowEvent::CursorLeft { .. } => MouseExited,
 
             winit::event::WindowEvent::MouseWheel { delta, phase, .. } => {
-                MouseWheel(delta.clone(), phase.clone())
+                MouseWheel(*delta, *phase)
             }
 
             winit::event::WindowEvent::MouseInput { state, button, .. } => match state {
-                ElementState::Pressed => MousePressed(button.clone()),
-                ElementState::Released => MouseReleased(button.clone()),
+                ElementState::Pressed => MousePressed(*button),
+                ElementState::Released => MouseReleased(*button),
             },
 
             winit::event::WindowEvent::Touch(winit::event::Touch {
@@ -269,9 +267,9 @@ impl WindowEvent {
                 let y = ty(y);
                 let position = [x, y].into();
                 let touch = TouchEvent {
-                    phase: phase.clone(),
+                    phase: *phase,
                     position,
-                    id: id.clone(),
+                    id: *id,
                 };
                 WindowEvent::Touch(touch)
             }
@@ -281,22 +279,15 @@ impl WindowEvent {
                 pressure,
                 stage,
             } => TouchPressure(TouchpadPressure {
-                device_id: device_id.clone(),
-                pressure: pressure.clone(),
-                stage: stage.clone(),
+                device_id: *device_id,
+                pressure: *pressure,
+                stage: *stage,
             }),
 
-            winit::event::WindowEvent::KeyboardInput { input, .. } => match input.virtual_keycode {
-                Some(key) => match input.state {
-                    ElementState::Pressed => KeyPressed(key),
-                    ElementState::Released => KeyReleased(key),
-                },
-                None => return None,
+            winit::event::WindowEvent::KeyboardInput { event, .. } => match event.state {
+                ElementState::Pressed => KeyPressed(event.logical_key.clone()),
+                ElementState::Released => KeyReleased(event.logical_key.clone()),
             },
-
-            winit::event::WindowEvent::ReceivedCharacter(char) => {
-                WindowEvent::ReceivedCharacter(char.clone())
-            }
 
             winit::event::WindowEvent::ModifiersChanged(_) => {
                 return None;
@@ -307,12 +298,14 @@ impl WindowEvent {
             | winit::event::WindowEvent::ScaleFactorChanged { .. } => {
                 return None;
             }
-            // new 0.28 events
+
             winit::event::WindowEvent::Ime(_)
             | winit::event::WindowEvent::TouchpadMagnify { .. }
             | winit::event::WindowEvent::SmartMagnify { .. }
             | winit::event::WindowEvent::TouchpadRotate { .. }
-            | winit::event::WindowEvent::Occluded(_) => return None,
+            | winit::event::WindowEvent::Occluded(_)
+            | winit::event::WindowEvent::ActivationTokenDone { .. }
+            | winit::event::WindowEvent::RedrawRequested => return None,
         };
 
         Some(event)
@@ -325,7 +318,7 @@ impl LoopEvent for Event {
         let event = match event {
             winit::event::Event::WindowEvent { window_id, event } => {
                 let windows = app.windows.borrow();
-                let (win_w, win_h, scale_factor) = match windows.get(&window_id) {
+                let (win_w, win_h, scale_factor) = match windows.get(window_id) {
                     None => (0.0, 0.0, 1.0), // The window was likely closed, these will be ignored.
                     Some(window) => {
                         let sf = window.tracked_state.scale_factor;
@@ -337,23 +330,22 @@ impl LoopEvent for Event {
                 let simple =
                     WindowEvent::from_winit_window_event(event, win_w, win_h, scale_factor);
                 Event::WindowEvent {
-                    id: window_id.clone(),
+                    id: *window_id,
                     simple,
                     // TODO: Re-add this when winit#1387 is resolved.
                     // raw,
                 }
             }
             winit::event::Event::DeviceEvent { device_id, event } => {
-                Event::DeviceEvent(device_id.clone(), event.clone())
+                Event::DeviceEvent(*device_id, event.clone())
             }
             winit::event::Event::Suspended => Event::Suspended,
             winit::event::Event::Resumed => Event::Resumed,
             winit::event::Event::NewEvents(_)
             | winit::event::Event::UserEvent(_)
-            | winit::event::Event::MainEventsCleared
-            | winit::event::Event::RedrawRequested(_)
-            | winit::event::Event::RedrawEventsCleared
-            | winit::event::Event::LoopDestroyed => return None,
+            | winit::event::Event::LoopExiting
+            | winit::event::Event::AboutToWait
+            | winit::event::Event::MemoryWarning => return None,
         };
         Some(event)
     }

@@ -21,6 +21,7 @@ use std::{env, fmt};
 use wgpu_upstream::CompositeAlphaMode;
 use winit::dpi::{LogicalSize, PhysicalSize};
 
+use winit::raw_window_handle::HasWindowHandle;
 pub use winit::window::Fullscreen;
 pub use winit::window::WindowId as Id;
 use winit::window::{CursorGrabMode, WindowLevel};
@@ -807,7 +808,7 @@ impl<'app> Builder<'app> {
             .or_else(|| {
                 window
                     .window_attributes()
-                    .fullscreen
+                    .fullscreen()
                     .as_ref()
                     .and_then(|fullscreen| match fullscreen {
                         Fullscreen::Exclusive(video_mode) => {
@@ -861,14 +862,14 @@ impl<'app> Builder<'app> {
         // Use the `initial_window_size` as the default dimensions for the window if none
         // were specified.
         if window.window_attributes().inner_size.is_none()
-            && window.window_attributes().fullscreen.is_none()
+            && window.window_attributes().fullscreen().is_none()
         {
             window = window.with_inner_size(initial_window_size);
         }
 
         // Set a default minimum window size for configuring the surface.
         if window.window_attributes().min_inner_size.is_none()
-            && window.window_attributes().fullscreen.is_none()
+            && window.window_attributes().fullscreen().is_none()
         {
             window = window.with_min_inner_size(winit::dpi::Size::Physical(MIN_SC_PIXELS));
         }
@@ -1217,7 +1218,7 @@ impl Window {
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_pixels(&self, width: u32, height: u32) {
         self.window
-            .set_inner_size(winit::dpi::PhysicalSize { width, height })
+            .request_inner_size(winit::dpi::PhysicalSize { width, height });
     }
 
     /// Modifies the inner size of the window using point values.
@@ -1225,7 +1226,7 @@ impl Window {
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_points(&self, width: f32, height: f32) {
         self.window
-            .set_inner_size(winit::dpi::LogicalSize { width, height })
+            .request_inner_size(winit::dpi::LogicalSize { width, height });
     }
 
     /// The width and height of the window in pixels.
@@ -1389,8 +1390,10 @@ impl Window {
     /// - **iOS:** Has no effect.
     /// - **Web:** Has no effect.
     pub fn set_ime_position_points(&self, x: f32, y: f32) {
+        let outer_size = self.outer_size_pixels();
+        let size = LogicalSize::new(outer_size.0, outer_size.1);
         self.window
-            .set_ime_position(winit::dpi::LogicalPosition { x, y })
+            .set_ime_cursor_area(winit::dpi::LogicalPosition { x, y }, size);
     }
 
     /// Modifies the mouse cursor of the window.
