@@ -59,6 +59,7 @@ enum View<Model = ()> {
 }
 
 /// A splatter `App` builder.
+#[allow(clippy::type_complexity)]
 pub struct Builder<M = (), E = Event> {
     model: Box<dyn FnOnce(&App) -> Box<dyn Future<Output = M> + '_>>,
     config: Config,
@@ -517,7 +518,7 @@ where
         // If there is not yet some default window in "focus" check to see if one has been created.
         if app.focused_window.borrow().is_none() {
             if let Some(id) = app.windows.borrow().keys().next() {
-                *app.focused_window.borrow_mut() = Some(id.clone());
+                *app.focused_window.borrow_mut() = Some(*id);
             }
         }
 
@@ -669,7 +670,7 @@ impl App {
         let keys = state::Keys::default();
         let duration = state::Time::default();
         let time = duration.since_start.secs() as _;
-        let app = App {
+        App {
             event_loop_proxy,
             event_loop_window_target,
             default_window_size,
@@ -686,8 +687,7 @@ impl App {
             keys,
             duration,
             time,
-        };
-        app
+        }
     }
 
     /// Returns the list of all the monitors available on the system.
@@ -1048,7 +1048,7 @@ impl EventLoopWindowTarget {
     // This method is solely used during `window::Builder::build` to allow for
     pub(crate) fn as_ref(&self) -> &winit::event_loop::EventLoopWindowTarget<()> {
         match *self {
-            EventLoopWindowTarget::Owned(ref event_loop) => &**event_loop,
+            EventLoopWindowTarget::Owned(ref event_loop) => event_loop,
             EventLoopWindowTarget::Pointer(ptr) => {
                 // This cast is safe, assuming that the `App`'s `EventLoopWindowTarget` will only
                 // ever be in the `Pointer` state while the pointer is valid - that is, during the
@@ -1106,7 +1106,8 @@ fn run_loop<M, E>(
     };
 
     // Run the event loop.
-    event_loop.run(move |mut event, event_loop_window_target| {
+    // TODO: handle the result here
+    let _ = event_loop.run(move |mut event, event_loop_window_target| {
         // Set the event loop window target pointer to allow for building windows.
         app.event_loop_window_target = Some(EventLoopWindowTarget::Pointer(
             event_loop_window_target as *const _,
@@ -1173,18 +1174,14 @@ fn run_loop<M, E>(
                 winit::event::WindowEvent::Resized(new_inner_size) => {
                     let mut windows = app.windows.borrow_mut();
                     if let Some(window) = windows.get_mut(&window_id) {
-                        window.reconfigure_surface(new_inner_size.clone().into());
+                        window.reconfigure_surface([new_inner_size.width, new_inner_size.height]);
                     }
                 }
 
-                winit::event::WindowEvent::ScaleFactorChanged {
-                    scale_factor,
-                    inner_size_writer,
-                } => {
+                winit::event::WindowEvent::ScaleFactorChanged { scale_factor, .. } => {
                     let mut windows = app.windows.borrow_mut();
                     if let Some(window) = windows.get_mut(&window_id) {
                         window.tracked_state.scale_factor = *scale_factor;
-                        // window.reconfigure_surface(new_inner_size.clone().into());
                     }
                 }
                 // Request a frame from the user for the specified window.
@@ -1268,8 +1265,7 @@ fn run_loop<M, E>(
                             // Clear the raw frame immediately once the window is invalidated
                             if window.is_invalidated {
                                 if let Some(data) = frame_data {
-                                    raw_frame
-                                        .clear(&data.render.texture_view(), window.clear_color);
+                                    raw_frame.clear(data.render.texture_view(), window.clear_color);
                                 }
                             }
 
@@ -1297,7 +1293,7 @@ fn run_loop<M, E>(
                                     let raw_view = raw_view.to_fn_ptr::<M>().expect(
                                     "unexpected model argument given to window raw_view function",
                                 );
-                                    (*raw_view)(&app, &model, raw_frame);
+                                    (*raw_view)(&app, model, raw_frame);
                                 }
                                 None => match default_view {
                                     Some(View::Sketch(view)) => {
@@ -1318,7 +1314,7 @@ fn run_loop<M, E>(
                                             &data.render,
                                             &data.capture,
                                         );
-                                        view(&app, &model, frame);
+                                        view(&app, model, frame);
                                     }
                                     None => raw_frame.submit(),
                                 },
@@ -1383,7 +1379,6 @@ fn run_loop<M, E>(
                 .unwrap()
                 .as_ref()
                 .exit();
-            return;
         }
     });
 
@@ -1421,7 +1416,7 @@ fn apply_update<M, E>(
     };
     // User event function.
     if let Some(event_fn) = event_fn {
-        let event = E::from(update.clone());
+        let event = E::from(update);
         event_fn(app, model, event);
     }
     // User update function.
@@ -1458,10 +1453,8 @@ fn should_toggle_fullscreen(
     // TODO: Somehow add special case for KDE?
     if cfg!(target_os = "linux") {
         if *mods == winit::keyboard::ModifiersState::empty() {
-            if let Key::Named(key) = key {
-                if let NamedKey::F11 = key {
-                    return true;
-                }
+            if let Key::Named(NamedKey::F11) = key {
+                return true;
             }
         }
 
@@ -1583,19 +1576,14 @@ where
                     app.mouse.window = Some(window_id);
                 }
 
-                winit::event::WindowEvent::KeyboardInput { event, .. } => {
-                    match &event.logical_key {
-                        key => match event.state {
-                            event::ElementState::Pressed => {
-                                app.keys.down.keys.insert(key.clone());
-                            }
-                            event::ElementState::Released => {
-                                app.keys.down.keys.remove(&key);
-                            }
-                        },
-                        _ => (),
+                winit::event::WindowEvent::KeyboardInput { event, .. } => match event.state {
+                    event::ElementState::Pressed => {
+                        app.keys.down.keys.insert(event.logical_key.clone());
                     }
-                }
+                    event::ElementState::Released => {
+                        app.keys.down.keys.remove(&event.logical_key);
+                    }
+                },
 
                 _ => (),
             }
@@ -1603,17 +1591,19 @@ where
     }
 
     // Update the modifier keys within the app if necessary.
-    if let winit::event::Event::WindowEvent { event, .. } = winit_event {
-        if let winit::event::WindowEvent::ModifiersChanged(new_mods) = event {
-            app.keys.mods = new_mods.state().clone();
-        }
+    if let winit::event::Event::WindowEvent {
+        event: winit::event::WindowEvent::ModifiersChanged(new_mods),
+        ..
+    } = winit_event
+    {
+        app.keys.mods = new_mods.state();
     }
 
     // If the user provided an event function and winit::event::Event could be interpreted as some event
     // `E`, use it to update the model.
     if let Some(event_fn) = event_fn {
         if let Some(event) = E::from_winit_event(winit_event, app) {
-            event_fn(&app, model, event);
+            event_fn(app, model, event);
         }
     }
 
@@ -1639,7 +1629,7 @@ where
             let raw_window_event_fn = raw_window_event_fn
                 .to_fn_ptr::<M>()
                 .expect("unexpected model argument given to window event function");
-            (*raw_window_event_fn)(&app, model, event);
+            (*raw_window_event_fn)(app, model, event);
         }
 
         let (win_w, win_h, scale_factor) = {
@@ -1674,7 +1664,7 @@ where
                 let window_event_fn = window_event_fn
                     .to_fn_ptr::<M>()
                     .expect("unexpected model argument given to window event function");
-                (*window_event_fn)(&app, model, simple.clone());
+                (*window_event_fn)(app, model, simple.clone());
             }
 
             // A macro to simplify calling event-specific user functions.
@@ -1742,17 +1732,9 @@ where
     }
 
     // If the loop was destroyed, we'll need to exit.
-    let loop_destroyed = match winit_event {
-        winit::event::Event::LoopExiting => true,
-        _ => false,
-    };
+    let loop_destroyed = matches!(winit_event, winit::event::Event::LoopExiting);
 
     // If any exist conditions were triggered, indicate so.
-    let exit = if loop_destroyed || exit_on_escape || app.windows.borrow().is_empty() {
-        true
-    } else {
-        false
-    };
 
-    exit
+    loop_destroyed || exit_on_escape || app.windows.borrow().is_empty()
 }

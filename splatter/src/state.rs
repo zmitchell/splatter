@@ -32,6 +32,12 @@ pub mod window {
             self.id.unwrap()
         }
     }
+
+    impl Default for Window {
+        fn default() -> Self {
+            Self::new()
+        }
+    }
 }
 
 /// Tracked state related to the keyboard.
@@ -119,6 +125,12 @@ pub mod mouse {
         }
     }
 
+    impl Default for Mouse {
+        fn default() -> Self {
+            Self::new()
+        }
+    }
+
     impl ButtonPosition {
         /// If the mouse button is down, return a new one with position relative to the given `xy`.
         pub fn relative_to(self, xy: Point2) -> Self {
@@ -133,18 +145,12 @@ pub mod mouse {
 
         /// Is the `ButtonPosition` down.
         pub fn is_down(&self) -> bool {
-            match *self {
-                ButtonPosition::Down(_) => true,
-                _ => false,
-            }
+            matches!(*self, ButtonPosition::Down(_))
         }
 
         /// Is the `ButtonPosition` up.
         pub fn is_up(&self) -> bool {
-            match *self {
-                ButtonPosition::Up => true,
-                _ => false,
-            }
+            matches!(*self, ButtonPosition::Up)
         }
 
         /// Returns the position at which the button was pressed.
@@ -202,10 +208,16 @@ pub mod mouse {
 
         /// An iterator yielding all pressed mouse buttons along with the location at which they
         /// were originally pressed.
-        pub fn pressed<'a>(&'a self) -> impl Iterator<Item = (Button, Point2)> + 'a {
+        pub fn pressed(&self) -> impl Iterator<Item = (Button, Point2)> + '_ {
             self.buttons
                 .iter()
                 .filter_map(|(&button, &point)| point.if_down().map(|point| (button, point)))
+        }
+    }
+
+    impl Default for ButtonMap {
+        fn default() -> Self {
+            Self::new()
         }
     }
 

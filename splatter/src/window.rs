@@ -21,7 +21,6 @@ use std::{env, fmt};
 use wgpu_upstream::CompositeAlphaMode;
 use winit::dpi::{LogicalSize, PhysicalSize};
 
-use winit::raw_window_handle::HasWindowHandle;
 pub use winit::window::Fullscreen;
 pub use winit::window::WindowId as Id;
 use winit::window::{CursorGrabMode, WindowLevel};
@@ -333,13 +332,7 @@ impl SurfaceConfigurationBuilder {
         let usage = self.usage.unwrap_or(Self::DEFAULT_USAGE);
         let format = self
             .format
-            .or_else(|| {
-                surface
-                    .get_capabilities(&adapter)
-                    .formats
-                    .get(0)
-                    .map(|x| x.clone())
-            })
+            .or_else(|| surface.get_capabilities(adapter).formats.get(0).copied())
             .unwrap_or(Self::DEFAULT_FORMAT);
         let present_mode = self.present_mode.unwrap_or(Self::DEFAULT_PRESENT_MODE);
         wgpu::SurfaceConfiguration {
@@ -877,14 +870,13 @@ impl<'app> Builder<'app> {
         // Background must be initially cleared
         let is_invalidated = true;
 
-        let clear_color = clear_color.unwrap_or_else(|| {
-            let mut color: wgpu::Color = Default::default();
-            color.a = if window.window_attributes().transparent {
+        let clear_color = clear_color.unwrap_or_else(|| wgpu::Color {
+            a: if window.window_attributes().transparent {
                 0.0
             } else {
                 1.0
-            };
-            color
+            },
+            ..Default::default()
         });
 
         // Build the window.
@@ -939,8 +931,8 @@ impl<'app> Builder<'app> {
         let win_physical_size = window.inner_size();
         let win_dims_px: [u32; 2] = win_physical_size.into();
         let device = device_queue_pair.device();
-        let surface_conf = surface_conf_builder.build(&surface, &*adapter, win_dims_px);
-        surface.configure(&device, &surface_conf);
+        let surface_conf = surface_conf_builder.build(&surface, &adapter, win_dims_px);
+        surface.configure(device, &surface_conf);
 
         // If we're using an intermediary image for rendering frames to surface textures, create
         // the necessary render data.
@@ -949,12 +941,8 @@ impl<'app> Builder<'app> {
                 let msaa_samples = msaa_samples.unwrap_or(Frame::DEFAULT_MSAA_SAMPLES);
                 // TODO: Verity that requested sample count is valid for surface?
                 let surface_dims = [surface_conf.width, surface_conf.height];
-                let render = frame::RenderData::new(
-                    &device,
-                    surface_dims,
-                    surface_conf.format,
-                    msaa_samples,
-                );
+                let render =
+                    frame::RenderData::new(device, surface_dims, surface_conf.format, msaa_samples);
                 let capture =
                     frame::CaptureData::new(max_capture_frame_jobs, capture_frame_timeout);
                 let frame_data = FrameData { render, capture };
@@ -1217,7 +1205,9 @@ impl Window {
     ///
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_pixels(&self, width: u32, height: u32) {
-        self.window
+        // TODO: handle this result
+        let _ = self
+            .window
             .request_inner_size(winit::dpi::PhysicalSize { width, height });
     }
 
@@ -1225,7 +1215,9 @@ impl Window {
     ///
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_points(&self, width: f32, height: f32) {
-        self.window
+        // TODO: handle this result
+        let _ = self
+            .window
             .request_inner_size(winit::dpi::LogicalSize { width, height });
     }
 
@@ -1572,7 +1564,7 @@ impl Window {
         // If the parent directory does not exist, create it.
         let dir = path.parent().expect("capture_frame path has no directory");
         if !dir.exists() {
-            std::fs::create_dir_all(&dir).expect("failed to create `capture_frame` directory");
+            std::fs::create_dir_all(dir).expect("failed to create `capture_frame` directory");
         }
 
         let mut capture_next_frame_path = self
