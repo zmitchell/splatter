@@ -77,8 +77,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let flat_samples = image.as_flat_samples();
     model.texture.upload_data(
         app.main_window().device(),
-        &mut *frame.command_encoder(),
-        &flat_samples.as_slice(),
+        &mut frame.command_encoder(),
+        flat_samples.as_slice(),
     );
 
     let draw = app.draw();
@@ -93,8 +93,10 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

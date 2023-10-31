@@ -5,8 +5,10 @@ pub use egui_wgpu;
 use egui::{pos2, ClippedPrimitive, PlatformOutput};
 use egui_wgpu::renderer::ScreenDescriptor;
 use splatter::wgpu::ToTextureView;
-use splatter::{wgpu, winit::event::VirtualKeyCode, winit::event::WindowEvent::*};
+use splatter::{wgpu, winit::event::WindowEvent::*};
 use std::{cell::RefCell, ops::Deref, sync::Mutex, time::Duration};
+use winit::event::MouseButton;
+use winit::keyboard::NamedKey;
 
 /// All `egui`-related state for a single window.
 ///
@@ -202,24 +204,23 @@ impl Input {
             }
             ScaleFactorChanged {
                 scale_factor,
-                new_inner_size,
+                inner_size_writer: _,
             } => {
                 self.window_scale_factor = *scale_factor as f32;
-                self.window_size_pixels = [new_inner_size.width, new_inner_size.height];
                 self.raw.pixels_per_point = Some(self.window_scale_factor);
                 self.raw.screen_rect = Some(self.egui_window_rect());
             }
             MouseInput { state, button, .. } => {
-                if let winit::event::MouseButton::Other(..) = button {
-                } else {
+                let maybe_button = match button {
+                    MouseButton::Back | MouseButton::Forward | MouseButton::Other(_) => None,
+                    MouseButton::Left => Some(egui::PointerButton::Primary),
+                    MouseButton::Right => Some(egui::PointerButton::Secondary),
+                    MouseButton::Middle => Some(egui::PointerButton::Middle),
+                };
+                if let Some(button) = maybe_button {
                     self.raw.events.push(egui::Event::PointerButton {
                         pos: self.pointer_pos,
-                        button: match button {
-                            winit::event::MouseButton::Left => egui::PointerButton::Primary,
-                            winit::event::MouseButton::Right => egui::PointerButton::Secondary,
-                            winit::event::MouseButton::Middle => egui::PointerButton::Middle,
-                            winit::event::MouseButton::Other(_) => unreachable!(),
-                        },
+                        button,
                         pressed: *state == winit::event::ElementState::Pressed,
                         modifiers: self.raw.modifiers,
                     });
@@ -244,8 +245,8 @@ impl Input {
             }
             CursorMoved { position, .. } => {
                 self.pointer_pos = pos2(
-                    position.x as f32 / self.window_scale_factor as f32,
-                    position.y as f32 / self.window_scale_factor as f32,
+                    position.x as f32 / self.window_scale_factor,
+                    position.y as f32 / self.window_scale_factor,
                 );
                 self.raw
                     .events
@@ -255,24 +256,17 @@ impl Input {
                 self.raw.events.push(egui::Event::PointerGone);
             }
             ModifiersChanged(input) => {
-                self.raw.modifiers = winit_to_egui_modifiers(*input);
+                self.raw.modifiers = winit_to_egui_modifiers(input.state());
             }
-            KeyboardInput { input, .. } => {
-                if let Some(virtual_keycode) = input.virtual_keycode {
-                    if let Some(key) = winit_to_egui_key_code(virtual_keycode) {
-                        // TODO figure out why if I enable this the characters get ignored
-                        self.raw.events.push(egui::Event::Key {
-                            key,
-                            pressed: input.state == winit::event::ElementState::Pressed,
-                            repeat: false,
-                            modifiers: self.raw.modifiers,
-                        });
-                    }
-                }
-            }
-            ReceivedCharacter(ch) => {
-                if is_printable(*ch) && !self.raw.modifiers.ctrl && !self.raw.modifiers.command {
-                    self.raw.events.push(egui::Event::Text(ch.to_string()));
+            KeyboardInput { event, .. } => {
+                if let Some(key) = winit_to_egui_key_code(event.logical_key.clone()) {
+                    // TODO figure out why if I enable this the characters get ignored
+                    self.raw.events.push(egui::Event::Key {
+                        key,
+                        pressed: event.state == winit::event::ElementState::Pressed,
+                        repeat: false,
+                        modifiers: self.raw.modifiers,
+                    });
                 }
             }
             _ => {}
@@ -289,7 +283,7 @@ impl Input {
         let [w, h] = self.window_size_pixels;
         egui::Rect::from_min_size(
             Default::default(),
-            egui::vec2(w as f32, h as f32) / self.window_scale_factor as f32,
+            egui::vec2(w as f32, h as f32) / self.window_scale_factor,
         )
     }
 }
@@ -341,13 +335,13 @@ impl Renderer {
             pixels_per_point: dst_scale_factor,
         };
         for (id, image_delta) in &textures.set {
-            renderer.update_texture(&device, &queue, *id, &image_delta);
+            renderer.update_texture(device, queue, *id, image_delta);
         }
-        renderer.update_buffers(device, queue, encoder, &paint_jobs, &screen_descriptor);
+        renderer.update_buffers(device, queue, encoder, paint_jobs, &screen_descriptor);
         let mut render_pass = encoder.begin_render_pass(&egui_wgpu::wgpu::RenderPassDescriptor {
             label: Some("nannou_egui_render_pass"),
             color_attachments: &[Some(egui_wgpu::wgpu::RenderPassColorAttachment {
-                view: &dst_texture,
+                view: dst_texture,
                 resolve_target: None,
                 ops: egui_wgpu::wgpu::Operations {
                     load: egui_wgpu::wgpu::LoadOp::Load,
@@ -356,7 +350,7 @@ impl Renderer {
             })],
             depth_stencil_attachment: None,
         });
-        renderer.render(&mut render_pass, &paint_jobs, &screen_descriptor);
+        renderer.render(&mut render_pass, paint_jobs, &screen_descriptor);
         Ok(())
     }
 
@@ -429,92 +423,88 @@ impl<'a> Deref for FrameCtx<'a> {
 
 /// Translates winit to egui keycodes.
 #[inline]
-fn winit_to_egui_key_code(key: VirtualKeyCode) -> Option<egui::Key> {
-    use egui::Key;
-
+fn winit_to_egui_key_code(key: winit::keyboard::Key) -> Option<egui::Key> {
     Some(match key {
-        VirtualKeyCode::Escape => Key::Escape,
-        VirtualKeyCode::Insert => Key::Insert,
-        VirtualKeyCode::Home => Key::Home,
-        VirtualKeyCode::Delete => Key::Delete,
-        VirtualKeyCode::End => Key::End,
-        VirtualKeyCode::PageDown => Key::PageDown,
-        VirtualKeyCode::PageUp => Key::PageUp,
-        VirtualKeyCode::Left => Key::ArrowLeft,
-        VirtualKeyCode::Up => Key::ArrowUp,
-        VirtualKeyCode::Right => Key::ArrowRight,
-        VirtualKeyCode::Down => Key::ArrowDown,
-        VirtualKeyCode::Back => Key::Backspace,
-        VirtualKeyCode::Return => Key::Enter,
-        VirtualKeyCode::Tab => Key::Tab,
-        VirtualKeyCode::Space => Key::Space,
-
-        VirtualKeyCode::A => Key::A,
-        VirtualKeyCode::B => Key::B,
-        VirtualKeyCode::C => Key::C,
-        VirtualKeyCode::D => Key::D,
-        VirtualKeyCode::E => Key::E,
-        VirtualKeyCode::F => Key::F,
-        VirtualKeyCode::G => Key::G,
-        VirtualKeyCode::H => Key::H,
-        VirtualKeyCode::I => Key::I,
-        VirtualKeyCode::J => Key::J,
-        VirtualKeyCode::K => Key::K,
-        VirtualKeyCode::L => Key::L,
-        VirtualKeyCode::M => Key::M,
-        VirtualKeyCode::N => Key::N,
-        VirtualKeyCode::O => Key::O,
-        VirtualKeyCode::P => Key::P,
-        VirtualKeyCode::Q => Key::Q,
-        VirtualKeyCode::R => Key::R,
-        VirtualKeyCode::S => Key::S,
-        VirtualKeyCode::T => Key::T,
-        VirtualKeyCode::U => Key::U,
-        VirtualKeyCode::V => Key::V,
-        VirtualKeyCode::W => Key::W,
-        VirtualKeyCode::X => Key::X,
-        VirtualKeyCode::Y => Key::Y,
-        VirtualKeyCode::Z => Key::Z,
-
-        VirtualKeyCode::Key0 => Key::Num0,
-        VirtualKeyCode::Key1 => Key::Num1,
-        VirtualKeyCode::Key2 => Key::Num2,
-        VirtualKeyCode::Key3 => Key::Num3,
-        VirtualKeyCode::Key4 => Key::Num4,
-        VirtualKeyCode::Key5 => Key::Num5,
-        VirtualKeyCode::Key6 => Key::Num6,
-        VirtualKeyCode::Key7 => Key::Num7,
-        VirtualKeyCode::Key8 => Key::Num8,
-        VirtualKeyCode::Key9 => Key::Num9,
-
-        _ => {
-            return None;
-        }
+        winit::keyboard::Key::Named(NamedKey::Escape) => egui::Key::Escape,
+        winit::keyboard::Key::Named(NamedKey::Insert) => egui::Key::Insert,
+        winit::keyboard::Key::Named(NamedKey::Home) => egui::Key::Home,
+        winit::keyboard::Key::Named(NamedKey::Delete) => egui::Key::Delete,
+        winit::keyboard::Key::Named(NamedKey::End) => egui::Key::End,
+        winit::keyboard::Key::Named(NamedKey::PageDown) => egui::Key::PageDown,
+        winit::keyboard::Key::Named(NamedKey::PageUp) => egui::Key::PageUp,
+        winit::keyboard::Key::Named(NamedKey::ArrowLeft) => egui::Key::ArrowLeft,
+        winit::keyboard::Key::Named(NamedKey::ArrowUp) => egui::Key::ArrowUp,
+        winit::keyboard::Key::Named(NamedKey::ArrowRight) => egui::Key::ArrowRight,
+        winit::keyboard::Key::Named(NamedKey::ArrowDown) => egui::Key::ArrowDown,
+        winit::keyboard::Key::Named(NamedKey::Backspace) => egui::Key::Backspace,
+        winit::keyboard::Key::Named(NamedKey::Enter) => egui::Key::Enter,
+        winit::keyboard::Key::Named(NamedKey::Tab) => egui::Key::Tab,
+        winit::keyboard::Key::Named(NamedKey::Space) => egui::Key::Space,
+        winit::keyboard::Key::Character(key) => match key.as_str() {
+            "a" => egui::Key::A,
+            "b" => egui::Key::B,
+            "c" => egui::Key::C,
+            "d" => egui::Key::D,
+            "e" => egui::Key::E,
+            "f" => egui::Key::F,
+            "g" => egui::Key::G,
+            "h" => egui::Key::H,
+            "i" => egui::Key::I,
+            "j" => egui::Key::J,
+            "k" => egui::Key::K,
+            "l" => egui::Key::L,
+            "m" => egui::Key::M,
+            "n" => egui::Key::N,
+            "o" => egui::Key::O,
+            "p" => egui::Key::P,
+            "q" => egui::Key::Q,
+            "r" => egui::Key::R,
+            "s" => egui::Key::S,
+            "t" => egui::Key::T,
+            "u" => egui::Key::U,
+            "v" => egui::Key::V,
+            "w" => egui::Key::W,
+            "x" => egui::Key::X,
+            "y" => egui::Key::Y,
+            "z" => egui::Key::Z,
+            "0" => egui::Key::Num0,
+            "1" => egui::Key::Num1,
+            "2" => egui::Key::Num2,
+            "3" => egui::Key::Num3,
+            "4" => egui::Key::Num4,
+            "5" => egui::Key::Num5,
+            "6" => egui::Key::Num6,
+            "7" => egui::Key::Num7,
+            "8" => egui::Key::Num8,
+            "9" => egui::Key::Num9,
+            _ => return None,
+        },
+        _ => return None,
     })
 }
 
 /// Translates winit to egui modifier keys.
 #[inline]
-fn winit_to_egui_modifiers(modifiers: winit::event::ModifiersState) -> egui::Modifiers {
+fn winit_to_egui_modifiers(modifiers: winit::keyboard::ModifiersState) -> egui::Modifiers {
     egui::Modifiers {
-        alt: modifiers.alt(),
-        ctrl: modifiers.ctrl(),
-        shift: modifiers.shift(),
+        alt: modifiers.alt_key(),
+        ctrl: modifiers.control_key(),
+        shift: modifiers.shift_key(),
         #[cfg(target_os = "macos")]
-        mac_cmd: modifiers.logo(),
+        mac_cmd: modifiers.super_key(),
         #[cfg(target_os = "macos")]
-        command: modifiers.logo(),
+        command: modifiers.super_key(),
         #[cfg(not(target_os = "macos"))]
         mac_cmd: false,
         #[cfg(not(target_os = "macos"))]
-        command: modifiers.ctrl(),
+        command: modifiers.control_key(),
     }
 }
 
 /// We only want printable characters and ignore all special keys.
 fn is_printable(chr: char) -> bool {
-    let is_in_private_use_area = '\u{e000}' <= chr && chr <= '\u{f8ff}'
-        || '\u{f0000}' <= chr && chr <= '\u{ffffd}'
-        || '\u{100000}' <= chr && chr <= '\u{10fffd}';
+    let is_in_private_use_area = ('\u{e000}'..='\u{f8ff}').contains(&chr)
+        || ('\u{f0000}'..='\u{ffffd}').contains(&chr)
+        || ('\u{100000}'..='\u{10fffd}').contains(&chr);
     !is_in_private_use_area && !chr.is_ascii_control()
 }

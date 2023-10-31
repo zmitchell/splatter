@@ -1,5 +1,7 @@
 use splatter::prelude::*;
 use splatter::winit;
+use splatter::winit::keyboard::NamedKey;
+use splatter::winit::keyboard::SmolStr;
 use std::cell::RefCell;
 
 mod data;
@@ -183,35 +185,59 @@ fn update(app: &App, model: &mut Model, update: Update) {
     if model.camera_is_active {
         let velocity = (update.since_last.secs() * CAM_SPEED_HZ) as f32;
         // Go forwards on W.
-        if app.keys.down.contains(&Key::W) {
+        if app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("w")))
+        {
             model.camera.eye += model.camera.direction() * velocity;
         }
         // Go backwards on S.
-        if app.keys.down.contains(&Key::S) {
+        if app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("s")))
+        {
             model.camera.eye -= model.camera.direction() * velocity;
         }
         // Strafe left on A.
-        if app.keys.down.contains(&Key::A) {
+        if app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("a")))
+        {
             let pitch = 0.0;
             let yaw = model.camera.yaw + std::f32::consts::PI * 0.5;
             let direction = pitch_yaw_to_direction(pitch, yaw);
             model.camera.eye += direction * velocity;
         }
         // Strafe right on D.
-        if app.keys.down.contains(&Key::D) {
+        if app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("d")))
+        {
             let pitch = 0.0;
             let yaw = model.camera.yaw - std::f32::consts::PI * 0.5;
             let direction = pitch_yaw_to_direction(pitch, yaw);
             model.camera.eye += direction * velocity;
         }
         // Float down on Q.
-        if app.keys.down.contains(&Key::Q) {
+        if app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("q")))
+        {
             let pitch = model.camera.pitch - std::f32::consts::PI * 0.5;
             let direction = pitch_yaw_to_direction(pitch, model.camera.yaw);
             model.camera.eye += direction * velocity;
         }
         // Float up on E.
-        if app.keys.down.contains(&Key::E) {
+        if app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("e")))
+        {
             let pitch = model.camera.pitch + std::f32::consts::PI * 0.5;
             let direction = pitch_yaw_to_direction(pitch, model.camera.yaw);
             model.camera.eye += direction * velocity;
@@ -223,20 +249,20 @@ fn update(app: &App, model: &mut Model, update: Update) {
 // TODO: Check device ID for mouse here - not sure if possible with winit currently.
 fn event(_app: &App, model: &mut Model, event: Event) {
     if model.camera_is_active {
-        if let Event::DeviceEvent(_device_id, event) = event {
-            if let winit::event::DeviceEvent::Motion { axis, value } = event {
-                let sensitivity = 0.004;
-                match axis {
-                    // Yaw left and right on mouse x axis movement.
-                    0 => model.camera.yaw -= (value * sensitivity) as f32,
-                    // Pitch up and down on mouse y axis movement.
-                    _ => {
-                        let max_pitch = std::f32::consts::PI * 0.5 - 0.0001;
-                        let min_pitch = -max_pitch;
-                        model.camera.pitch = (model.camera.pitch + (-value * sensitivity) as f32)
-                            .min(max_pitch)
-                            .max(min_pitch)
-                    }
+        if let Event::DeviceEvent(_device_id, winit::event::DeviceEvent::Motion { axis, value }) =
+            event
+        {
+            let sensitivity = 0.004;
+            match axis {
+                // Yaw left and right on mouse x axis movement.
+                0 => model.camera.yaw -= (value * sensitivity) as f32,
+                // Pitch up and down on mouse y axis movement.
+                _ => {
+                    let max_pitch = std::f32::consts::PI * 0.5 - 0.0001;
+                    let min_pitch = -max_pitch;
+                    model.camera.pitch = (model.camera.pitch + (-value * sensitivity) as f32)
+                        .min(max_pitch)
+                        .max(min_pitch)
                 }
             }
         }
@@ -245,16 +271,14 @@ fn event(_app: &App, model: &mut Model, event: Event) {
 
 // Toggle cursor grabbing and hiding on Space key.
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
-    if let Key::Space = key {
+    if let Key::Named(NamedKey::Space) = key {
         let window = app.main_window();
         if !model.camera_is_active {
             if window.set_cursor_grab(true).is_ok() {
                 model.camera_is_active = true;
             }
-        } else {
-            if window.set_cursor_grab(false).is_ok() {
-                model.camera_is_active = false;
-            }
+        } else if window.set_cursor_grab(false).is_ok() {
+            model.camera_is_active = false;
         }
         window.set_cursor_visible(!model.camera_is_active);
     }
@@ -313,8 +337,8 @@ fn create_uniforms([w, h]: [u32; 2], view: Mat4) -> Uniforms {
     let scale = Mat4::from_scale(Vec3::splat(0.01));
     Uniforms {
         world: rotation,
-        view: (view * scale).into(),
-        proj: proj.into(),
+        view: (view * scale),
+        proj: proj,
     }
 }
 
@@ -354,7 +378,7 @@ fn create_pipeline_layout(
 ) -> wgpu::PipelineLayout {
     let desc = wgpu::PipelineLayoutDescriptor {
         label: None,
-        bind_group_layouts: &[&bind_group_layout],
+        bind_group_layouts: &[bind_group_layout],
         push_constant_ranges: &[],
     };
     device.create_pipeline_layout(&desc)
@@ -370,7 +394,7 @@ fn create_render_pipeline(
     sample_count: u32,
 ) -> wgpu::RenderPipeline {
     wgpu::RenderPipelineBuilder::from_layout(layout, vs_mod)
-        .fragment_shader(&fs_mod)
+        .fragment_shader(fs_mod)
         .color_format(dst_format)
         .color_blend(wgpu::BlendComponent::REPLACE)
         .alpha_blend(wgpu::BlendComponent::REPLACE)

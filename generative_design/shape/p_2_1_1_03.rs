@@ -93,7 +93,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
             let toggle = rng.gen::<bool>();
 
-            if toggle == false {
+            if !toggle {
                 let (h, s, v) = model.color_left.into_components();
                 let a = calculate_alpha_left(grid_y, model.transparent_left);
 
@@ -120,7 +120,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
                         ),
                     );
             }
-            if toggle == true {
+            if toggle {
                 let (h, s, v) = model.color_right.into_components();
                 let a = calculate_alpha_right(grid_y, model.transparent_right);
 
@@ -153,7 +153,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn calculate_alpha_left(grid_y: u32, transparent_left: bool) -> f32 {
     let max_alpha = 100.0;
-    let alpha_left = if transparent_left {
+
+    if transparent_left {
         let a = grid_y as f32 * 10.0;
         match a {
             _ if a > max_alpha => 1.0,
@@ -162,14 +163,13 @@ fn calculate_alpha_left(grid_y: u32, transparent_left: bool) -> f32 {
         }
     } else {
         1.0
-    };
-
-    alpha_left
+    }
 }
 
 fn calculate_alpha_right(grid_y: u32, transparent_right: bool) -> f32 {
     let max_alpha = 100.0;
-    let alpha_right = if transparent_right {
+
+    if transparent_right {
         let a = max_alpha - (grid_y as f32 * 10.0);
         match a {
             _ if a > max_alpha => 1.0,
@@ -178,9 +178,7 @@ fn calculate_alpha_right(grid_y: u32, transparent_right: bool) -> f32 {
         }
     } else {
         1.0
-    };
-
-    alpha_right
+    }
 }
 
 fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
@@ -188,40 +186,45 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }
 
 fn key_released(_app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            if model.color_left.eq(&hsv(0.75, 0.73, 0.51)) {
-                model.color_left = hsv(0.89, 1.0, 0.77);
-            } else {
-                model.color_left = hsv(0.75, 0.73, 0.51);
+        Key::Character(key) => match key.as_str() {
+            "1" => {
+                if model.color_left.eq(&hsv(0.75, 0.73, 0.51)) {
+                    model.color_left = hsv(0.89, 1.0, 0.77);
+                } else {
+                    model.color_left = hsv(0.75, 0.73, 0.51);
+                }
             }
-        }
-        Key::Key2 => {
-            if model.color_right.eq(&hsv(0.0, 0.0, 0.0)) {
-                model.color_right = hsv(0.53, 1.0, 0.64);
-            } else {
+            "2" => {
+                if model.color_right.eq(&hsv(0.0, 0.0, 0.0)) {
+                    model.color_right = hsv(0.53, 1.0, 0.64);
+                } else {
+                    model.color_right = hsv(0.0, 0.0, 0.0);
+                }
+            }
+            "3" => {
+                model.transparent_left = !model.transparent_left;
+            }
+            "4" => {
+                model.transparent_right = !model.transparent_right;
+            }
+            "0" => {
+                model.transparent_left = false;
+                model.transparent_right = false;
+                model.color_left = hsv(0.89, 1.0, 0.77);
                 model.color_right = hsv(0.0, 0.0, 0.0);
             }
-        }
-        Key::Key3 => {
-            model.transparent_left = !model.transparent_left;
-        }
-        Key::Key4 => {
-            model.transparent_right = !model.transparent_right;
-        }
-        Key::Key0 => {
-            model.transparent_left = false;
-            model.transparent_right = false;
-            model.color_left = hsv(0.89, 1.0, 0.77);
-            model.color_right = hsv(0.0, 0.0, 0.0);
-        }
-        _other_key => {}
+            _ => {}
+        },
+        _ => {}
     }
 }

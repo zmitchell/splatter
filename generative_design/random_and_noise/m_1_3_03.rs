@@ -34,6 +34,7 @@
 use splatter::image;
 use splatter::noise::{Fbm, MultiFractal, NoiseFn, Perlin};
 use splatter::prelude::*;
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).run();
@@ -114,8 +115,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let flat_samples = image.as_flat_samples();
     model.texture.upload_data(
         app.main_window().device(),
-        &mut *frame.command_encoder(),
-        &flat_samples.as_slice(),
+        &mut frame.command_encoder(),
+        flat_samples.as_slice(),
     );
 
     let draw = app.draw();
@@ -127,38 +128,36 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+        Key::Named(key) => {
+            match key {
+                NamedKey::Space => model.noise_random_seed = (random_f32() * 100000.0) as u32,
+                _ => {}
+            };
         }
-        Key::Space => {
-            model.noise_random_seed = (random_f32() * 100000.0) as u32;
-        }
-        Key::Key1 => {
-            model.noise_mode = 1;
-        }
-        Key::Key2 => {
-            model.noise_mode = 2;
-        }
-        _otherkey => (),
+        Key::Character(key) => match key.as_str() {
+            "1" => model.noise_mode = 1,
+            "2" => model.noise_mode = 2,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Up => {
-            model.falloff += 0.05;
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => model.falloff += 0.05,
+                NamedKey::ArrowDown => model.falloff -= 0.05,
+                NamedKey::ArrowLeft => model.octaves -= 1,
+                NamedKey::ArrowRight => model.octaves += 1,
+                _ => {}
+            };
         }
-        Key::Down => {
-            model.falloff -= 0.05;
-        }
-        Key::Left => {
-            model.octaves -= 1;
-        }
-        Key::Right => {
-            model.octaves += 1;
-        }
-        _otherkey => (),
+        _ => {}
     }
 
     if model.falloff > 1.0 {

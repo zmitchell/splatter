@@ -29,7 +29,7 @@
  * arrow down          : angle distortion -
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -98,8 +98,8 @@ fn update(app: &App, model: &mut Model, _update: Update) {
                 model.counter = 0;
             }
 
-            model.x = model.x + model.angle.cos() * model.step_size;
-            model.y = model.y + model.angle.sin() * model.step_size;
+            model.x += model.angle.cos() * model.step_size;
+            model.y += model.angle.sin() * model.step_size;
         }
     }
 }
@@ -139,17 +139,18 @@ fn mouse_pressed(app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
-    if key == Key::Up {
-        model.angle_distortion += 0.1;
-    }
-    if key == Key::Down {
-        model.angle_distortion -= 0.1;
+    if let Key::Named(NamedKey::ArrowUp) = key {
+        model.angle_distortion += 0.1
+    } else if let Key::Named(NamedKey::ArrowDown) = key {
+        model.angle_distortion -= 0.1
     }
 }
 
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

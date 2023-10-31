@@ -32,6 +32,7 @@
  */
 use splatter::lyon;
 use splatter::prelude::*;
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -94,7 +95,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 
 fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
-    if frame.nth() == 0 || app.keys.down.contains(&Key::Delete) {
+    if frame.nth() == 0 || app.keys.down.contains(&Key::Named(NamedKey::Delete)) {
         draw.background().color(WHITE);
     }
 
@@ -143,26 +144,28 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        Key::Key1 => {
-            model.filled = false;
-        }
-        Key::Key2 => {
-            model.filled = true;
-        }
-        Key::F => {
-            model.freeze = !model.freeze;
-            if model.freeze {
-                app.set_loop_mode(LoopMode::loop_once());
-            } else {
-                app.set_loop_mode(LoopMode::RefreshSync);
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => {
+                model.filled = false;
             }
+            "2" => {
+                model.filled = true;
+            }
+            "f" => {
+                model.freeze = !model.freeze;
+                if model.freeze {
+                    app.set_loop_mode(LoopMode::loop_once());
+                } else {
+                    app.set_loop_mode(LoopMode::RefreshSync);
+                }
+            }
+            "s" => {
+                app.main_window()
+                    .capture_frame(app.exe_name().unwrap() + ".png");
+            }
+            _ => {}
         }
-        _ => (),
     }
 }
 

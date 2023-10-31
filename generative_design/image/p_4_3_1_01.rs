@@ -102,7 +102,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
                 }
                 2 => {
                     // greyscale to ellise area
-                    let mut r2 = 1.1284 * (tile_width * tile_width * (1.0 - greyscale)).sqrt();
+                    let mut r2 = f32::FRAC_2_SQRT_PI()
+                        * (tile_width * tile_width * (1.0 - greyscale)).sqrt();
                     r2 *= mouse_x_factor * 3.0;
                     draw.ellipse()
                         .x_y(pos_x, pos_y)
@@ -209,37 +210,21 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            model.draw_mode = 1;
-        }
-        Key::Key2 => {
-            model.draw_mode = 2;
-        }
-        Key::Key3 => {
-            model.draw_mode = 3;
-        }
-        Key::Key4 => {
-            model.draw_mode = 4;
-        }
-        Key::Key5 => {
-            model.draw_mode = 5;
-        }
-        Key::Key6 => {
-            model.draw_mode = 6;
-        }
-        Key::Key7 => {
-            model.draw_mode = 7;
-        }
-        Key::Key8 => {
-            model.draw_mode = 8;
-        }
-        Key::Key9 => {
-            model.draw_mode = 9;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _otherkey => (),
+        Key::Character(key) => match key.as_str() {
+            "1" => model.draw_mode = 1,
+            "2" => model.draw_mode = 2,
+            "3" => model.draw_mode = 3,
+            "4" => model.draw_mode = 4,
+            "5" => model.draw_mode = 5,
+            "6" => model.draw_mode = 6,
+            "7" => model.draw_mode = 7,
+            "8" => model.draw_mode = 8,
+            "9" => model.draw_mode = 9,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

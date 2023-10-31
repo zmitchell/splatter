@@ -70,9 +70,9 @@ impl AdapterMap {
     /// handle to this adapter. Otherwise, requests a new adapter via `Adapter::request`.
     ///
     /// Returns `None` if there are no available adapters that meet the specified options.
-    pub fn get_or_request<'a, 'b>(
+    pub fn get_or_request<'a>(
         &'a self,
-        options: wgpu::RequestAdapterOptions<'b>,
+        options: wgpu::RequestAdapterOptions<'_>,
         instance: &'a wgpu::Instance,
     ) -> Option<Arc<ActiveAdapter>> {
         let rt = tokio::runtime::Handle::current();
@@ -87,9 +87,9 @@ impl AdapterMap {
     /// active adapter exists.
     ///
     /// Returns `None` if there are no available adapters that meet the specified options.
-    pub fn request<'a, 'b>(
+    pub fn request<'a>(
         &'a self,
-        options: wgpu::RequestAdapterOptions<'b>,
+        options: wgpu::RequestAdapterOptions<'_>,
         instance: &'a wgpu::Instance,
     ) -> Option<Arc<ActiveAdapter>> {
         let rt = tokio::runtime::Handle::current();

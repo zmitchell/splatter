@@ -100,8 +100,10 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

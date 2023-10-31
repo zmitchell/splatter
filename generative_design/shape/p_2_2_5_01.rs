@@ -30,7 +30,7 @@
  * f                    : freeze process. on/off
  * s                    : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -144,8 +144,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
                     break;
                 }
             }
-            if closest_circle.is_some() {
-                let closest = closest_circle.unwrap();
+            if let Some(closest_circle) = closest_circle {
+                let closest = closest_circle;
                 draw.line()
                     .start(pt2(model.circles[i].x, model.circles[i].y))
                     .end(pt2(closest.x, closest.y))
@@ -174,30 +174,29 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => model.mouse_rect += 4.0,
+                NamedKey::ArrowDown => model.mouse_rect -= 4.0,
+                _ => {}
+            };
         }
-        Key::Up => {
-            model.mouse_rect += 4.0;
-        }
-        Key::Down => {
-            model.mouse_rect -= 4.0;
-        }
-        Key::F => {
-            model.freeze = !model.freeze;
-            if model.freeze {
-                app.set_loop_mode(LoopMode::loop_once());
-            } else {
-                app.set_loop_mode(LoopMode::RefreshSync);
+        Key::Character(key) => match key.as_str() {
+            "1" => model.show_circle = !model.show_circle,
+            "2" => model.show_line = !model.show_line,
+            "f" => {
+                model.freeze = !model.freeze;
+                if model.freeze {
+                    app.set_loop_mode(LoopMode::loop_once());
+                } else {
+                    app.set_loop_mode(LoopMode::RefreshSync);
+                }
             }
-        }
-        Key::Key1 => {
-            model.show_circle = !model.show_circle;
-        }
-        Key::Key2 => {
-            model.show_line = !model.show_line;
-        }
-        _other_key => {}
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

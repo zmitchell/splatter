@@ -83,7 +83,7 @@ impl Reshaper {
                 let usage = wgpu::BufferUsages::UNIFORM;
                 let buffer = device.create_buffer_init(&BufferInitDescriptor {
                     label: None,
-                    contents: &uniforms_bytes,
+                    contents: uniforms_bytes,
                     usage,
                 });
                 Some(buffer)
@@ -203,7 +203,7 @@ fn pipeline_layout(
 ) -> wgpu::PipelineLayout {
     let desc = wgpu::PipelineLayoutDescriptor {
         label: Some("splatter_reshaper"),
-        bind_group_layouts: &[&bind_group_layout],
+        bind_group_layouts: &[bind_group_layout],
         push_constant_ranges: &[],
     };
     device.create_pipeline_layout(&desc)

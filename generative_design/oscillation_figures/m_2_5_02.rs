@@ -118,7 +118,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             for i in 0..(model.point_count - 1) {
                 draw_line(
                     &draw,
-                    &model,
+                    model,
                     model.lissajous_points[i],
                     model.lissajous_points[i + 1],
                 );
@@ -127,7 +127,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             for i2 in 0..model.point_index {
                 draw_line(
                     &draw,
-                    &model,
+                    model,
                     model.lissajous_points[model.point_index],
                     model.lissajous_points[i2],
                 );
@@ -193,8 +193,10 @@ fn calculate_lissajous_points(app: &App, model: &mut Model) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png")
+        }
     }
 }

@@ -24,7 +24,7 @@
  * del, backspace      : clear screen
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();
@@ -79,7 +79,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         .into_descriptor();
     let draw = app.draw().sampler(sampler);
 
-    if frame.nth() == 0 || app.keys.down.contains(&Key::Delete) {
+    if frame.nth() == 0 || app.keys.down.contains(&Key::Named(NamedKey::Delete)) {
         frame.clear(WHITE);
         draw.texture(&model.texture);
     } else {
@@ -92,8 +92,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

@@ -54,27 +54,18 @@ fn model(app: &App) -> Model {
 }
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Key1 => {
-            model.segment_count = 360;
-        }
-        Key::Key2 => {
-            model.segment_count = 45;
-        }
-        Key::Key3 => {
-            model.segment_count = 24;
-        }
-        Key::Key4 => {
-            model.segment_count = 12;
-        }
-        Key::Key5 => {
-            model.segment_count = 6;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.segment_count = 360,
+            "2" => model.segment_count = 45,
+            "3" => model.segment_count = 24,
+            "4" => model.segment_count = 12,
+            "5" => model.segment_count = 6,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        };
     }
 }
 

@@ -107,13 +107,13 @@ fn crop_tiles(app: &App, model: &mut Model, win: Rect) {
             }
             model.crop_x = clamp(
                 model.crop_x,
-                win.left() + (model.tile_width as f32 / 2.0),
-                win.right() - (model.tile_width as f32 / 2.0),
+                win.left() + (model.tile_width / 2.0),
+                win.right() - (model.tile_width / 2.0),
             );
             model.crop_y = clamp(
                 model.crop_y,
-                win.top() - (model.tile_height as f32 / 2.0),
-                win.bottom() + (model.tile_height as f32 / 2.0),
+                win.top() - (model.tile_height / 2.0),
+                win.bottom() + (model.tile_height / 2.0),
             );
 
             let [w, h] = model.texture.size();
@@ -149,11 +149,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let mut index = 0;
         for grid_y in 0..model.tile_count_y {
             for grid_x in 0..model.tile_count_x {
-                let x =
-                    win.left() + grid_x as f32 * model.tile_width + (model.tile_width as f32 / 2.0);
-                let y = win.top()
-                    - grid_y as f32 * model.tile_height
-                    - (model.tile_height as f32 / 2.0);
+                let x = win.left() + grid_x as f32 * model.tile_width + (model.tile_width / 2.0);
+                let y = win.top() - grid_y as f32 * model.tile_height - (model.tile_height / 2.0);
                 draw.texture(&model.texture)
                     .x_y(x, y)
                     .w_h(model.tile_width, model.tile_height)
@@ -187,28 +184,28 @@ fn mouse_moved(app: &App, model: &mut Model, pos: Point2) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            model.tile_count_x = 4;
-            model.tile_count_y = 4;
-            crop_tiles(app, model, app.window_rect());
-        }
-        Key::Key2 => {
-            model.tile_count_x = 10;
-            model.tile_count_y = 10;
-            crop_tiles(app, model, app.window_rect());
-        }
-        Key::Key3 => {
-            model.tile_count_x = 20;
-            model.tile_count_y = 20;
-            crop_tiles(app, model, app.window_rect());
-        }
-        Key::R => {
-            model.random_mode = !model.random_mode;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "1" => {
+                model.tile_count_x = 4;
+                model.tile_count_y = 4;
+                crop_tiles(app, model, app.window_rect());
+            }
+            "2" => {
+                model.tile_count_x = 10;
+                model.tile_count_y = 10;
+                crop_tiles(app, model, app.window_rect());
+            }
+            "3" => {
+                model.tile_count_x = 20;
+                model.tile_count_y = 20;
+                crop_tiles(app, model, app.window_rect());
+            }
+            "r" => model.random_mode = !model.random_mode,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

@@ -67,94 +67,95 @@ fn model(app: &App) -> Model {
 }
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Key1 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = random();
-                model.saturation_values[i] = random();
-                model.brightness_values[i] = random();
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => {
+                for i in 0..model.tile_count_x {
+                    model.hue_values[i] = random();
+                    model.saturation_values[i] = random();
+                    model.brightness_values[i] = random();
+                }
             }
-        }
-        Key::Key2 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = random();
-                model.saturation_values[i] = random();
-                model.brightness_values[i] = 1.0;
+            "2" => {
+                for i in 0..model.tile_count_x {
+                    model.hue_values[i] = random();
+                    model.saturation_values[i] = random();
+                    model.brightness_values[i] = 1.0;
+                }
             }
-        }
-        Key::Key3 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = random();
-                model.saturation_values[i] = 1.0;
-                model.brightness_values[i] = random();
-            }
-        }
-        Key::Key4 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = 0.0;
-                model.saturation_values[i] = 0.0;
-                model.brightness_values[i] = random();
-            }
-        }
-        Key::Key5 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = 0.54;
-                model.saturation_values[i] = 1.0;
-                model.brightness_values[i] = random();
-            }
-        }
-        Key::Key6 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = 0.54;
-                model.saturation_values[i] = random();
-                model.brightness_values[i] = 1.0;
-            }
-        }
-        Key::Key7 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = random_f32() * 0.5;
-                model.saturation_values[i] = random_f32() * 0.2 + 0.8;
-                model.brightness_values[i] = random_f32() * 0.4 + 0.5;
-            }
-        }
-        Key::Key8 => {
-            for i in 0..model.tile_count_x {
-                model.hue_values[i] = random_f32() * 0.5 + 0.5;
-                model.saturation_values[i] = random_f32() * 0.2 + 0.8;
-                model.brightness_values[i] = random_f32() * 0.4 + 0.5;
-            }
-        }
-        Key::Key9 => {
-            for i in 0..model.tile_count_x {
-                if i % 2 == 0 {
+            "3" => {
+                for i in 0..model.tile_count_x {
                     model.hue_values[i] = random();
                     model.saturation_values[i] = 1.0;
                     model.brightness_values[i] = random();
-                } else {
+                }
+            }
+            "4" => {
+                for i in 0..model.tile_count_x {
+                    model.hue_values[i] = 0.0;
+                    model.saturation_values[i] = 0.0;
+                    model.brightness_values[i] = random();
+                }
+            }
+            "5" => {
+                for i in 0..model.tile_count_x {
+                    model.hue_values[i] = 0.54;
+                    model.saturation_values[i] = 1.0;
+                    model.brightness_values[i] = random();
+                }
+            }
+            "6" => {
+                for i in 0..model.tile_count_x {
                     model.hue_values[i] = 0.54;
                     model.saturation_values[i] = random();
                     model.brightness_values[i] = 1.0;
                 }
             }
-        }
-        Key::Key0 => {
-            for i in 0..model.tile_count_x {
-                if i % 2 == 0 {
-                    model.hue_values[i] = 0.38;
-                    model.saturation_values[i] = random_f32() * 0.7 + 0.3;
-                    model.brightness_values[i] = random_f32() * 0.6 + 0.4;
-                } else {
-                    model.hue_values[i] = 0.58;
-                    model.saturation_values[i] = random_f32() * 0.6 + 0.4;
-                    model.brightness_values[i] = random_f32() * 0.5 + 0.5;
+            "7" => {
+                for i in 0..model.tile_count_x {
+                    model.hue_values[i] = random_f32() * 0.5;
+                    model.saturation_values[i] = random_f32() * 0.2 + 0.8;
+                    model.brightness_values[i] = random_f32() * 0.4 + 0.5;
                 }
             }
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+            "8" => {
+                for i in 0..model.tile_count_x {
+                    model.hue_values[i] = random_f32() * 0.5 + 0.5;
+                    model.saturation_values[i] = random_f32() * 0.2 + 0.8;
+                    model.brightness_values[i] = random_f32() * 0.4 + 0.5;
+                }
+            }
+            "9" => {
+                for i in 0..model.tile_count_x {
+                    if i % 2 == 0 {
+                        model.hue_values[i] = random();
+                        model.saturation_values[i] = 1.0;
+                        model.brightness_values[i] = random();
+                    } else {
+                        model.hue_values[i] = 0.54;
+                        model.saturation_values[i] = random();
+                        model.brightness_values[i] = 1.0;
+                    }
+                }
+            }
+            "0" => {
+                for i in 0..model.tile_count_x {
+                    if i % 2 == 0 {
+                        model.hue_values[i] = 0.38;
+                        model.saturation_values[i] = random_f32() * 0.7 + 0.3;
+                        model.brightness_values[i] = random_f32() * 0.6 + 0.4;
+                    } else {
+                        model.hue_values[i] = 0.58;
+                        model.saturation_values[i] = random_f32() * 0.6 + 0.4;
+                        model.brightness_values[i] = random_f32() * 0.5 + 0.5;
+                    }
+                }
+            }
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        };
     }
 }
 

@@ -29,7 +29,7 @@
  * a-z                 : change letter
  * ctrl                : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();
@@ -60,7 +60,7 @@ fn model(app: &App) -> Model {
 fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
-    if model.mouse_drag == false {
+    if !model.mouse_drag {
         draw.background().color(WHITE);
     }
 
@@ -77,11 +77,13 @@ fn view(app: &App, model: &Model, frame: Frame) {
 fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
     model.mouse_drag = true;
 }
+
 fn mouse_released(_app: &App, model: &mut Model, _button: MouseButton) {
     model.mouse_drag = false;
 }
+
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::LControl || key == Key::RControl {
+    if key == Key::Named(NamedKey::Control) {
         app.main_window()
             .capture_frame(app.exe_name().unwrap() + ".png");
     }

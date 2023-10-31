@@ -31,7 +31,7 @@
  * arrow down          : line length -
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -77,8 +77,8 @@ fn update(app: &App, model: &mut Model, _update: Update) {
         if model.dist > model.step_size {
             model.angle = (app.mouse.y - model.y).atan2(app.mouse.x - model.x);
             if model.draw_mode == 1 {
-                model.x = model.x + model.angle.cos() * model.step_size;
-                model.y = model.y + model.angle.sin() * model.step_size;
+                model.x += model.angle.cos() * model.step_size;
+                model.y += model.angle.sin() * model.step_size;
             } else {
                 model.x = app.mouse.x;
                 model.y = app.mouse.y;
@@ -89,7 +89,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 
 fn view(app: &App, model: &Model, frame: Frame) {
     let mut draw = app.draw();
-    if frame.nth() == 0 || app.keys.down.contains(&Key::Delete) {
+    if frame.nth() == 0 || app.keys.down.contains(&Key::Named(NamedKey::Delete)) {
         frame.clear(WHITE);
     }
 
@@ -120,30 +120,24 @@ fn mouse_pressed(app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Up => {
-            model.line_length += 5.0;
+    if let Key::Named(key) = key {
+        match key {
+            NamedKey::ArrowUp => model.line_length += 5.0,
+            NamedKey::ArrowDown => model.line_length -= 5.0,
+            _ => {}
         }
-        Key::Down => {
-            model.line_length -= 5.0;
-        }
-        _otherkey => (),
     }
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.draw_mode = 1,
+            "2" => model.draw_mode = 2,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
         }
-        // default colors from 1 to 4
-        Key::Key1 => {
-            model.draw_mode = 1;
-        }
-        Key::Key2 => {
-            model.draw_mode = 2;
-        }
-        _otherkey => (),
     }
 }

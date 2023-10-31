@@ -41,7 +41,7 @@ fn view(app: &App, frame: Frame) {
         .align_text_bottom();
 
     // Assign the blend mode.
-    let mut draw = draw.color_blend(desc.clone());
+    let mut draw = draw.color_blend(*desc);
 
     // Draw RGB circles.
     let t = app.time;

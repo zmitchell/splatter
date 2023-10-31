@@ -56,7 +56,7 @@ impl Gol {
         let mut next = vec![vec![0; self.rows]; self.columns];
 
         // Loop through every spot in our 2D array and check spots neighbors
-        for x in 0..self.columns {
+        (0..self.columns).for_each(|x| {
             for y in 0..self.rows {
                 // Add up all the states in a 3x3 surrounding grid
                 let mut neighbors = 0;
@@ -75,17 +75,15 @@ impl Gol {
                 neighbors -= self.board[x][y];
 
                 // Rules of Life
-                if self.board[x][y] == 1 && neighbors < 2 {
+                if self.board[x][y] == 1 && !(2..=3).contains(&neighbors) {
                     next[x][y] = 0; // Loneliness
-                } else if self.board[x][y] == 1 && neighbors > 3 {
-                    next[x][y] = 0; // Over Population
                 } else if self.board[x][y] == 0 && neighbors == 3 {
                     next[x][y] = 1; // Reproduction
                 } else {
                     next[x][y] = self.board[x][y]; // Stasis
                 }
             }
-        }
+        });
         // Next is now our board
         self.board = next;
     }
@@ -101,8 +99,8 @@ impl Gol {
                 let offset = self.w as f32 / 2.0;
                 draw.rect()
                     .x_y(
-                        offset + (i * self.w) as f32 - rect.right() as f32,
-                        offset + (j * self.w) as f32 - rect.top() as f32,
+                        offset + (i * self.w) as f32 - rect.right(),
+                        offset + (j * self.w) as f32 - rect.top(),
                     )
                     .w_h(self.w as f32, self.w as f32)
                     .gray(fill)

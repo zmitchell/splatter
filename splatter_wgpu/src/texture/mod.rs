@@ -238,7 +238,7 @@ impl Texture {
         let format = self.format();
         TextureViewInfo {
             label: TextureView::DEFAULT_LABEL,
-            format: format,
+            format,
             dimension: self.view_dimension(),
             aspect: infer_aspect_from_format(format),
             base_mip_level: 0,
@@ -393,7 +393,7 @@ impl TextureView {
 
     /// The width, height and depth of the source texture.
     pub fn extent(&self) -> wgpu::Extent3d {
-        self.texture_extent.clone()
+        self.texture_extent
     }
 
     /// The unique identifier associated with the texture that this view is derived from.
@@ -693,7 +693,7 @@ impl Clone for Texture {
 impl Deref for Texture {
     type Target = TextureHandle;
     fn deref(&self) -> &Self::Target {
-        &*self.handle
+        &self.handle
     }
 }
 
@@ -730,9 +730,9 @@ impl From<wgpu::TextureDescriptor<'static>> for Builder {
     }
 }
 
-impl Into<wgpu::TextureDescriptor<'static>> for Builder {
-    fn into(self) -> wgpu::TextureDescriptor<'static> {
-        self.descriptor
+impl From<Builder> for wgpu::TextureDescriptor<'static> {
+    fn from(val: Builder) -> Self {
+        val.descriptor
     }
 }
 
@@ -763,7 +763,7 @@ pub fn data_size_bytes(desc: &wgpu::TextureDescriptor) -> usize {
 pub fn format_size_bytes(format: wgpu::TextureFormat) -> u32 {
     format
         .block_size(None)
-        .expect("Expected the format to have a block size") as u32
+        .expect("Expected the format to have a block size")
 }
 
 /// Returns `true` if the given `wgpu::Extent3d`s are equal.

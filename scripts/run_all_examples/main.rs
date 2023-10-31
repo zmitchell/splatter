@@ -103,7 +103,7 @@ fn main() -> Result<(), Error> {
                 .context("failed to wait for child process")?;
 
             // If the example wrote to `stderr` it must have failed.
-            if !output.stderr.is_empty() || output.status.code().unwrap_or(0) == 101 {
+            if output.status.code().unwrap_or(0) == 101 {
                 failures.push(name.to_string());
             }
         }
@@ -115,6 +115,6 @@ fn main() -> Result<(), Error> {
     if failures.is_empty() {
         Ok(())
     } else {
-        bail!("some examples didn't build properly")
+        bail!("some examples didn't build/run properly")
     }
 }

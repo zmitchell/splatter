@@ -97,7 +97,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let mut counter = 0;
         // row count and row height
         let row_count = random_range(5, 30);
-        let row_height = (app.window_rect().h() as i32 / row_count) as i32;
+        let row_height = (app.window_rect().h() as i32 / row_count);
 
         // seperate each line in parts
         for i in (0..=row_count).rev() {
@@ -128,7 +128,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             // draw rects
             let mut sum_parts_now = 0;
             for ii in 0..parts.len() {
-                sum_parts_now += parts[ii as usize];
+                sum_parts_now += parts[ii];
 
                 let x = map_range(
                     sum_parts_now,
@@ -143,9 +143,9 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
                 let index = counter % model.color_count;
                 draw.rect().x_y(x + (w / 2.0), y - (h / 2.0)).w_h(w, h).hsv(
-                    model.hue_values[index as usize],
-                    model.saturation_values[index as usize],
-                    model.brightness_values[index as usize],
+                    model.hue_values[index],
+                    model.saturation_values[index],
+                    model.brightness_values[index],
                 );
 
                 counter += 1;
@@ -163,8 +163,10 @@ fn mouse_released(app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if let "s" = key.as_str() {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

@@ -120,9 +120,9 @@ fn model(app: &App) -> Model {
                     for e in path_events {
                         v.push(e);
                     }
-                    let w = view_box.rect.width() as f32;
-                    let h = view_box.rect.height() as f32;
-                    let path = SvgPath::new(v, stroke.width.get() as f32, color, w, h);
+                    let w = view_box.rect.width();
+                    let h = view_box.rect.height();
+                    let path = SvgPath::new(v, stroke.width.get(), color, w, h);
                     shapes.push(path);
                 }
             }
@@ -183,9 +183,11 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }
 
@@ -244,7 +246,7 @@ impl<'l> Iterator for PathConvIter<'l> {
                 let from = self.prev;
                 self.prev = point(&(p2.x as f64), &(p2.y as f64));
                 Some(PathEvent::Quadratic {
-                    from: from,
+                    from,
                     ctrl: point(&(p1.x as f64), &(p2.y as f64)),
                     to: point(&(p2.x as f64), &(p2.y as f64)),
                 })
@@ -291,7 +293,7 @@ impl<'l> Iterator for PathConvIter<'l> {
     }
 }
 
-pub fn convert_path<'a>(p: &'a usvg::Path) -> PathConvIter<'a> {
+pub fn convert_path(p: &usvg::Path) -> PathConvIter<'_> {
     PathConvIter {
         iter: p.data.segments(),
         first: Point::new(0.0, 0.0),

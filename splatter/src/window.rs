@@ -332,13 +332,7 @@ impl SurfaceConfigurationBuilder {
         let usage = self.usage.unwrap_or(Self::DEFAULT_USAGE);
         let format = self
             .format
-            .or_else(|| {
-                surface
-                    .get_capabilities(&adapter)
-                    .formats
-                    .get(0)
-                    .map(|x| x.clone())
-            })
+            .or_else(|| surface.get_capabilities(adapter).formats.get(0).copied())
             .unwrap_or(Self::DEFAULT_FORMAT);
         let present_mode = self.present_mode.unwrap_or(Self::DEFAULT_PRESENT_MODE);
         wgpu::SurfaceConfiguration {
@@ -807,7 +801,7 @@ impl<'app> Builder<'app> {
             .or_else(|| {
                 window
                     .window_attributes()
-                    .fullscreen
+                    .fullscreen()
                     .as_ref()
                     .and_then(|fullscreen| match fullscreen {
                         Fullscreen::Exclusive(video_mode) => {
@@ -861,14 +855,14 @@ impl<'app> Builder<'app> {
         // Use the `initial_window_size` as the default dimensions for the window if none
         // were specified.
         if window.window_attributes().inner_size.is_none()
-            && window.window_attributes().fullscreen.is_none()
+            && window.window_attributes().fullscreen().is_none()
         {
             window = window.with_inner_size(initial_window_size);
         }
 
         // Set a default minimum window size for configuring the surface.
         if window.window_attributes().min_inner_size.is_none()
-            && window.window_attributes().fullscreen.is_none()
+            && window.window_attributes().fullscreen().is_none()
         {
             window = window.with_min_inner_size(winit::dpi::Size::Physical(MIN_SC_PIXELS));
         }
@@ -876,14 +870,13 @@ impl<'app> Builder<'app> {
         // Background must be initially cleared
         let is_invalidated = true;
 
-        let clear_color = clear_color.unwrap_or_else(|| {
-            let mut color: wgpu::Color = Default::default();
-            color.a = if window.window_attributes().transparent {
+        let clear_color = clear_color.unwrap_or_else(|| wgpu::Color {
+            a: if window.window_attributes().transparent {
                 0.0
             } else {
                 1.0
-            };
-            color
+            },
+            ..Default::default()
         });
 
         // Build the window.
@@ -896,20 +889,20 @@ impl<'app> Builder<'app> {
             window.build(window_target)?
         };
 
-        #[cfg(target_arch = "wasm32")]
-        {
-            use winit::platform::web::WindowExtWebSys;
-            let canvas = window.canvas();
+        // // #[cfg(target_arch = "wasm32")]
+        // {
+        //     use winit::platform::web::WindowExtWebSys;
+        //     let canvas = window.canvas();
 
-            web_sys::window()
-                .expect("window")
-                .document()
-                .expect("document")
-                .body()
-                .expect("body")
-                .append_child(&canvas)
-                .expect("append_child");
-        }
+        //     web_sys::window()
+        //         .expect("window")
+        //         .document()
+        //         .expect("document")
+        //         .body()
+        //         .expect("body")
+        //         .append_child(&canvas)
+        //         .expect("append_child");
+        // }
 
         // Build the wgpu surface.
         let surface = unsafe {
@@ -938,8 +931,8 @@ impl<'app> Builder<'app> {
         let win_physical_size = window.inner_size();
         let win_dims_px: [u32; 2] = win_physical_size.into();
         let device = device_queue_pair.device();
-        let surface_conf = surface_conf_builder.build(&surface, &*adapter, win_dims_px);
-        surface.configure(&device, &surface_conf);
+        let surface_conf = surface_conf_builder.build(&surface, &adapter, win_dims_px);
+        surface.configure(device, &surface_conf);
 
         // If we're using an intermediary image for rendering frames to surface textures, create
         // the necessary render data.
@@ -948,12 +941,8 @@ impl<'app> Builder<'app> {
                 let msaa_samples = msaa_samples.unwrap_or(Frame::DEFAULT_MSAA_SAMPLES);
                 // TODO: Verity that requested sample count is valid for surface?
                 let surface_dims = [surface_conf.width, surface_conf.height];
-                let render = frame::RenderData::new(
-                    &device,
-                    surface_dims,
-                    surface_conf.format,
-                    msaa_samples,
-                );
+                let render =
+                    frame::RenderData::new(device, surface_dims, surface_conf.format, msaa_samples);
                 let capture =
                     frame::CaptureData::new(max_capture_frame_jobs, capture_frame_timeout);
                 let frame_data = FrameData { render, capture };
@@ -1216,16 +1205,20 @@ impl Window {
     ///
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_pixels(&self, width: u32, height: u32) {
-        self.window
-            .set_inner_size(winit::dpi::PhysicalSize { width, height })
+        // TODO: handle this result
+        let _ = self
+            .window
+            .request_inner_size(winit::dpi::PhysicalSize { width, height });
     }
 
     /// Modifies the inner size of the window using point values.
     ///
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_points(&self, width: f32, height: f32) {
-        self.window
-            .set_inner_size(winit::dpi::LogicalSize { width, height })
+        // TODO: handle this result
+        let _ = self
+            .window
+            .request_inner_size(winit::dpi::LogicalSize { width, height });
     }
 
     /// The width and height of the window in pixels.
@@ -1389,8 +1382,10 @@ impl Window {
     /// - **iOS:** Has no effect.
     /// - **Web:** Has no effect.
     pub fn set_ime_position_points(&self, x: f32, y: f32) {
+        let outer_size = self.outer_size_pixels();
+        let size = LogicalSize::new(outer_size.0, outer_size.1);
         self.window
-            .set_ime_position(winit::dpi::LogicalPosition { x, y })
+            .set_ime_cursor_area(winit::dpi::LogicalPosition { x, y }, size);
     }
 
     /// Modifies the mouse cursor of the window.
@@ -1569,7 +1564,7 @@ impl Window {
         // If the parent directory does not exist, create it.
         let dir = path.parent().expect("capture_frame path has no directory");
         if !dir.exists() {
-            std::fs::create_dir_all(&dir).expect("failed to create `capture_frame` directory");
+            std::fs::create_dir_all(dir).expect("failed to create `capture_frame` directory");
         }
 
         let mut capture_next_frame_path = self

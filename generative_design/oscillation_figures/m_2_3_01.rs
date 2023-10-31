@@ -28,7 +28,7 @@
  * 7/8               : carrier signal frequency -/+ (modulation frequency)
  * s                 : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -132,35 +132,26 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            model.freq -= 1.0;
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowLeft => model.phi -= 15.0,
+                NamedKey::ArrowRight => model.phi += 15.0,
+                _ => {}
+            };
         }
-        Key::Key2 => {
-            model.freq += 1.0;
-        }
-        Key::Key7 => {
-            model.mod_freq -= 1.0;
-        }
-        Key::Key8 => {
-            model.mod_freq += 1.0;
-        }
-        Key::A => {
-            model.draw_frequency = !model.draw_frequency;
-        }
-        Key::C => {
-            model.draw_modulation = !model.draw_modulation;
-        }
-        Key::Left => {
-            model.phi -= 15.0;
-        }
-        Key::Right => {
-            model.phi += 15.0;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "1" => model.freq -= 1.0,
+            "2" => model.freq += 1.0,
+            "7" => model.mod_freq -= 1.0,
+            "8" => model.mod_freq += 1.0,
+            "a" => model.draw_frequency = !model.draw_frequency,
+            "c" => model.draw_modulation = !model.draw_modulation,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
     model.freq = model.freq.max(1.0);
     model.mod_freq = model.mod_freq.max(1.0);

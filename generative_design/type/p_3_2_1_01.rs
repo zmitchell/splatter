@@ -35,6 +35,7 @@ use splatter::lyon::algorithms::walk::{walk_along_path, RepeatedPattern, WalkerE
 
 use splatter::lyon::path::iterator::*;
 use splatter::prelude::*;
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).run();
@@ -113,7 +114,7 @@ fn key_pressed(_app: &App, _model: &mut Model, _key: Key) {
     //model.letter = key.into();
 }
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::LControl || key == Key::RControl {
+    if key == Key::Named(NamedKey::Control) {
         app.main_window()
             .capture_frame(app.exe_name().unwrap() + ".png");
     }

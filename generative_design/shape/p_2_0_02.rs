@@ -29,7 +29,7 @@
  * spacebar            : erase
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();
@@ -95,18 +95,22 @@ fn mouse_released(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Space => {
-            model.clear_background = true;
+        Key::Named(key) => {
+            if let NamedKey::Space = key {
+                model.clear_background = true
+            };
         }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }
 fn key_released(_app: &App, model: &mut Model, key: Key) {
-    if key == Key::Space {
+    if let Key::Named(NamedKey::Space) = key {
         model.clear_background = false;
     }
 }

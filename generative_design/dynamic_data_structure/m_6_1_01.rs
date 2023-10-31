@@ -24,7 +24,7 @@
  * r             : reset positions
  * s             : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::SmolStr};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -165,7 +165,12 @@ fn view(app: &App, model: &Model, frame: Frame) {
     // Begin drawing
     let draw = app.draw();
 
-    if frame.nth() == 0 || app.keys.down.contains(&Key::R) {
+    if frame.nth() == 0
+        || app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("r")))
+    {
         draw.background().color(WHITE);
     } else {
         draw.rect()
@@ -182,12 +187,13 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::R => model.nodes = create_nodes(model.node_count, app.window_rect()),
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "r" => model.nodes = create_nodes(model.node_count, app.window_rect()),
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
         }
-        _other_key => {}
     }
 }

@@ -105,7 +105,7 @@ where
     {
         let file = fs::File::create(&temp_path)?;
         let mut buffered = io::BufWriter::new(file);
-        buffered.write(content)?;
+        buffered.write_all(content)?;
         match buffered.into_inner() {
             Err(err) => {
                 let io_err = err.error();
@@ -124,7 +124,7 @@ where
         if backup_path.exists() {
             fs::remove_file(&backup_path)?;
         }
-        fs::rename(&path, &backup_path)?;
+        fs::rename(path, &backup_path)?;
     }
 
     // Rename the temp file to the original path name.

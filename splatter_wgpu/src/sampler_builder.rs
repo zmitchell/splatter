@@ -139,9 +139,9 @@ impl Default for SamplerBuilder {
     }
 }
 
-impl Into<wgpu::SamplerDescriptor<'static>> for SamplerBuilder {
-    fn into(self) -> wgpu::SamplerDescriptor<'static> {
-        self.descriptor
+impl From<SamplerBuilder> for wgpu::SamplerDescriptor<'static> {
+    fn from(val: SamplerBuilder) -> Self {
+        val.descriptor
     }
 }
 

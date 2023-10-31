@@ -99,7 +99,7 @@ fn draw_branch(draw: &Draw, x: f32, y: f32, radius: f32, level: u8, mx: f32, my:
     if level > 0 {
         // left branch
         draw_branch(
-            &draw,
+            draw,
             x - radius,
             y - radius / 2.0,
             radius / 2.0,
@@ -109,7 +109,7 @@ fn draw_branch(draw: &Draw, x: f32, y: f32, radius: f32, level: u8, mx: f32, my:
         );
         // right branch
         draw_branch(
-            &draw,
+            draw,
             x + radius,
             y - radius / 2.0,
             radius / 2.0,
@@ -121,21 +121,22 @@ fn draw_branch(draw: &Draw, x: f32, y: f32, radius: f32, level: u8, mx: f32, my:
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Key1 => model.recursion_level = 1,
-        Key::Key2 => model.recursion_level = 2,
-        Key::Key3 => model.recursion_level = 3,
-        Key::Key4 => model.recursion_level = 4,
-        Key::Key5 => model.recursion_level = 5,
-        Key::Key6 => model.recursion_level = 6,
-        Key::Key7 => model.recursion_level = 7,
-        Key::Key8 => model.recursion_level = 8,
-        Key::Key9 => model.recursion_level = 9,
-        Key::Key0 => model.recursion_level = 0,
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.recursion_level = 1,
+            "2" => model.recursion_level = 2,
+            "3" => model.recursion_level = 3,
+            "4" => model.recursion_level = 4,
+            "5" => model.recursion_level = 5,
+            "6" => model.recursion_level = 6,
+            "7" => model.recursion_level = 7,
+            "8" => model.recursion_level = 8,
+            "9" => model.recursion_level = 9,
+            "0" => model.recursion_level = 0,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        };
     }
 }

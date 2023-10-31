@@ -27,7 +27,7 @@
  * arrow left/right  : phi -/+
  * s                 : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -195,33 +195,22 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Key1 => {
-            model.freq_x -= 1.0;
-        }
-        Key::Key2 => {
-            model.freq_x += 1.0;
-        }
-        Key::Key3 => {
-            model.freq_y -= 1.0;
-        }
-        Key::Key4 => {
-            model.freq_y += 1.0;
-        }
-        Key::A => {
-            model.do_draw_animation = !model.do_draw_animation;
-        }
-        Key::Left => {
-            model.phi -= 15.0;
-        }
-        Key::Right => {
-            model.phi += 15.0;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.freq_x -= 1.0,
+            "2" => model.freq_x += 1.0,
+            "3" => model.freq_y -= 1.0,
+            "4" => model.freq_y += 1.0,
+            "a" => model.do_draw_animation = !model.do_draw_animation,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        };
+    } else if let Key::Named(NamedKey::ArrowLeft) = key {
+        model.phi -= 15.0;
+    } else if let Key::Named(NamedKey::ArrowRight) = key {
+        model.phi += 15.0;
     }
     model.freq_x = model.freq_x.max(1.0);
     model.freq_y = model.freq_y.max(1.0);

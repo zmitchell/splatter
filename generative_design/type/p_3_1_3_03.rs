@@ -35,6 +35,7 @@
 use splatter::prelude::*;
 use splatter::rand::rngs::StdRng;
 use splatter::rand::{Rng, SeedableRng};
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).run();
@@ -168,9 +169,9 @@ fn count_characters(model: &mut Model) {
         // get one character from the text and turn it to uppercase
         let upper_case_char = c.to_uppercase().next().unwrap();
         let index = model.alphabet.chars().position(|c| c == upper_case_char);
-        if index.is_some() {
+        if let Some(index) = index {
             // increase the respective counter
-            model.counters[index.unwrap()] += 1;
+            model.counters[index] += 1;
         }
     }
 }
@@ -181,22 +182,16 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::LControl | Key::RControl => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        Key::Key1 => {
-            model.draw_alpha = !model.draw_alpha;
-        }
-        Key::Key2 => {
-            model.draw_lines = !model.draw_lines;
-        }
-        Key::Key3 => {
-            model.draw_ellipses = !model.draw_ellipses;
-        }
-        Key::Key4 => {
-            model.draw_text = !model.draw_text;
-        }
-        _other_key => {}
+        Key::Named(NamedKey::Control) => app
+            .main_window()
+            .capture_frame(app.exe_name().unwrap() + ".png"),
+        Key::Character(key) => match key.as_str() {
+            "1" => model.draw_alpha = !model.draw_alpha,
+            "2" => model.draw_lines = !model.draw_lines,
+            "3" => model.draw_ellipses = !model.draw_ellipses,
+            "4" => model.draw_text = !model.draw_text,
+            _ => {}
+        },
+        _ => {}
     }
 }

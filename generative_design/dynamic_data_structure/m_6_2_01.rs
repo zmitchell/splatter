@@ -22,7 +22,6 @@
  * and prints them to the console
  */
 use splatter::prelude::*;
-use wikipedia;
 
 fn main() {
     splatter::app(model).update(update).run();

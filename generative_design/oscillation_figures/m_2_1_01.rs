@@ -26,7 +26,7 @@
  * arrow left/right  : phi -/+
  * s                 : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -70,7 +70,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
         model.x = (model.angle * model.freq + deg_to_rad(model.phi)).cos();
         model.x *= 100.0 - 125.0;
         model.y = (model.angle * model.freq + deg_to_rad(model.phi)).sin();
-        model.y = model.y * 100.0;
+        model.y *= 100.0;
     } else {
         model.point_count = app.window_rect().w() as usize;
     }
@@ -198,26 +198,22 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            model.freq -= 1.0;
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowLeft => model.phi -= 15.0,
+                NamedKey::ArrowRight => model.phi += 15.0,
+                _ => {}
+            };
         }
-        Key::Key2 => {
-            model.freq += 1.0;
-        }
-        Key::A => {
-            model.do_draw_animation = !model.do_draw_animation;
-        }
-        Key::Left => {
-            model.phi -= 15.0;
-        }
-        Key::Right => {
-            model.phi += 15.0;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "1" => model.freq -= 1.0,
+            "2" => model.freq += 1.0,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
     model.freq = model.freq.max(1.0);
 }

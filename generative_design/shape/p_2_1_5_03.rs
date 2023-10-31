@@ -36,7 +36,7 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -124,11 +124,11 @@ fn view(app: &App, model: &Model, frame: Frame) {
     draw.background().color(WHITE);
 
     model.shapes.iter().for_each(|shape| {
-        shape.display(&draw, &model);
+        shape.display(&draw, model);
     });
 
     if let Some(ref s) = model.new_shape {
-        s.display(&draw, &model);
+        s.display(&draw, model);
     }
 
     // Write to the window frame.
@@ -163,28 +163,23 @@ fn mouse_released(_app: &App, model: &mut Model, button: MouseButton) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => model.shape_height += model.density as f32,
+                NamedKey::ArrowDown => model.shape_height -= model.density as f32,
+                _ => {}
+            };
         }
-        Key::Key1 => {
-            model.shape_color = vec3(1.0, 0.0, 0.0);
-        }
-        Key::Key2 => {
-            model.shape_color = vec3(0.0, 1.0, 0.0);
-        }
-        Key::Key3 => {
-            model.shape_color = vec3(0.0, 0.0, 1.0);
-        }
-        Key::Key4 => {
-            model.shape_color = vec3(0.0, 0.0, 0.0);
-        }
-        Key::Up => {
-            model.shape_height += model.density as f32;
-        }
-        Key::Down => {
-            model.shape_height -= model.density as f32;
-        }
-        _other_key => (),
+        Key::Character(key) => match key.as_str() {
+            "1" => model.shape_color = vec3(1.0, 0.0, 0.0),
+            "2" => model.shape_color = vec3(0.0, 1.0, 0.0),
+            "3" => model.shape_color = vec3(0.0, 0.0, 1.0),
+            "4" => model.shape_color = vec3(0.0, 0.0, 0.0),
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

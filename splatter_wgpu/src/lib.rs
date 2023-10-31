@@ -229,7 +229,7 @@ pub mod bytes {
     where
         T: Copy + Sized,
     {
-        let len = slice.len() * std::mem::size_of::<T>();
+        let len = std::mem::size_of_val(slice);
         let ptr = slice.as_ptr() as *const u8;
         std::slice::from_raw_parts(ptr, len)
     }

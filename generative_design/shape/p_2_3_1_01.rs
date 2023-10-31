@@ -34,7 +34,7 @@
  * arrow down          : line length -
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -73,7 +73,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 
 fn view(app: &App, model: &Model, frame: Frame) {
     let mut draw = app.draw();
-    if frame.nth() == 0 || app.keys.down.contains(&Key::Delete) {
+    if frame.nth() == 0 || app.keys.down.contains(&Key::Named(NamedKey::Delete)) {
         frame.clear(WHITE);
     }
 
@@ -96,56 +96,42 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Up => {
-            model.line_length += 5.0;
+    use NamedKey::*;
+    if let Key::Named(key) = key {
+        match key {
+            ArrowUp => model.line_length += 5.0,
+            ArrowDown => model.line_length -= 5.0,
+            ArrowLeft => model.angle_speed -= 0.5,
+            ArrowRight => model.angle_speed += 0.5,
+            _ => {}
         }
-        Key::Down => {
-            model.line_length -= 5.0;
-        }
-        Key::Left => {
-            model.angle_speed -= 0.5;
-        }
-        Key::Right => {
-            model.angle_speed += 0.5;
-        }
-        _otherkey => (),
     }
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Named(NamedKey::Space) = key {
+        model.c = rgba(
+            random_f32(),
+            random_f32(),
+            random_f32(),
+            random_range(0.3, 0.4),
+        );
+        return;
+    }
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.c = rgba(0.7, 0.61, 0.0, 1.0),
+            "2" => model.c = rgba(0.0, 0.5, 0.64, 1.0),
+            "3" => model.c = rgba(0.34, 0.13, 0.5, 1.0),
+            "4" => model.c = rgba(0.77, 0.0, 0.48, 1.0),
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            "d" => {
+                model.angle += 180.0;
+                model.angle_speed *= -1.0;
+            }
+            _ => {}
         }
-        // reverse direction and mirror angle
-        Key::D => {
-            model.angle += 180.0;
-            model.angle_speed *= -1.0;
-        }
-        // change color
-        Key::Space => {
-            model.c = rgba(
-                random_f32(),
-                random_f32(),
-                random_f32(),
-                random_range(0.3, 0.4),
-            );
-        }
-        // default colors from 1 to 4
-        Key::Key1 => {
-            model.c = rgba(0.7, 0.61, 0.0, 1.0);
-        }
-        Key::Key2 => {
-            model.c = rgba(0.0, 0.5, 0.64, 1.0);
-        }
-        Key::Key3 => {
-            model.c = rgba(0.34, 0.13, 0.5, 1.0);
-        }
-        Key::Key4 => {
-            model.c = rgba(0.77, 0.0, 0.48, 1.0);
-        }
-        _otherkey => (),
     }
 }
