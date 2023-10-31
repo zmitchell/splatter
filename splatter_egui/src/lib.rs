@@ -497,7 +497,7 @@ fn winit_to_egui_modifiers(modifiers: winit::keyboard::ModifiersState) -> egui::
         #[cfg(not(target_os = "macos"))]
         mac_cmd: false,
         #[cfg(not(target_os = "macos"))]
-        command: modifiers.ctrl(),
+        command: modifiers.control_key(),
     }
 }
 
