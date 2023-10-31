@@ -23,7 +23,6 @@
  */
 use splatter::prelude::*;
 
-
 fn main() {
     splatter::app(model).update(update).run();
 }

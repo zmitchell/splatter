@@ -28,9 +28,7 @@
  * s                   : save png
  * c                   : save color palette
  */
-use splatter::{
-    prelude::*,
-};
+use splatter::prelude::*;
 
 fn main() {
     splatter::app(model).run();

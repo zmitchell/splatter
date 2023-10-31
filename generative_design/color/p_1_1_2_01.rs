@@ -28,7 +28,7 @@
  * 1-5                 : number of segments
  * s                   : save png
  */
-use splatter::{prelude::*};
+use splatter::prelude::*;
 
 fn main() {
     splatter::app(model).run();

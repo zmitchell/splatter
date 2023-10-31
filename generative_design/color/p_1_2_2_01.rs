@@ -41,7 +41,6 @@ use splatter::image;
 use splatter::image::GenericImageView;
 use splatter::prelude::*;
 
-
 fn main() {
     splatter::app(model).run();
 }
