@@ -187,28 +187,28 @@ fn mouse_moved(app: &App, model: &mut Model, pos: Point2) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            model.tile_count_x = 4;
-            model.tile_count_y = 4;
-            crop_tiles(app, model, app.window_rect());
-        }
-        Key::Key2 => {
-            model.tile_count_x = 10;
-            model.tile_count_y = 10;
-            crop_tiles(app, model, app.window_rect());
-        }
-        Key::Key3 => {
-            model.tile_count_x = 20;
-            model.tile_count_y = 20;
-            crop_tiles(app, model, app.window_rect());
-        }
-        Key::R => {
-            model.random_mode = !model.random_mode;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "1" => {
+                model.tile_count_x = 4;
+                model.tile_count_y = 4;
+                crop_tiles(app, model, app.window_rect());
+            }
+            "2" => {
+                model.tile_count_x = 10;
+                model.tile_count_y = 10;
+                crop_tiles(app, model, app.window_rect());
+            }
+            "3" => {
+                model.tile_count_x = 20;
+                model.tile_count_y = 20;
+                crop_tiles(app, model, app.window_rect());
+            }
+            "r" => model.random_mode = !model.random_mode,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

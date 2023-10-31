@@ -134,62 +134,60 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }
 
 fn key_released(_app: &App, model: &mut Model, key: Key) {
     let black = rgba(0.0, 0.0, 0.0, 1.0);
 
-    match key {
-        Key::Key1 => {
-            model.act_stroke_cap = LineCap::Round;
-        }
-        Key::Key2 => {
-            model.act_stroke_cap = LineCap::Square;
-        }
-        Key::Key3 => {
-            model.act_stroke_cap = LineCap::Butt;
-        }
-        Key::Key4 => {
-            if model.color_left.eq(&black) {
-                model.color_left = rgba(0.77, 0.0, 0.48, model.alpha_left);
-            } else {
-                model.color_left = rgba(0.0, 0.0, 0.0, model.alpha_left);
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.act_stroke_cap = LineCap::Round,
+            "2" => model.act_stroke_cap = LineCap::Square,
+            "3" => model.act_stroke_cap = LineCap::Butt,
+            "4" => {
+                if model.color_left.eq(&black) {
+                    model.color_left = rgba(0.77, 0.0, 0.48, model.alpha_left);
+                } else {
+                    model.color_left = rgba(0.0, 0.0, 0.0, model.alpha_left);
+                }
             }
-        }
-        Key::Key5 => {
-            if model.color_right.eq(&black) {
-                model.color_right = rgba(0.34, 0.13, 0.5, model.alpha_right);
-            } else {
+            "5" => {
+                if model.color_right.eq(&black) {
+                    model.color_right = rgba(0.34, 0.13, 0.5, model.alpha_right);
+                } else {
+                    model.color_right = rgba(0.0, 0.0, 0.0, model.alpha_right);
+                }
+            }
+            "6" => {
+                if model.alpha_left == 1.0 {
+                    model.alpha_left = 0.5;
+                } else {
+                    model.alpha_left = 1.0;
+                }
+                model.color_left.alpha = model.alpha_left;
+            }
+            "7" => {
+                if model.alpha_right == 1.0 {
+                    model.alpha_right = 0.5;
+                } else {
+                    model.alpha_right = 1.0;
+                }
+                model.color_right.alpha = model.alpha_right;
+            }
+            "0" => {
+                model.act_stroke_cap = LineCap::Round;
+                model.alpha_left = 1.0;
+                model.alpha_right = 1.0;
+                model.color_left = rgba(0.0, 0.0, 0.0, model.alpha_left);
                 model.color_right = rgba(0.0, 0.0, 0.0, model.alpha_right);
             }
+            _ => {}
         }
-        Key::Key6 => {
-            if model.alpha_left == 1.0 {
-                model.alpha_left = 0.5;
-            } else {
-                model.alpha_left = 1.0;
-            }
-            model.color_left.alpha = model.alpha_left;
-        }
-        Key::Key7 => {
-            if model.alpha_right == 1.0 {
-                model.alpha_right = 0.5;
-            } else {
-                model.alpha_right = 1.0;
-            }
-            model.color_right.alpha = model.alpha_right;
-        }
-        Key::Key0 => {
-            model.act_stroke_cap = LineCap::Round;
-            model.alpha_left = 1.0;
-            model.alpha_right = 1.0;
-            model.color_left = rgba(0.0, 0.0, 0.0, model.alpha_left);
-            model.color_right = rgba(0.0, 0.0, 0.0, model.alpha_right);
-        }
-        _other_key => {}
     }
 }

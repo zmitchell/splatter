@@ -260,13 +260,17 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
-    }
-    if key == Key::R {
-        model.nodes = create_nodes(model.node_count, model.node_radius, app.window_rect());
-        model.spring_connections = create_connections(model.node_count);
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            "r" => {
+                model.nodes = create_nodes(model.node_count, model.node_radius, app.window_rect());
+                model.spring_connections = create_connections(model.node_count);
+            }
+            _ => {}
+        }
     }
 }
 

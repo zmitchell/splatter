@@ -69,8 +69,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
     for grid_y in (0..win.h() as usize).step_by(step_y as usize) {
         for grid_x in (0..win.w() as usize).step_by(step_x as usize) {
-            let x = win.left() + grid_x as f32 + (step_x as f32 / 2.0);
-            let y = win.top() - grid_y as f32 - (step_y as f32 / 2.0);
+            let x = win.left() + grid_x as f32 + (step_x / 2.0);
+            let y = win.top() - grid_y as f32 - (step_y / 2.0);
             draw.texture(&model.texture).x_y(x, y).w_h(step_x, step_y);
         }
     }
@@ -79,8 +79,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

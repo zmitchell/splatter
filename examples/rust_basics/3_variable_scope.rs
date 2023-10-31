@@ -13,12 +13,13 @@ struct Model {
     bar: f64,
 }
 
+#[allow(clippy::disallowed_names)]
 fn model(app: &App) -> Model {
     // Make a window.
     app.new_window().event(event).view(view).build().unwrap();
     // Initialise our model's fields.
     let foo = 80;
-    let bar = 3.14;
+    let bar = std::f64::consts::PI;
     // Construct and return the model with our initialised values.
     Model { foo, bar }
 }

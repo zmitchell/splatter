@@ -31,6 +31,7 @@ use splatter::prelude::*;
 
 use splatter::image;
 use splatter::image::GenericImageView;
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).run();
@@ -156,38 +157,29 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
     match key {
-        // change fontSizeMax with arrow keys up/down
-        Key::Up => {
-            model.font_size_max += 2;
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => model.font_size_max += 2,
+                NamedKey::ArrowDown => model.font_size_max -= 2,
+                NamedKey::ArrowLeft => model.font_size_min -= 2,
+                NamedKey::ArrowRight => model.font_size_min += 2,
+                _ => {}
+            };
         }
-        Key::Down => {
-            model.font_size_max -= 2;
-        }
-        // change fontSizeMin with arrow keys left/right
-        Key::Right => {
-            model.font_size_min += 2;
-        }
-        Key::Left => {
-            model.font_size_min -= 2;
-        }
-        _otherkey => (),
+        _ => {}
     }
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        // change render mode
-        Key::Key1 => {
-            model.font_size_static = !model.font_size_static;
-        }
-        // change color style
-        Key::Key2 => {
-            model.black_and_white = !model.black_and_white;
-        }
-        _otherkey => (),
+        Key::Character(key) => match key.as_str() {
+            "1" => model.font_size_static = !model.font_size_static,
+            "2" => model.black_and_white = !model.black_and_white,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

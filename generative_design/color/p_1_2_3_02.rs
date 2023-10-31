@@ -27,7 +27,7 @@
  * s                   : save png
  * c                   : save color palette
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::SmolStr};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -163,8 +163,10 @@ fn mouse_released(app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if let "s" = key.as_str() {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

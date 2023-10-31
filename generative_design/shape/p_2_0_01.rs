@@ -29,7 +29,7 @@
  */
 extern crate splatter;
 
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::SmolStr};
 
 fn main() {
     splatter::sketch(view).size(550, 550).run();
@@ -58,7 +58,11 @@ fn view(app: &App, frame: Frame) {
     // Write to the window frame.
     draw.to_frame(app, &frame).unwrap();
 
-    if app.keys.down.contains(&Key::S) {
+    if app
+        .keys
+        .down
+        .contains(&Key::Character(SmolStr::new_inline("s")))
+    {
         app.main_window()
             .capture_frame(app.exe_name().unwrap() + ".png");
     }

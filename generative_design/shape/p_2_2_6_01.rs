@@ -36,7 +36,7 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -166,48 +166,51 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => {
+                    model.line_length += 2.0;
+                    start_drawing(model);
+                }
+                NamedKey::ArrowDown => {
+                    model.line_length -= 2.0;
+                    start_drawing(model);
+                }
+                NamedKey::ArrowLeft => {
+                    if model.joints > 1 {
+                        model.joints -= 1;
+                        start_drawing(model);
+                    }
+                }
+                NamedKey::ArrowRight => {
+                    if model.joints < 10 {
+                        model.joints += 1;
+                        start_drawing(model);
+                    }
+                }
+                _ => {}
+            };
         }
-        Key::Up => {
-            model.line_length += 2.0;
-            start_drawing(model);
-        }
-        Key::Down => {
-            model.line_length -= 2.0;
-            start_drawing(model);
-        }
-        Key::Left => {
-            if model.joints > 1 {
-                model.joints -= 1;
-                start_drawing(model);
+        Key::Character(key) => match key.as_str() {
+            "1" => model.show_pendulum = !model.show_pendulum,
+            "2" => model.show_pendulum_path = !model.show_pendulum_path,
+            "=" => {
+                if model.speed_relation < 5.0 {
+                    model.speed_relation += 0.5;
+                    start_drawing(model);
+                }
             }
-        }
-        Key::Right => {
-            if model.joints < 10 {
-                model.joints += 1;
-                start_drawing(model);
+            "-" => {
+                if model.speed_relation > 2.0 {
+                    model.speed_relation -= 0.5;
+                    start_drawing(model);
+                }
             }
-        }
-        Key::Equals => {
-            if model.speed_relation < 5.0 {
-                model.speed_relation += 0.5;
-                start_drawing(model);
-            }
-        }
-        Key::Minus => {
-            if model.speed_relation > 2.0 {
-                model.speed_relation -= 0.5;
-                start_drawing(model);
-            }
-        }
-        Key::Key1 => {
-            model.show_pendulum = !model.show_pendulum;
-        }
-        Key::Key2 => {
-            model.show_pendulum_path = !model.show_pendulum_path;
-        }
-        _other_key => {}
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

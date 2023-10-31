@@ -114,20 +114,23 @@ fn view(app: &App, model: &Model, frame: Frame) {
 fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
     model.act_random_seed = (random_f32() * 100000.0) as u64;
 }
+
 fn key_released(_app: &App, model: &mut Model, key: Key) {
-    if key == Key::Key1 {
-        model.act_stroke_cap = LineCap::Round;
-    }
-    if key == Key::Key2 {
-        model.act_stroke_cap = LineCap::Square;
-    }
-    if key == Key::Key3 {
-        model.act_stroke_cap = LineCap::Butt;
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.act_stroke_cap = LineCap::Round,
+            "2" => model.act_stroke_cap = LineCap::Square,
+            "3" => model.act_stroke_cap = LineCap::Butt,
+            _ => {}
+        }
     }
 }
+
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

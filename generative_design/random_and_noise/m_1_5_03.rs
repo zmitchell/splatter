@@ -27,6 +27,7 @@
  */
 use splatter::noise::{NoiseFn, Perlin};
 use splatter::prelude::*;
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).update(update).run();
@@ -166,7 +167,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     // Begin drawing
     let draw = app.draw();
 
-    if frame.nth() == 0 || app.keys.down.contains(&Key::Delete) {
+    if frame.nth() == 0 || app.keys.down.contains(&Key::Named(NamedKey::Delete)) {
         draw.background().color(WHITE);
     } else {
         draw.rect()
@@ -184,15 +185,20 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => model.draw_mode = 1,
-        Key::Key2 => model.draw_mode = 2,
-        Key::Space => {
-            model.noise_seed = (random_f32() * 10000.0).floor() as u32;
+        Key::Named(key) => {
+            match key {
+                NamedKey::Space => model.noise_seed = (random_f32() * 10000.0).floor() as u32,
+                _ => {}
+            };
         }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "1" => model.draw_mode = 1,
+            "2" => model.draw_mode = 2,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

@@ -1,9 +1,10 @@
+#![allow(clippy::excessive_precision)]
 use splatter::prelude::*;
 
 #[test]
 fn angle_test() {
     let vector = vec2(1.0, 1.0);
-    assert_eq!(vector.angle(), 0.7853981633974483);
+    assert_eq!(vector.angle(), std::f32::consts::FRAC_PI_4);
     let vector = vec2(5.0, 2.0);
     assert_eq!(vector.angle(), 0.3805063771123649);
     let vector = vec2(-3.0, 4.0);

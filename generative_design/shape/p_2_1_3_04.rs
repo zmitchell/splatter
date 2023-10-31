@@ -30,7 +30,7 @@
  * arrow up/down       : number of tiles vertically
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{color::named, prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();
@@ -135,31 +135,24 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            model.draw_mode = 1;
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => model.tile_count_y += 1,
+                NamedKey::ArrowDown => model.tile_count_y = (model.tile_count_y - 1).max(1),
+                NamedKey::ArrowLeft => model.tile_count_x = (model.tile_count_x - 1).max(1),
+                NamedKey::ArrowRight => model.tile_count_x += 1,
+                _ => {}
+            };
         }
-        Key::Key2 => {
-            model.draw_mode = 2;
-        }
-        Key::Key3 => {
-            model.draw_mode = 3;
-        }
-        Key::Down => {
-            model.tile_count_y = (model.tile_count_y - 1).max(1);
-        }
-        Key::Up => {
-            model.tile_count_y += 1;
-        }
-        Key::Left => {
-            model.tile_count_x = (model.tile_count_x - 1).max(1);
-        }
-        Key::Right => {
-            model.tile_count_x += 1;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "1" => model.draw_mode = 1,
+            "2" => model.draw_mode = 2,
+            "3" => model.draw_mode = 3,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }

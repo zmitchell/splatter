@@ -27,7 +27,7 @@
  * r                   : clear display
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::SmolStr};
 
 enum Direction {
     North,
@@ -134,7 +134,12 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
-    if frame.nth() == 0 || app.keys.down.contains(&Key::R) {
+    if frame.nth() == 0
+        || app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("r")))
+    {
         draw.background().color(WHITE);
     }
     model.positions.iter().for_each(|pos| {
@@ -148,8 +153,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }

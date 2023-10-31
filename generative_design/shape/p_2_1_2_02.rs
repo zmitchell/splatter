@@ -35,6 +35,7 @@
 use splatter::prelude::*;
 use splatter::rand::rngs::StdRng;
 use splatter::rand::{Rng, SeedableRng};
+use splatter::winit::keyboard::NamedKey;
 
 fn main() {
     splatter::app(model).run();
@@ -128,67 +129,79 @@ fn mouse_pressed(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, _model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        if key.as_str() == "s" {
+            app.main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png");
+        }
     }
 }
 
 fn key_released(_app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Key1 => {
-            if model
-                .module_color_background
-                .eq(&hsva(0.0, 0.0, 0.0, model.module_alpha_background))
-            {
-                model.module_color_background =
-                    hsva(0.758, 0.73, 0.51, model.module_alpha_background);
-            } else {
-                model.module_color_background = hsva(0.0, 0.0, 0.0, model.module_alpha_background);
-            }
+        Key::Named(key) => {
+            match key {
+                NamedKey::ArrowUp => model.module_radius_background += 2.0,
+                NamedKey::ArrowDown => {
+                    model.module_radius_background = 5.0.max(model.module_radius_background - 2.0)
+                }
+                NamedKey::ArrowLeft => {
+                    model.module_radius_foreground = 2.5.max(model.module_radius_foreground - 2.0)
+                }
+                NamedKey::ArrowRight => model.module_radius_foreground += 2.0,
+                _ => {}
+            };
         }
-        Key::Key2 => {
-            if model
-                .module_color_foreground
-                .eq(&hsva(1.0, 1.0, 1.0, model.module_alpha_foreground))
-            {
-                model.module_color_foreground =
-                    hsva(0.89, 1.0, 0.77, model.module_alpha_foreground);
-            } else {
-                model.module_color_foreground = hsva(1.0, 1.0, 1.0, model.module_alpha_foreground);
+        Key::Character(key) => match key.as_str() {
+            "1" => {
+                if model.module_color_background.eq(&hsva(
+                    0.0,
+                    0.0,
+                    0.0,
+                    model.module_alpha_background,
+                )) {
+                    model.module_color_background =
+                        hsva(0.758, 0.73, 0.51, model.module_alpha_background);
+                } else {
+                    model.module_color_background =
+                        hsva(0.0, 0.0, 0.0, model.module_alpha_background);
+                }
             }
-        }
-        Key::Key3 => {
-            if model.module_alpha_background == 1.0 {
-                model.module_alpha_background = 0.5;
-                model.module_alpha_foreground = 0.5;
-            } else {
+            "2" => {
+                if model.module_color_foreground.eq(&hsva(
+                    1.0,
+                    1.0,
+                    1.0,
+                    model.module_alpha_foreground,
+                )) {
+                    model.module_color_foreground =
+                        hsva(0.89, 1.0, 0.77, model.module_alpha_foreground);
+                } else {
+                    model.module_color_foreground =
+                        hsva(1.0, 1.0, 1.0, model.module_alpha_foreground);
+                }
+            }
+            "3" => {
+                if model.module_alpha_background == 1.0 {
+                    model.module_alpha_background = 0.5;
+                    model.module_alpha_foreground = 0.5;
+                } else {
+                    model.module_alpha_background = 1.0;
+                    model.module_alpha_foreground = 1.0;
+                }
+                model.module_color_background.alpha = model.module_alpha_background;
+                model.module_color_foreground.alpha = model.module_alpha_foreground;
+            }
+            "0" => {
+                model.module_radius_background = 15.0;
+                model.module_radius_foreground = 7.5;
                 model.module_alpha_background = 1.0;
                 model.module_alpha_foreground = 1.0;
+                model.module_color_background = hsva(0.0, 0.0, 0.0, model.module_alpha_background);
+                model.module_color_foreground = hsva(0.0, 0.0, 1.0, model.module_alpha_foreground);
             }
-            model.module_color_background.alpha = model.module_alpha_background;
-            model.module_color_foreground.alpha = model.module_alpha_foreground;
-        }
-        Key::Key0 => {
-            model.module_radius_background = 15.0;
-            model.module_radius_foreground = 7.5;
-            model.module_alpha_background = 1.0;
-            model.module_alpha_foreground = 1.0;
-            model.module_color_background = hsva(0.0, 0.0, 0.0, model.module_alpha_background);
-            model.module_color_foreground = hsva(0.0, 0.0, 1.0, model.module_alpha_foreground);
-        }
-        Key::Up => {
-            model.module_radius_background += 2.0;
-        }
-        Key::Down => {
-            model.module_radius_background = 5.0.max(model.module_radius_background - 2.0);
-        }
-        Key::Left => {
-            model.module_radius_foreground = 2.5.max(model.module_radius_foreground - 2.0);
-        }
-        Key::Right => {
-            model.module_radius_foreground += 2.0;
-        }
-        _other_key => {}
+            _ => {}
+        },
+        _ => {}
     }
 }

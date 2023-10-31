@@ -112,9 +112,8 @@ impl Gol {
                 for i in 0..3 {
                     for j in 0..3 {
                         let i_idx =
-                            (x as i32 + (i as i32 - 1) + self.columns as i32) % self.columns as i32;
-                        let j_idx =
-                            (y as i32 + (j as i32 - 1) + self.rows as i32) % self.rows as i32;
+                            (x as i32 + (i - 1) + self.columns as i32) % self.columns as i32;
+                        let j_idx = (y as i32 + (j - 1) + self.rows as i32) % self.rows as i32;
                         neighbors += self.board[i_idx as usize][j_idx as usize].previous;
                     }
                 }
@@ -124,10 +123,8 @@ impl Gol {
                 neighbors -= self.board[x][y].previous;
 
                 // Rules of Life
-                if self.board[x][y].state == 1 && neighbors < 2 {
+                if self.board[x][y].state == 1 && !(2..=3).contains(&neighbors) {
                     self.board[x][y].new_state(0); // Loneliness
-                } else if self.board[x][y].state == 1 && neighbors > 3 {
-                    self.board[x][y].new_state(0); // Over Population
                 } else if self.board[x][y].state == 0 && neighbors == 3 {
                     self.board[x][y].new_state(1); // Reproduction
                 }
@@ -139,10 +136,10 @@ impl Gol {
     fn display(&self, draw: &Draw, rect: &Rect) {
         for i in 0..self.columns {
             for j in 0..self.rows {
-                let x = (i * self.w) as f32 - rect.right() as f32;
-                let y = (j * self.w) as f32 - rect.top() as f32;
+                let x = (i * self.w) as f32 - rect.right();
+                let y = (j * self.w) as f32 - rect.top();
                 let offset = self.w as f32 / 2.0;
-                self.board[i][j].display(&draw, x + offset, y + offset);
+                self.board[i][j].display(draw, x + offset, y + offset);
             }
         }
     }

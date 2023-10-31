@@ -136,11 +136,16 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
-    }
-    if key == Key::Key1 {
-        model.draw_ghosts = !model.draw_ghosts;
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "s" => {
+                app.main_window()
+                    .capture_frame(app.exe_name().unwrap() + ".png");
+            }
+            "1" => {
+                model.draw_ghosts = !model.draw_ghosts;
+            }
+            _ => {}
+        }
     }
 }

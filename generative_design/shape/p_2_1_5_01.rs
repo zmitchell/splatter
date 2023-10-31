@@ -108,17 +108,14 @@ fn overlay(draw: &Draw, model: &Model, rect: Rect, stroke_weight: f32) {
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.draw_mode = 1,
+            "2" => model.draw_mode = 2,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
         }
-        Key::Key1 => {
-            model.draw_mode = 1;
-        }
-        Key::Key2 => {
-            model.draw_mode = 2;
-        }
-        _other_key => (),
     }
 }

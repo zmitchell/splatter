@@ -130,19 +130,21 @@ fn count_characters(model: &mut Model) {
         // get one character from the text and turn it to uppercase
         let upper_case_char = c.to_uppercase().next().unwrap();
         let index = model.alphabet.chars().position(|c| c == upper_case_char);
-        if index.is_some() {
+        if let Some(index) = index {
             // increase the respective counter
-            model.counters[index.unwrap()] += 1;
+            model.counters[index] += 1;
         }
     }
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    if key == Key::S {
-        app.main_window()
-            .capture_frame(app.exe_name().unwrap() + ".png");
-    }
-    if key == Key::A {
-        model.draw_alpha = !model.draw_alpha;
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            "a" => model.draw_alpha = !model.draw_alpha,
+            _ => {}
+        }
     }
 }

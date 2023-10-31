@@ -154,20 +154,15 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Key1 => {
-            model.draw_mode = 1;
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.draw_mode = 1,
+            "2" => model.draw_mode = 2,
+            "3" => model.draw_mode = 3,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
         }
-        Key::Key2 => {
-            model.draw_mode = 2;
-        }
-        Key::Key3 => {
-            model.draw_mode = 3;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
     }
 }

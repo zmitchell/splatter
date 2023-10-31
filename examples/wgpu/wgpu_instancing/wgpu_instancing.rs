@@ -441,12 +441,12 @@ fn create_render_pipeline(
             wgpu::VertexAttribute {
                 shader_location: 2,
                 format: wgpu::VertexFormat::Float32x4,
-                offset: std::mem::size_of::<[f32; 4]>() as u64 * 0,
+                offset: 0,
             },
             wgpu::VertexAttribute {
                 shader_location: 3,
                 format: wgpu::VertexFormat::Float32x4,
-                offset: std::mem::size_of::<[f32; 4]>() as u64 * 1,
+                offset: std::mem::size_of::<[f32; 4]>() as u64,
             },
             wgpu::VertexAttribute {
                 shader_location: 4,

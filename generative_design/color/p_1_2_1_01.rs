@@ -139,17 +139,14 @@ fn mouse_released(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::Key1 => {
-            model.interpolate_shortest = true;
-        }
-        Key::Key2 => {
-            model.interpolate_shortest = false;
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => model.interpolate_shortest = true,
+            "2" => model.interpolate_shortest = false,
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        };
     }
 }

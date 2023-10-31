@@ -30,7 +30,7 @@
  * spacebar            : erase
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();
@@ -98,27 +98,35 @@ fn mouse_released(_app: &App, model: &mut Model, _button: MouseButton) {
 }
 fn key_pressed(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Space => {
-            model.clear_background = true;
+        Key::Named(key) => {
+            match key {
+                NamedKey::Space => model.clear_background = true,
+                _ => {}
+            };
         }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _other_key => {}
+        Key::Character(key) => match key.as_str() {
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        },
+        _ => {}
     }
 }
 fn key_released(_app: &App, model: &mut Model, key: Key) {
-    if key == Key::Space {
-        model.clear_background = false;
-    }
-    if key == Key::Key1 {
-        model.stroke_color = hsva(0.0, 0.0, 0.0, 0.1);
-    }
-    if key == Key::Key2 {
-        model.stroke_color = hsva(0.53, 1.0, 0.64, 0.1);
-    }
-    if key == Key::Key3 {
-        model.stroke_color = hsva(0.147, 1.0, 0.71, 0.1);
+    match key {
+        Key::Named(key) => {
+            match key {
+                NamedKey::Space => model.clear_background = false,
+                _ => {}
+            };
+        }
+        Key::Character(key) => match key.as_str() {
+            "1" => model.stroke_color = hsva(0.0, 0.0, 0.0, 0.1),
+            "2" => model.stroke_color = hsva(0.53, 1.0, 0.64, 0.1),
+            "3" => model.stroke_color = hsva(0.147, 1.0, 0.71, 0.1),
+            _ => {}
+        },
+        _ => {}
     }
 }

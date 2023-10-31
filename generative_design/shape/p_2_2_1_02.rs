@@ -28,7 +28,7 @@
  * r                   : clear display
  * s                   : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::SmolStr};
 
 enum Direction {
     North,
@@ -164,12 +164,17 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
-    if frame.nth() == 0 || app.keys.down.contains(&Key::R) {
+    if frame.nth() == 0
+        || app
+            .keys
+            .down
+            .contains(&Key::Character(SmolStr::new_inline("r")))
+    {
         draw.background().color(WHITE);
     }
 
     model.positions.iter().enumerate().for_each(|(i, pos)| {
-        if model.draw_mode == 3 && model.counter_triggers[i] == true {
+        if model.draw_mode == 3 && model.counter_triggers[i] {
             draw.ellipse()
                 .x_y(pos.x + model.step_size / 2.0, pos.y + model.step_size / 2.0)
                 .radius(model.radius + 3.5)
@@ -185,26 +190,28 @@ fn view(app: &App, model: &Model, frame: Frame) {
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
-    match key {
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "1" => {
+                model.draw_mode = 1;
+                model.step_size = 1.0;
+                model.radius = 1.0;
+            }
+            "2" => {
+                model.draw_mode = 2;
+                model.step_size = 1.0;
+                model.radius = 1.0;
+            }
+            "3" => {
+                model.draw_mode = 3;
+                model.step_size = 10.0;
+                model.radius = 2.5;
+            }
+            "s" => {
+                app.main_window()
+                    .capture_frame(app.exe_name().unwrap() + ".png");
+            }
+            _ => {}
         }
-        Key::Key1 => {
-            model.draw_mode = 1;
-            model.step_size = 1.0;
-            model.radius = 1.0;
-        }
-        Key::Key2 => {
-            model.draw_mode = 2;
-            model.step_size = 1.0;
-            model.radius = 1.0;
-        }
-        Key::Key3 => {
-            model.draw_mode = 3;
-            model.step_size = 10.0;
-            model.radius = 2.5;
-        }
-        _ => (),
     }
 }

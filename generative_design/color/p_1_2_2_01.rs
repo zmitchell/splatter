@@ -40,6 +40,7 @@
 use splatter::image;
 use splatter::image::GenericImageView;
 use splatter::prelude::*;
+use splatter::winit::keyboard::SmolStr;
 
 fn main() {
     splatter::app(model).run();
@@ -133,52 +134,26 @@ fn view(app: &App, model: &Model, frame: Frame) {
 fn key_released(app: &App, model: &mut Model, key: Key) {
     let assets = app.assets_path().unwrap();
     let img_path = assets.join("images").join("generative_examples");
-
-    match key {
-        Key::Q => {
-            model.image = image::open(img_path.join("pic1.jpg")).unwrap();
-        }
-        Key::W => {
-            model.image = image::open(img_path.join("pic2.jpg")).unwrap();
-        }
-        Key::E => {
-            model.image = image::open(img_path.join("pic3.jpg")).unwrap();
-        }
-        Key::R => {
-            model.image = image::open(img_path.join("pic4.jpg")).unwrap();
-        }
-        Key::Key1 => {
-            model.sort_mode = None;
-        }
-        Key::Key2 => {
-            model.sort_mode = Some(SortMode::Hue);
-        }
-        Key::Key3 => {
-            model.sort_mode = Some(SortMode::Saturation);
-        }
-        Key::Key4 => {
-            model.sort_mode = Some(SortMode::Brightness);
-        }
-        Key::Key5 => {
-            model.sort_mode = Some(SortMode::Grayscale);
-        }
-        Key::Key6 => {
-            model.sort_mode = Some(SortMode::Red);
-        }
-        Key::Key7 => {
-            model.sort_mode = Some(SortMode::Green);
-        }
-        Key::Key8 => {
-            model.sort_mode = Some(SortMode::Blue);
-        }
-        Key::Key9 => {
-            model.sort_mode = Some(SortMode::Alpha);
-        }
-        Key::S => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        _otherkey => (),
+    if let Key::Character(key) = key {
+        match key.as_str() {
+            "q" => model.image = image::open(img_path.join("pic1.jpg")).unwrap(),
+            "w" => model.image = image::open(img_path.join("pic2.jpg")).unwrap(),
+            "e" => model.image = image::open(img_path.join("pic3.jpg")).unwrap(),
+            "r" => model.image = image::open(img_path.join("pic4.jpg")).unwrap(),
+            "1" => model.sort_mode = None,
+            "2" => model.sort_mode = Some(SortMode::Hue),
+            "3" => model.sort_mode = Some(SortMode::Saturation),
+            "4" => model.sort_mode = Some(SortMode::Brightness),
+            "5" => model.sort_mode = Some(SortMode::Grayscale),
+            "6" => model.sort_mode = Some(SortMode::Red),
+            "7" => model.sort_mode = Some(SortMode::Green),
+            "8" => model.sort_mode = Some(SortMode::Blue),
+            "9" => model.sort_mode = Some(SortMode::Alpha),
+            "s" => app
+                .main_window()
+                .capture_frame(app.exe_name().unwrap() + ".png"),
+            _ => {}
+        };
     }
 }
 

@@ -33,7 +33,7 @@
  * a-z                 : switch letter on/off
  * ctrl                : save png
  */
-use splatter::prelude::*;
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();
@@ -204,38 +204,34 @@ fn count_characters(model: &mut Model) {
         // get one character from the text and turn it to uppercase
         let upper_case_char = c.to_uppercase().next().unwrap();
         let index = model.alphabet.chars().position(|c| c == upper_case_char);
-        if index.is_some() {
+        if let Some(index) = index {
             // increase the respective counter
-            model.counters[index.unwrap()] += 1;
+            model.counters[index] += 1;
         }
     }
 }
 
 fn key_released(app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::LControl | Key::RControl => {
-            app.main_window()
-                .capture_frame(app.exe_name().unwrap() + ".png");
-        }
-        Key::Key1 => {
-            model.draw_grey_lines = !model.draw_grey_lines;
-        }
-        Key::Key2 => {
-            model.draw_colored_lines = !model.draw_colored_lines;
-        }
-        Key::Key3 => {
-            model.draw_text = !model.draw_text;
-        }
-        Key::Key4 => {
-            for i in 0..model.alphabet.len() {
-                model.draw_letters[i] = false;
+        Key::Named(NamedKey::Control) => app
+            .main_window()
+            .capture_frame(app.exe_name().unwrap() + ".png"),
+        Key::Character(key) => match key.as_str() {
+            "1" => model.draw_grey_lines = !model.draw_grey_lines,
+            "2" => model.draw_colored_lines = !model.draw_colored_lines,
+            "3" => model.draw_text = !model.draw_text,
+            "4" => {
+                for i in 0..model.alphabet.len() {
+                    model.draw_letters[i] = false;
+                }
             }
-        }
-        Key::Key5 => {
-            for i in 0..model.alphabet.len() {
-                model.draw_letters[i] = true;
+            "5" => {
+                for i in 0..model.alphabet.len() {
+                    model.draw_letters[i] = true;
+                }
             }
-        }
-        _other_key => {}
+            _ => {}
+        },
+        _ => {}
     }
 }
