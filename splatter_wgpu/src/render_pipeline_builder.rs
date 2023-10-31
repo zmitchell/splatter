@@ -522,7 +522,7 @@ fn build(
     } = builder;
 
     let vertex = wgpu::VertexState {
-        module: &vs_mod,
+        module: vs_mod,
         entry_point: vs_entry_point,
         buffers: &vertex_buffers[..],
     };
@@ -544,7 +544,7 @@ fn build(
     };
     let fragment = match (fs_mod, color_states.is_empty()) {
         (Some(fs_mod), false) => Some(wgpu::FragmentState {
-            module: &fs_mod,
+            module: fs_mod,
             entry_point: fs_entry_point,
             targets: color_states,
         }),

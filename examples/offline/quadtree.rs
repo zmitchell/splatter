@@ -121,7 +121,7 @@ impl QuadTree {
             return false;
         }
 
-        return true;
+        true
     }
 
     pub fn get_elements<T: WithPos>(

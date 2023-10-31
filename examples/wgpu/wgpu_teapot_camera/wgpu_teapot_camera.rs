@@ -249,20 +249,20 @@ fn update(app: &App, model: &mut Model, update: Update) {
 // TODO: Check device ID for mouse here - not sure if possible with winit currently.
 fn event(_app: &App, model: &mut Model, event: Event) {
     if model.camera_is_active {
-        if let Event::DeviceEvent(_device_id, event) = event {
-            if let winit::event::DeviceEvent::Motion { axis, value } = event {
-                let sensitivity = 0.004;
-                match axis {
-                    // Yaw left and right on mouse x axis movement.
-                    0 => model.camera.yaw -= (value * sensitivity) as f32,
-                    // Pitch up and down on mouse y axis movement.
-                    _ => {
-                        let max_pitch = std::f32::consts::PI * 0.5 - 0.0001;
-                        let min_pitch = -max_pitch;
-                        model.camera.pitch = (model.camera.pitch + (-value * sensitivity) as f32)
-                            .min(max_pitch)
-                            .max(min_pitch)
-                    }
+        if let Event::DeviceEvent(_device_id, winit::event::DeviceEvent::Motion { axis, value }) =
+            event
+        {
+            let sensitivity = 0.004;
+            match axis {
+                // Yaw left and right on mouse x axis movement.
+                0 => model.camera.yaw -= (value * sensitivity) as f32,
+                // Pitch up and down on mouse y axis movement.
+                _ => {
+                    let max_pitch = std::f32::consts::PI * 0.5 - 0.0001;
+                    let min_pitch = -max_pitch;
+                    model.camera.pitch = (model.camera.pitch + (-value * sensitivity) as f32)
+                        .min(max_pitch)
+                        .max(min_pitch)
                 }
             }
         }
@@ -337,8 +337,8 @@ fn create_uniforms([w, h]: [u32; 2], view: Mat4) -> Uniforms {
     let scale = Mat4::from_scale(Vec3::splat(0.01));
     Uniforms {
         world: rotation,
-        view: (view * scale).into(),
-        proj: proj.into(),
+        view: (view * scale),
+        proj: proj,
     }
 }
 
@@ -378,7 +378,7 @@ fn create_pipeline_layout(
 ) -> wgpu::PipelineLayout {
     let desc = wgpu::PipelineLayoutDescriptor {
         label: None,
-        bind_group_layouts: &[&bind_group_layout],
+        bind_group_layouts: &[bind_group_layout],
         push_constant_ranges: &[],
     };
     device.create_pipeline_layout(&desc)
@@ -394,7 +394,7 @@ fn create_render_pipeline(
     sample_count: u32,
 ) -> wgpu::RenderPipeline {
     wgpu::RenderPipelineBuilder::from_layout(layout, vs_mod)
-        .fragment_shader(&fs_mod)
+        .fragment_shader(fs_mod)
         .color_format(dst_format)
         .color_blend(wgpu::BlendComponent::REPLACE)
         .alpha_blend(wgpu::BlendComponent::REPLACE)

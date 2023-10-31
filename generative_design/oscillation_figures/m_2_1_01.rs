@@ -70,7 +70,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
         model.x = (model.angle * model.freq + deg_to_rad(model.phi)).cos();
         model.x *= 100.0 - 125.0;
         model.y = (model.angle * model.freq + deg_to_rad(model.phi)).sin();
-        model.y = model.y * 100.0;
+        model.y *= 100.0;
     } else {
         model.point_count = app.window_rect().w() as usize;
     }

@@ -107,13 +107,13 @@ fn crop_tiles(app: &App, model: &mut Model, win: Rect) {
             }
             model.crop_x = clamp(
                 model.crop_x,
-                win.left() + (model.tile_width as f32 / 2.0),
-                win.right() - (model.tile_width as f32 / 2.0),
+                win.left() + (model.tile_width / 2.0),
+                win.right() - (model.tile_width / 2.0),
             );
             model.crop_y = clamp(
                 model.crop_y,
-                win.top() - (model.tile_height as f32 / 2.0),
-                win.bottom() + (model.tile_height as f32 / 2.0),
+                win.top() - (model.tile_height / 2.0),
+                win.bottom() + (model.tile_height / 2.0),
             );
 
             let [w, h] = model.texture.size();
@@ -150,10 +150,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
         for grid_y in 0..model.tile_count_y {
             for grid_x in 0..model.tile_count_x {
                 let x =
-                    win.left() + grid_x as f32 * model.tile_width + (model.tile_width as f32 / 2.0);
+                    win.left() + grid_x as f32 * model.tile_width + (model.tile_width / 2.0);
                 let y = win.top()
                     - grid_y as f32 * model.tile_height
-                    - (model.tile_height as f32 / 2.0);
+                    - (model.tile_height / 2.0);
                 draw.texture(&model.texture)
                     .x_y(x, y)
                     .w_h(model.tile_width, model.tile_height)

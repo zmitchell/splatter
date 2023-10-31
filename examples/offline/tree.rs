@@ -95,7 +95,7 @@ fn model(app: &App) -> Model {
     things.push(candidate);
 
     Model {
-        palette: palette,
+        palette,
         things,
     }
 }
@@ -139,12 +139,10 @@ fn update(app: &App, model: &mut Model, _update: Update) {
         tree.insert(&model.things, i);
     }
     for i in 0..max_count {
-        if model.things[i].parent == None {
-            if app.elapsed_frames() < 1000 {
-                model.things[i].energy += 10000.0;
-                if model.things[i].alive == true {
-                    model.things[i].grown = true;
-                }
+        if model.things[i].parent.is_none() && app.elapsed_frames() < 1000 {
+            model.things[i].energy += 10000.0;
+            if model.things[i].alive {
+                model.things[i].grown = true;
             }
         }
         //move the size to the children
@@ -191,14 +189,12 @@ fn update(app: &App, model: &mut Model, _update: Update) {
                     model.things[i].children.push(s);
                 }
             }
-            if model.things[i].energy > 10.0 {
-                if model.things[i].children.len() > 0 {
-                    model.things[i].energy -= 1.0;
-                    for k in 0..model.things[i].children.len() {
-                        let other = model.things[i].children[k];
-                        model.things[other].energy += 3.0;
-                        model.things[other].grown = true;
-                    }
+            if model.things[i].energy > 10.0 && !model.things[i].children.is_empty() {
+                model.things[i].energy -= 1.0;
+                for k in 0..model.things[i].children.len() {
+                    let other = model.things[i].children[k];
+                    model.things[other].energy += 3.0;
+                    model.things[other].grown = true;
                 }
             }
         }
@@ -206,7 +202,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 
     //check if the grown things are free
     for i in 0..model.things.len() {
-        if model.things[i].grown == true {
+        if model.things[i].grown {
             let indices = tree.get_elements(
                 &model.things,
                 model.things[i].position.x,
@@ -231,7 +227,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
                     }
                 }
             }
-            if model.things[i].alive == true {
+            if model.things[i].alive {
                 if model.things[i].size > 29.0 {
                     model.things[i].alive = false;
                 } else {

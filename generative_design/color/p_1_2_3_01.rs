@@ -30,7 +30,6 @@
  */
 use splatter::{
     prelude::*,
-    winit::keyboard::{NamedKey, SmolStr},
 };
 
 fn main() {

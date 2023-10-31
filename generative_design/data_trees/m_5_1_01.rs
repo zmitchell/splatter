@@ -99,7 +99,7 @@ fn draw_branch(draw: &Draw, x: f32, y: f32, radius: f32, level: u8, mx: f32, my:
     if level > 0 {
         // left branch
         draw_branch(
-            &draw,
+            draw,
             x - radius,
             y - radius / 2.0,
             radius / 2.0,
@@ -109,7 +109,7 @@ fn draw_branch(draw: &Draw, x: f32, y: f32, radius: f32, level: u8, mx: f32, my:
         );
         // right branch
         draw_branch(
-            &draw,
+            draw,
             x + radius,
             y - radius / 2.0,
             radius / 2.0,

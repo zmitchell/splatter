@@ -183,8 +183,8 @@ fn create_uniforms(rotation: f32, [w, h]: [u32; 2]) -> Uniforms {
     let scale = Mat4::from_scale(Vec3::splat(0.01));
     Uniforms {
         world: rotation,
-        view: (view * scale).into(),
-        proj: proj.into(),
+        view: (view * scale),
+        proj: proj,
     }
 }
 
@@ -224,7 +224,7 @@ fn create_pipeline_layout(
 ) -> wgpu::PipelineLayout {
     let desc = wgpu::PipelineLayoutDescriptor {
         label: None,
-        bind_group_layouts: &[&bind_group_layout],
+        bind_group_layouts: &[bind_group_layout],
         push_constant_ranges: &[],
     };
     device.create_pipeline_layout(&desc)
@@ -240,7 +240,7 @@ fn create_render_pipeline(
     sample_count: u32,
 ) -> wgpu::RenderPipeline {
     wgpu::RenderPipelineBuilder::from_layout(layout, vs_mod)
-        .fragment_shader(&fs_mod)
+        .fragment_shader(fs_mod)
         .color_format(dst_format)
         .color_blend(wgpu::BlendComponent::REPLACE)
         .alpha_blend(wgpu::BlendComponent::REPLACE)

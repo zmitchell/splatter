@@ -249,7 +249,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let win = app.window_rect();
     let draw = app.draw();
 
-    draw.text(&"Best Phrase:".to_string())
+    draw.text("Best Phrase:")
         .color(BLACK)
         .left_justify()
         .align_text_top()

@@ -39,7 +39,7 @@ fn draw_circle(draw: &Draw, x: f32, y: f32, r: f32) {
     if r > 2.0 {
         // Now we draw two more circles, one to the left
         // and one to the right
-        draw_circle(&draw, x + r, y, r / 2.0);
-        draw_circle(&draw, x - r, y, r / 2.0);
+        draw_circle(draw, x + r, y, r / 2.0);
+        draw_circle(draw, x - r, y, r / 2.0);
     }
 }

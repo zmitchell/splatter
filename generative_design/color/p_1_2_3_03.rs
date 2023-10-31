@@ -108,7 +108,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let mut counter = 0;
         // row count and row height
         let row_count = rng.gen_range(5..30);
-        let row_height = (app.window_rect().h() as i32 / row_count) as i32;
+        let row_height = (app.window_rect().h() as i32 / row_count);
 
         // seperate each line in parts
         for i in (0..=row_count).rev() {
@@ -139,7 +139,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
             // draw rects
             let mut sum_parts_now = 0;
             for ii in 0..parts.len() {
-                sum_parts_now += parts[ii as usize];
+                sum_parts_now += parts[ii];
 
                 let x = map_range(
                     sum_parts_now,
@@ -158,9 +158,9 @@ fn view(app: &App, model: &Model, frame: Frame) {
                     let lum = map_range(y, h / 2.0, -h / 2.0, 0.0, 1.0);
 
                     let col = hsva(
-                        model.hue_values[index as usize],
-                        model.saturation_values[index as usize],
-                        model.brightness_values[index as usize],
+                        model.hue_values[index],
+                        model.saturation_values[index],
+                        model.brightness_values[index],
                         model.alpha_value * lum,
                     );
                     (pt2(x, y), col)

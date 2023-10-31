@@ -93,7 +93,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     draw.background().color(WHITE);
 
     model.shapes.iter().for_each(|shape| {
-        shape.display(&draw, &model);
+        shape.display(&draw, model);
     });
 
     // Write to the window frame.

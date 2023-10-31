@@ -30,7 +30,7 @@
  * arrow up/down       : number of tiles vertically
  * s                   : save png
  */
-use splatter::{color::named, prelude::*, winit::keyboard::NamedKey};
+use splatter::{prelude::*, winit::keyboard::NamedKey};
 
 fn main() {
     splatter::app(model).run();

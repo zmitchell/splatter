@@ -115,8 +115,8 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let flat_samples = image.as_flat_samples();
     model.texture.upload_data(
         app.main_window().device(),
-        &mut *frame.command_encoder(),
-        &flat_samples.as_slice(),
+        &mut frame.command_encoder(),
+        flat_samples.as_slice(),
     );
 
     let draw = app.draw();

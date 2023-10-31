@@ -222,7 +222,7 @@ where
         let index = index
             .try_into()
             .unwrap_or_else(|_err| panic!("index out of range of valid `usize` values"));
-        self.points.channel().get(index).map(|p| p.clone())
+        self.points.channel().get(index).cloned()
     }
 }
 
@@ -1467,7 +1467,7 @@ where
 }
 
 // The error message produced when the `Vertices` iterator panics due to an out of bound index.
-const NO_VERTEX_FOR_INDEX: &'static str =
+const NO_VERTEX_FOR_INDEX: &str =
     "no vertex for the index produced by the mesh's indices channel";
 
 impl<M> RawVertices<M> {

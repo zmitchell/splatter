@@ -75,7 +75,7 @@ fn model(app: &App) -> Model {
     );
 
     // Make sure the directory where we will save images to exists.
-    std::fs::create_dir_all(&capture_directory(app)).unwrap();
+    std::fs::create_dir_all(capture_directory(app)).unwrap();
 
     Model {
         texture,
@@ -181,7 +181,7 @@ fn view(_app: &App, model: &Model, frame: Frame) {
     let mut encoder = frame.command_encoder();
     model
         .texture_reshaper
-        .encode_render_pass(frame.texture_view(), &mut *encoder);
+        .encode_render_pass(frame.texture_view(), &mut encoder);
 }
 
 // Wait for capture to finish.
@@ -191,7 +191,7 @@ fn exit(app: &App, model: Model) {
     let device = window.device();
     model
         .texture_capturer
-        .await_active_snapshots(&device)
+        .await_active_snapshots(device)
         .unwrap();
     println!("Done!");
 }

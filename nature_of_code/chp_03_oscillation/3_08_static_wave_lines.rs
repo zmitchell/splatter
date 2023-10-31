@@ -33,7 +33,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
     for x in (0..(win.w() as usize)).step_by(5) {
         let y = map_range(model.angle.sin(), -1.0, 1.0, win.bottom(), win.top());
         model.angle += model.angle_vel;
-        model.vertices.push(pt2(win.left() + x as f32, y as f32));
+        model.vertices.push(pt2(win.left() + x as f32, y));
     }
 }
 

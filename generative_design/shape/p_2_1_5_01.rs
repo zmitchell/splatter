@@ -62,7 +62,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
     let win = app.window_rect();
     // first shape (fixed)
-    overlay(&draw, &model, win, 3.0);
+    overlay(&draw, model, win, 3.0);
 
     // second shape (dynamically translated/rotated and scaled)
     let x = map_range(app.mouse.x, win.left(), win.right(), -50.0, 50.0);
@@ -76,7 +76,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     }
     draw = draw.scale(s);
 
-    overlay(&draw, &model, win, 2.0);
+    overlay(&draw, model, win, 2.0);
 
     // Write to the window frame.
     draw.to_frame(app, &frame).unwrap();
