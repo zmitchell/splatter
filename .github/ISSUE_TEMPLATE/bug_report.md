@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
@@ -22,8 +22,8 @@ A clear and concise description of what you expected to happen.
 
 **System info (please complete the following information):**
  - OS: [e.g. iOS]
- - Version [e.g. 22]
- - GPU 
+ - Version: [e.g. 22]
+ - GPU: [integrated, RTX 4070, etc]
 
 **Additional context**
 Add any other context about the problem here.
