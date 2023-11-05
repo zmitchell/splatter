@@ -133,7 +133,7 @@ pub fn safe_file_save(path: &std::path::Path, content: &[u8]) -> std::io::Result
     // Write the temp file.
     let file = std::fs::File::create(&temp_path)?;
     let mut buffered = std::io::BufWriter::new(file);
-    buffered.write(content)?;
+    buffered.write_all(content)?;
 
     // If there's already a file at `path`, remove it.
     if path.exists() {
