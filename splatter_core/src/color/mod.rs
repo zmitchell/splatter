@@ -5,8 +5,8 @@
 
 pub mod conv;
 
-pub use self::conv::IntoLinSrgba;
 pub use self::named::*;
+use palette::stimulus::Stimulus;
 #[doc(inline)]
 pub use palette::*;
 
@@ -47,7 +47,7 @@ pub type Gray<S = DefaultScalar> = Srgb<S>;
 /// A short-hand constructor for `Rgb::new`.
 pub fn rgb<T>(r: T, g: T, b: T) -> Rgb<T>
 where
-    T: Component,
+    T: Stimulus,
 {
     srgb(r, g, b)
 }
@@ -60,7 +60,7 @@ pub fn rgb8(r: u8, g: u8, b: u8) -> Rgb8 {
 /// A short-hand constructor for `Rgba::new`.
 pub fn rgba<T>(r: T, g: T, b: T, a: T) -> Rgba<T>
 where
-    T: Component,
+    T: Stimulus,
 {
     srgba(r, g, b, a)
 }
@@ -73,7 +73,7 @@ pub fn rgba8(r: u8, g: u8, b: u8, a: u8) -> Rgba8 {
 /// A short-hand constructor for `Srgb::new`.
 pub fn srgb<T>(r: T, g: T, b: T) -> Srgb<T>
 where
-    T: Component,
+    T: Stimulus,
 {
     Srgb::new(r, g, b)
 }
@@ -86,7 +86,7 @@ pub fn srgb8(r: u8, g: u8, b: u8) -> Srgb<u8> {
 /// A short-hand constructor for `Srgba::new`.
 pub fn srgba<T>(r: T, g: T, b: T, a: T) -> Srgba<T>
 where
-    T: Component,
+    T: Stimulus,
 {
     Srgba::new(r, g, b, a)
 }
@@ -99,7 +99,7 @@ pub fn srgba8(r: u8, g: u8, b: u8, a: u8) -> Srgba<u8> {
 /// A short-hand constructor for `LinSrgb::new`.
 pub fn lin_srgb<T>(r: T, g: T, b: T) -> LinSrgb<T>
 where
-    T: Component,
+    T: Stimulus,
 {
     LinSrgb::new(r, g, b)
 }
@@ -107,7 +107,7 @@ where
 /// A short-hand constructor for `LinSrgba::new`.
 pub fn lin_srgba<T>(r: T, g: T, b: T, a: T) -> LinSrgba<T>
 where
-    T: Component,
+    T: Stimulus,
 {
     LinSrgba::new(r, g, b, a)
 }
@@ -156,7 +156,7 @@ pub fn hsva(h: f32, s: f32, v: f32, a: f32) -> Hsva {
 /// A short-hand constructor for `Gray::new`.
 pub fn gray<T>(g: T) -> Gray<T>
 where
-    T: Component,
+    T: Stimulus + Copy,
 {
     srgb(g, g, g)
 }

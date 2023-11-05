@@ -1,11 +1,14 @@
 //! Vertex types yielded by the mesh adaptors and their implementations.
 
 use core::ops::{Deref, DerefMut};
-use splatter_core::color::{self, IntoLinSrgba};
+use splatter_core::color::encoding::IntoLinear;
+use splatter_core::color::stimulus::Stimulus;
+use splatter_core::color::{self, FromColor};
 use splatter_core::geom::{self, Point2};
 
 #[cfg(feature = "serde1")]
 use serde::{Deserialize, Serialize};
+use splatter_core::prelude::rgb::Rgb;
 
 /// A vertex with a specified color.
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
@@ -159,21 +162,14 @@ where
 }
 
 // For converting from tuples to vertices.
-
-impl<A, V, B, C> From<(A, B)> for WithColor<V, C>
+impl<T, V, C, S, U> From<(T, Rgb<S, U>)> for WithColor<V, C>
 where
-    A: Into<V>,
-    B: IntoLinSrgba<f32>,
-    C: From<color::LinSrgba<f32>>,
+    T: Into<V>,
+    C: FromColor<Rgb<S, U>>,
 {
-    fn from((vertex, color): (A, B)) -> Self {
+    fn from((vertex, color): (T, Rgb<S, U>)) -> Self {
         let vertex = vertex.into();
-        // TODO: Using `into_lin_srgba` solely because palette's conversion implementations (e.g.
-        // `From` and `Into`) are not exhaustive. Using this gives more flexibility in terms of
-        // supported color conversions, but these conversions should really be added upstream to
-        // palette itself.
-        let lin_srgba = color.into_lin_srgba();
-        let color = lin_srgba.into();
+        let color = C::from_color(color);
         WithColor { vertex, color }
     }
 }
