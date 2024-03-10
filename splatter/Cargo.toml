@@ -14,7 +14,7 @@ edition = "2018"
 futures = "0.3"
 find_folder = "0.3"
 getrandom = "0.2.10"
-image = "0.23"
+image = "0.25"
 instant = "0.1.12"
 lyon = "1.0"
 splatter_core = { version = "0.1.0", path = "../splatter_core", features = [
